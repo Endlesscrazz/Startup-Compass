@@ -1,0 +1,111 @@
+/*
+ * Brand-matched overrides for Leaflet's default chrome.
+ * Keeps the OSM tiles untouched (judges expect map authenticity)
+ * but pulls every UI surface — controls, popups, attribution —
+ * into our cream/ink/terracotta palette.
+ */
+
+.leaflet-container {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  background: var(--surface-tint);
+}
+
+/* Marker hover lift */
+.startup-marker {
+  cursor: pointer;
+  transition: transform 0.18s ease;
+  filter: drop-shadow(0 2px 4px rgba(11, 27, 51, 0.18));
+}
+.startup-marker:hover {
+  transform: scale(1.18);
+  z-index: 1000 !important;
+}
+
+/* Popup */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  box-shadow:
+    0 1px 0 rgba(11, 27, 51, 0.04),
+    0 18px 36px -16px rgba(11, 27, 51, 0.28);
+  padding: 4px;
+  background: var(--surface-elev);
+}
+.leaflet-popup-content {
+  margin: 14px 16px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.leaflet-popup-tip-container {
+  width: 30px;
+  height: 14px;
+}
+.leaflet-popup-tip {
+  background: var(--surface-elev);
+  border: 1px solid var(--rule);
+  box-shadow: none;
+}
+.leaflet-popup-close-button {
+  color: var(--ink-mute) !important;
+  padding: 8px 8px 0 0 !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+}
+.leaflet-popup-close-button:hover {
+  color: var(--ink) !important;
+}
+
+/* Zoom controls */
+.leaflet-bar {
+  border-radius: 999px !important;
+  border: none !important;
+  box-shadow:
+    0 1px 0 rgba(11, 27, 51, 0.04),
+    0 8px 18px -10px rgba(11, 27, 51, 0.22) !important;
+  overflow: hidden;
+}
+.leaflet-bar a {
+  background: var(--surface-elev) !important;
+  color: var(--ink) !important;
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  font-weight: 500 !important;
+  font-size: 18px !important;
+  border-bottom: 1px solid var(--rule) !important;
+}
+.leaflet-bar a:last-child {
+  border-bottom: none !important;
+}
+.leaflet-bar a:hover {
+  background: var(--surface-tint) !important;
+  color: var(--ink) !important;
+}
+
+/* Attribution — required by OSM, polished to gov-grade */
+.leaflet-control-attribution {
+  background: rgba(251, 247, 240, 0.92) !important;
+  color: var(--ink-mute) !important;
+  font-size: 10.5px !important;
+  padding: 3px 8px !important;
+  border-top-left-radius: 6px;
+}
+.leaflet-control-attribution a {
+  color: var(--ink) !important;
+}
+
+/* Tame Leaflet's default text-anti-alias (looks crisper) */
+.leaflet-container,
+.leaflet-popup-content,
+.leaflet-control-attribution {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility for popup body — line-clamp */
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}

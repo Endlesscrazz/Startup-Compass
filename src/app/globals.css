@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/*
+ * Startup Compass — design tokens
+ * Palette inspired by Utah's official identity:
+ *   - Deep navy ink (state-credible, investor-ready)
+ *   - Warm cream surface (parchment / archive feel — gravitas)
+ *   - Red-rock terracotta accent (Mighty 5 landscape)
+ */
+:root {
+  --ink: #0b1b33;
+  --ink-soft: #1a2d4e;
+  --ink-mute: #44557a;
+
+  --surface: #fbf7f0;
+  --surface-elev: #ffffff;
+  --surface-tint: #f4ecdd;
+
+  --accent: #b8542a;
+  --accent-hover: #9b4421;
+  --accent-soft: #f3dccd;
+
+  --rule: #e7dec9;
+  --rule-strong: #c8b48a;
+
+  --focus: #b8542a;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+
+  --color-surface: var(--surface);
+  --color-surface-elev: var(--surface-elev);
+  --color-surface-tint: var(--surface-tint);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-fraunces);
+
+  --radius-card: 14px;
+
+  --shadow-card: 0 1px 0 rgba(11, 27, 51, 0.04),
+    0 18px 40px -24px rgba(11, 27, 51, 0.18);
+  --shadow-card-hover: 0 1px 0 rgba(11, 27, 51, 0.06),
+    0 24px 48px -20px rgba(11, 27, 51, 0.28);
+}
+
+html,
+body {
+  background: var(--surface);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+a {
+  color: inherit;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Hairline rule used between top bar / sections */
+.hairline {
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--rule) 12%,
+    var(--rule) 88%,
+    transparent
+  );
+  height: 1px;
+}
+
+/* Subtle topographic motif for hero — pure CSS so no asset to manage */
+.topo {
+  background-image: radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      rgba(184, 84, 42, 0.08),
+      transparent 60%
+    ),
+    repeating-radial-gradient(
+      circle at 20% 110%,
+      rgba(11, 27, 51, 0.045) 0,
+      rgba(11, 27, 51, 0.045) 1px,
+      transparent 1px,
+      transparent 60px
+    ),
+    repeating-radial-gradient(
+      circle at 85% 120%,
+      rgba(11, 27, 51, 0.04) 0,
+      rgba(11, 27, 51, 0.04) 1px,
+      transparent 1px,
+      transparent 80px
+    );
+}
