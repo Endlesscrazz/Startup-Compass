@@ -1,5 +1,8 @@
 /**
  * Visual config + helpers shared between the map and its filter sidebar.
+ *
+ * Company rows are generated from the CSV in `dataset/` — see `rawDataset.mapCompaniesCsv`
+ * in `src/lib/dataset.ts`. Regenerate with `npm run data`.
  */
 
 import companiesJson from "@/data/companies.json";

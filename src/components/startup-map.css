@@ -102,6 +102,56 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* MarkerCluster — branded cluster discs (neutralize plugin default blobs) */
+.cluster-pin-wrapper {
+  margin-left: unset !important;
+  margin-top: unset !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  filter: drop-shadow(0 3px 6px rgba(11, 27, 51, 0.22));
+  transition:
+    transform 0.14s ease,
+    filter 0.14s ease;
+}
+.cluster-pin-wrapper:hover {
+  transform: scale(1.06);
+  filter: drop-shadow(0 5px 10px rgba(11, 27, 51, 0.28));
+  z-index: 1100 !important;
+}
+.cluster-pin {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      ellipse 140% 100% at 30% -10%,
+      rgba(251, 247, 240, 0.18),
+      transparent 55%
+    ),
+    linear-gradient(
+      160deg,
+      var(--ink) 0%,
+      var(--ink-soft, #1a2d4e) 100%
+    );
+  border: 2.5px solid var(--accent, #b8542a);
+  box-shadow:
+    inset 0 1px 0 rgba(251, 247, 240, 0.12),
+    0 0 0 1px rgba(11, 27, 51, 0.06);
+}
+.cluster-pin__count {
+  font-family: var(--font-display), serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--surface, #fbf7f0);
+  line-height: 1;
+  text-shadow: 0 1px 1px rgba(11, 27, 51, 0.35);
+}
+
 /* Utility for popup body — line-clamp */
 .line-clamp-4 {
   display: -webkit-box;

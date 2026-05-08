@@ -54,9 +54,12 @@ npm run start
 
 ## Map data pipeline
 
-Source: `Map Data for Builder Day  - Sheet1.csv` (committed at the repo root).
+Raw inputs live in **`dataset/`** (see `src/lib/dataset.ts` for path names).
 
-The CSV is converted to `src/data/companies.json` by a one-shot Node script that:
+- **Map companies:** `dataset/Map Data for Builder Day  - Sheet1.csv`
+- **Resources (Navigator):** `dataset/Resources List - Builder Day.xlsx`
+
+The map CSV is converted to `src/data/companies.json` by a one-shot Node script (`scripts/generate-companies.mjs`, paths in `scripts/data-paths.mjs`) that:
 
 1. Parses the CSV (quoted multi-line fields and all)
 2. Extracts the city from each address
@@ -81,7 +84,11 @@ The project is plain Next.js with no special config &mdash; push to GitHub and i
 ## Project structure
 
 ```
+dataset/
+  Map Data for Builder Day  - Sheet1.csv   # raw — Utah Startup Map
+  Resources List - Builder Day.xlsx        # raw — Founder's Navigator
 scripts/
+  data-paths.mjs          # shared paths for build scripts
   generate-companies.mjs  # CSV → JSON pipeline
 src/
   app/
@@ -105,6 +112,7 @@ src/
   data/
     companies.json        # Generated dataset (do not edit by hand)
   lib/
+    dataset.ts            # Repo-relative paths for raw + generated data
     map-config.ts         # Sector colors, filter helpers
     personas.ts           # Hero persona content
 ```

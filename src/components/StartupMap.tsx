@@ -1,10 +1,13 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
+import "react-leaflet-cluster/dist/assets/MarkerCluster.css";
+import "react-leaflet-cluster/dist/assets/MarkerCluster.Default.css";
 import "./startup-map.css";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import L from "leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { type Company, getSectorColor } from "@/lib/map-config";
 
@@ -17,6 +20,12 @@ const UTAH_BOUNDS: L.LatLngBoundsExpression = [
 
 const INITIAL_CENTER: L.LatLngExpression = [40.4555, -111.65];
 const INITIAL_ZOOM = 8;
+
+/** At this zoom level and deeper, clustering is off so popups/spiderfy work reliably. */
+const DISABLE_CLUSTER_ZOOM = 14;
+
+/** When focusing a company from the sidebar, zoom at least here so dense SLC/Lehi resolves. */
+const FOCUS_MIN_ZOOM = DISABLE_CLUSTER_ZOOM;
 
 /**
  * Builds an SVG-based DivIcon for each marker.
@@ -54,6 +63,26 @@ function getMarkerIcon(color: string, isFocused = false): L.DivIcon {
   return icon;
 }
 
+/** Government-branded cluster disk (Ink + accent ring; size scales softly by count). */
+function clusterBrandIcon(cluster: L.MarkerCluster): L.DivIcon {
+  const count = cluster.getChildCount();
+  let size = 42;
+  if (count >= 35) size = 52;
+  else if (count >= 18) size = 48;
+
+  let fontSize = 14;
+  if (count >= 100) fontSize = 13;
+
+  const html = `<div class="cluster-pin"><span class="cluster-pin__count" style="font-size:${fontSize}px">${count}</span></div>`;
+
+  return L.divIcon({
+    html,
+    className: "cluster-pin-wrapper",
+    iconSize: L.point(size, size),
+    iconAnchor: [size / 2, size / 2],
+  });
+}
+
 type Props = {
   companies: Company[];
   /** When set, the map smoothly flies to this company on change. */
@@ -66,6 +95,19 @@ export default function StartupMap({
   focusedId,
   onMarkerClick,
 }: Props) {
+  const clusterOptions = useMemo(
+    (): L.MarkerClusterGroupOptions => ({
+      chunkedLoading: true,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      maxClusterRadius: 55,
+      disableClusteringAtZoom: DISABLE_CLUSTER_ZOOM,
+      zoomToBoundsOnClick: true,
+      iconCreateFunction: clusterBrandIcon,
+    }),
+    [],
+  );
+
   return (
     <MapContainer
       center={INITIAL_CENTER}
@@ -85,11 +127,13 @@ export default function StartupMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
         maxZoom={19}
       />
-      <Markers
-        companies={companies}
-        focusedId={focusedId}
-        onMarkerClick={onMarkerClick}
-      />
+      <MarkerClusterGroup {...clusterOptions}>
+        <Markers
+          companies={companies}
+          focusedId={focusedId}
+          onMarkerClick={onMarkerClick}
+        />
+      </MarkerClusterGroup>
       <FocusFlyTo companies={companies} focusedId={focusedId} />
     </MapContainer>
   );
@@ -148,7 +192,7 @@ function FocusFlyTo({
     const target = companies.find((c) => c.id === focusedId);
     if (!target) return;
     lastFocused.current = focusedId;
-    map.flyTo([target.lat, target.lng], Math.max(map.getZoom(), 13), {
+    map.flyTo([target.lat, target.lng], Math.max(map.getZoom(), FOCUS_MIN_ZOOM), {
       duration: 0.85,
       easeLinearity: 0.4,
     });

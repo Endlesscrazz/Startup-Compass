@@ -2,25 +2,23 @@
 /**
  * Build-time data pipeline.
  *
- * Reads the hackathon CSV (`Map Data for Builder Day  - Sheet1.csv`),
- * normalizes each row, and assigns coordinates by:
- *   1. Looking up the city in a curated Utah centroid table
- *   2. Adding deterministic jitter (hash of company name) so multiple
- *      companies in the same city don't stack on a single pixel
+ * Reads: dataset/Map Data for Builder Day  - Sheet1.csv
+ * Writes: src/data/companies.json
  *
- * Output: src/data/companies.json
+ * Paths: scripts/data-paths.mjs (and human-readable names in src/lib/dataset.ts)
  *
  * Re-run with: `npm run data`
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { dirname } from "node:path";
+import {
+  GENERATED_COMPANIES_JSON,
+  MAP_COMPANIES_CSV,
+} from "./data-paths.mjs";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "..");
-const CSV_PATH = resolve(ROOT, "Map Data for Builder Day  - Sheet1.csv");
-const OUT_PATH = resolve(ROOT, "src/data/companies.json");
+const CSV_PATH = MAP_COMPANIES_CSV;
+const OUT_PATH = GENERATED_COMPANIES_JSON;
 
 // ---------------------------------------------------------------------------
 // Utah city centroids (lat, lng).
@@ -239,6 +237,14 @@ function normalizeLinkedIn(url) {
 // Main
 // ---------------------------------------------------------------------------
 function main() {
+  if (!existsSync(CSV_PATH)) {
+    console.error(
+      `Missing map companies CSV:\n  ${CSV_PATH}\n` +
+        "Place the hackathon export under dataset/ (see src/lib/dataset.ts — rawDataset.mapCompaniesCsv).",
+    );
+    process.exit(1);
+  }
+
   const csv = readFileSync(CSV_PATH, "utf8");
   const rows = parseCSV(csv);
   const [header, ...body] = rows;
