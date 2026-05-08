@@ -1,62 +1,63 @@
 ---
 # Handoff — Startup Compass / Founder's Navigator
 Date: 2026-05-08
-Session: 1 (complete) + post-session merge
+Session: 2 complete
 
 ## What was completed
-Session 1: scaffold, parse, embed, index, /api/ping — Gate 1 passed.
-Post-session: merged founder-navigator/ into repo root (single Next.js app).
+Full /api/match pipeline built and Gate 2 passed.
 
-## Architecture change: MERGED SINGLE APP
-founder-navigator/ has been DELETED. Everything now lives in the repo root.
-- Teammates' code: src/app/page.tsx, src/app/map/, src/components/ (landing + map)
-- Shreyas's code: src/app/quiz/, src/app/results/, src/app/api/match/, src/lib/index.ts
+## Files created this session
+- src/lib/counties.ts — city→county lookup (60+ cities, county passthrough, strip " County")
+- src/lib/profile.ts — stage-aware profile string composer (DECISION-8 template)
+- src/lib/embed.ts — Gemini gemini-embedding-001 client (3072-dim)
+- src/lib/match.ts — cosine sim + statewide location filter + multiplicative boost
+- src/lib/explain.ts — Groq llama-3.3-70b explanations with fallback
+- src/app/api/match/route.ts — full pipeline wired, community label normalization
 
-DO NOT recreate founder-navigator/. The app runs from the repo root.
-Run dev server: `npm run dev` from repo root (Startup-Compass/).
+## Gate 2 status
+POST /api/match (Priya: revenue, SaaS, SLC, Funding) → Salt Lake Angels rank 5, no microloans ✓ PASSED
 
-## Decisions made
-- Embedding: gemini-embedding-001 (3072-dim, NOT 768) — text-embedding-004 was retired
-- LLM: Groq llama-3.3-70b-versatile (free tier, ~400ms)
-- Single merged Next.js app — no nested apps
-- Scoring: cosine × (1 + 0.10×topic + 0.10×industry + 0.10×community) — multiplicative
-- "Any" community tag always fires community boost
-- Location statewide heuristic: locations.length >= 20
-- embeddings.json committed to repo (pre-computed, cold start is instant)
-- Providers modular via EMBEDDING_PROVIDER / LLM_PROVIDER env vars
+## 6-Persona results summary
+| Persona | Key expected | Status |
+|---|---|---|
+| Jordan (idea, SLC, start) | Get Started ✓ rank 3, Lassonde ✓ rank 8 | PASS |
+| Maria (growth, Washington, rural, woman, agri, scaling) | Women's BC ✓, Rural Center ✓, Rural Chamber ✓ | PASS |
+| Marcus (building, Weber, veteran, mfg, mentorship) | STRIVE ✓, VBRC ✓, Veteran Registry ✓, MEP ✓, iMpact ✓ | EXCELLENT |
+| Priya (revenue, SLC, SaaS, funding) | Salt Lake Angels ✓ rank 5, Park City Angels ✓ rank 2 | PASS |
+| David (growth, Provo, life sci, international) | WTC Utah ✓ rank 6, BIO Utah in results | PARTIAL |
+| Dr. Amir (idea, SLC, student, start) | Lassonde ✓ rank 1 | PASS |
 
-## Completed files
-- data/resources.json — 211 resources (213 - 2 deduped)
-- data/embeddings.json — 211 × 3072-dim Float32Array vectors
-- src/lib/index.ts — module singleton, loads both files at cold start
-- src/app/api/ping/route.ts — GET /api/ping → { count: 211, dim: 3072 } ✓
-- scripts/parse_resources.py — dataset → resources.json
-- scripts/generate_embeddings.py — resources.json → embeddings.json (resumable)
+Missing: EPIC Ventures for Amir (appears if goal=Funding used), BIOHive for David.
+Wildcat MicroFund appears for David — minor tuning item.
 
-## Gate 1 status
-curl localhost:3000/api/ping → {"count":211,"dim":3072} ✓ PASSED
+## Key decision this session
+DECISION-15: Community boost fires only when founder has community tags.
+"Any" resources were over-boosting for non-community founders (Priya), pushing VC resources out of top 8.
+Fixed in match.ts: `community.length > 0 && (commsData.includes("Any") || intersect)`.
 
-## Pick up here — Session 2
-Goal: Build the full /api/match pipeline.
-Files to create (all in src/lib/ and src/app/api/match/):
-  1. src/lib/counties.ts     — city → county lookup (min 10 cities + "X County" passthrough)
-  2. src/lib/profile.ts      — compose profile string from quiz answers (stage-aware template)
-  3. src/lib/embed.ts        — call Gemini gemini-embedding-001, return Float32Array
-  4. src/lib/match.ts        — cosine sim + location filter + multiplicative boost + top-K
-  5. src/lib/explain.ts      — Groq llama-3.3-70b, return JSON array of {id, explanation}
-  6. src/app/api/match/route.ts — wire all the above, handle errors gracefully
+## Action required before Session 3
+1. Add GROQ_API_KEY to .env.local — explanations are currently using fallback text (truncated description)
+2. For teammate awareness: /api/match and /api/ping are live. POST body shape:
+   { stage, sector, city, goal, community? }
+   Response: { results[], profileString, county }
 
-Gate 2: POST /api/match with Priya profile → returns Salt Lake Angels in top 5, no microloans.
+## Architecture constants (do not change)
+- EMBEDDING_DIM = 3072 (gemini-embedding-001)
+- Resource count = 211
+- Statewide heuristic: locations.length >= 20
+- Community normalization: "Woman-owned" → "Women", "Veteran-owned" → "Veteran"
+- topK = 8 candidates returned (front-end renders 5–7)
 
-## Must-know constants
-- EMBEDDING_DIM = 3072 (gemini-embedding-001) — NOT 768, NOT 1536
-- Resource count = 211 — NOT 99, NOT 213
-- Statewide heuristic: locations.length >= 20 (95 resources qualify)
-- Community tag normalization: quiz "Woman-owned" → data field "Women"
-- npm deps in root: @google/genai, groq-sdk (already installed)
-- Python deps: google-genai, openpyxl (uv venv at Startup-Compass/.venv)
+## Pick up here — Session 3
+Goal: Build /quiz and /results pages (UI).
+- Install shadcn components needed: Card, Badge, Button, Progress
+- src/app/quiz/page.tsx — 4-step quiz, client-side state, sessionStorage handoff
+- src/app/results/page.tsx — reads sessionStorage, calls /api/match, renders cards
+- src/components/ResultCard.tsx — title, explanation badge, link button
+- src/components/CategoryBadge.tsx — Funding/Community/Workspace/Growth/Events color map
+- Utah palette: red #CC0000, navy #003087
 
 ## Open questions
-- iHub is Utah County only — Jordan (SLC) test case won't see it. Raise with GOED organizers.
-- Does any teammate have funded OpenAI/Anthropic keys? → 10-min swap if yes (see PROVIDER-SWAP.md)
+- iHub is Utah County only — Jordan (SLC) won't see it. Raise with GOED organizers.
+- GROQ_API_KEY needed in .env.local (add before demo)
 ---
