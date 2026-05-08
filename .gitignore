@@ -53,3 +53,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+
+# ─── Context bridge (Claude session files) ───────────────────────
+context-bridge-log.md
+context-bridge-state.db
+.claude/
