@@ -289,3 +289,36 @@ the data discrepancy. The matching engine is correct — the data may not be.
 
 ## OPEN
 (All items resolved above. No remaining open items.)
+
+---
+
+### [DECISION-15] 2026-05-08 | Community boost: only fires when founder has community tags
+
+**What was built:**
+Community boost multiplier in match.ts.
+
+**The decision:**
+"Any" community tag on a resource boosts it only when the founder specified at least one
+community tag. If the founder has no community tags (e.g. Priya), no resource gets a
+community boost — the community dimension is neutral.
+
+**Why this approach:**
+DECISION-12 said "Any" resources boost for all founders, including those with no community tags.
+Testing against the Priya persona showed this was wrong: generic resources with communities=["Any"]
+(e.g. 1MC Salt Lake) were getting a systematic +10% lift over VC/angel resources (Salt Lake Angels,
+Peterson Ventures, Pelion) that have no community tags. Salt Lake Angels dropped out of the top 8.
+
+The fix: community boost fires iff `founder.community.length > 0` AND
+(resource has "Any" OR resource communities intersects founder communities).
+
+**Alternatives considered:**
+Lower "Any" boost to 0.05 — rejected, still bleeds lift to generic resources unfairly.
+
+**Trade-off accepted:**
+"Any" resources no longer benefit from community boost for non-community founders. This is correct
+behavior — the boost is for alignment, not for openness.
+
+**How to explain in an interview:**
+"We caught this during persona testing. A resource being open to everyone shouldn't give it a ranking
+advantage over specialized resources that are more relevant but more narrowly tagged. The community
+boost is for alignment, not openness — so we only apply it when the founder has community context."
