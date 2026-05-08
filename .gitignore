@@ -1,0 +1,43 @@
+# ─── Environment & secrets ───────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.production
+
+# ─── Python virtual environment ──────────────────────────────────
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ─── Node / Next.js ──────────────────────────────────────────────
+node_modules/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+.turbo/
+
+# ─── Data files generated at runtime ─────────────────────────────
+# embeddings.json is COMMITTED intentionally (pre-computed vectors)
+# Do NOT add data/ here — resources.json and embeddings.json must be versioned
+
+# ─── OS & editor ─────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ─── Vercel ──────────────────────────────────────────────────────
+.vercel/
+
+# ─── Logs ────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,19 @@
+[project]
+name = "startup-compass"
+version = "0.1.0"
+description = "Python scripts for Startup Compass: Excel parsing, embedding generation, and dev utilities"
+requires-python = ">=3.11"
+dependencies = [
+    "openpyxl>=3.1",        # parse the GOED Excel spreadsheet → resources.json
+    "openai>=1.30",          # text-embedding-3-small for generating embeddings.json
+    "anthropic>=0.28",       # claude-sonnet-4-6 (dev/test calls from Python)
+    "python-dotenv>=1.0",    # load OPENAI_API_KEY / ANTHROPIC_API_KEY from .env
+    "pandas>=2.2",           # dataframe helpers for spreadsheet inspection
+    "numpy>=1.26",           # float32 array ops (used in embedding script)
+    "rich>=13.0",            # pretty-print tables when inspecting resources
+]
+
+[dependency-groups]
+dev = [
+    "ipython>=8.0",          # interactive exploration of resources.json
+]
