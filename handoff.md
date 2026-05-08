@@ -1,63 +1,52 @@
 ---
 # Handoff — Startup Compass / Founder's Navigator
 Date: 2026-05-08
-Session: 2 complete
+Session: 2
 
-## What was completed
-Full /api/match pipeline built and Gate 2 passed.
+## What we worked on
+Built the full /api/match pipeline (Sessions 1+2 complete). Also merged founder-navigator/ into the repo root so the team shares one Next.js app. Created branch `shreyas/quiz-results-ui` for independent work.
 
-## Files created this session
-- src/lib/counties.ts — city→county lookup (60+ cities, county passthrough, strip " County")
+## Decisions made
+- EMBEDDING_DIM = 3072 (gemini-embedding-001 replaced text-embedding-004)
+- Community boost only fires when founder has community tags — "Any" resources no longer boost for non-community founders (DECISION-15, fixed Priya test case)
+- Single merged Next.js app at repo root — no more founder-navigator/ subdir
+- Branch: `shreyas/quiz-results-ui` — all Session 3+ commits go here, PR to main when done
+- context-bridge-log.md, context-bridge-state.db, .claude/ added to .gitignore
+
+## Completed this session
+- data/resources.json — 211 resources parsed from GOED Excel (213 - 2 deduped)
+- data/embeddings.json — 211 × 3072-dim vectors via gemini-embedding-001 (committed)
+- src/lib/index.ts — module singleton index loader (Float32Array)
+- src/app/api/ping/route.ts — GET /api/ping → {count: 211, dim: 3072} ✓
+- src/lib/counties.ts — city→county lookup (60+ cities, county passthrough)
 - src/lib/profile.ts — stage-aware profile string composer (DECISION-8 template)
-- src/lib/embed.ts — Gemini gemini-embedding-001 client (3072-dim)
-- src/lib/match.ts — cosine sim + statewide location filter + multiplicative boost
-- src/lib/explain.ts — Groq llama-3.3-70b explanations with fallback
-- src/app/api/match/route.ts — full pipeline wired, community label normalization
+- src/lib/embed.ts — Gemini gemini-embedding-001 client
+- src/lib/match.ts — cosine sim + statewide filter + multiplicative boost
+- src/lib/explain.ts — Groq llama-3.3-70b, fallback on failure
+- src/app/api/match/route.ts — full pipeline wired
+- DECISIONS.md — decisions 1–15 documented
+- .gitignore updated
 
-## Gate 2 status
-POST /api/match (Priya: revenue, SaaS, SLC, Funding) → Salt Lake Angels rank 5, no microloans ✓ PASSED
+## Pick up here next session
+- Branch: `git checkout shreyas/quiz-results-ui` (already on it)
+- Run `npm run dev` from repo root (Startup-Compass/)
+- Session 3 goal: build /quiz and /results UI pages
+- Install shadcn components: `npx shadcn@latest add card badge progress`
+- Create: src/app/quiz/page.tsx (4-step quiz, client state, sessionStorage handoff)
+- Create: src/app/results/page.tsx (reads sessionStorage → POST /api/match → renders cards)
+- Create: src/components/ResultCard.tsx and src/components/CategoryBadge.tsx
+- Utah palette: red #CC0000, navy #003087, white, light gray #F5F5F5
 
-## 6-Persona results summary
-| Persona | Key expected | Status |
-|---|---|---|
-| Jordan (idea, SLC, start) | Get Started ✓ rank 3, Lassonde ✓ rank 8 | PASS |
-| Maria (growth, Washington, rural, woman, agri, scaling) | Women's BC ✓, Rural Center ✓, Rural Chamber ✓ | PASS |
-| Marcus (building, Weber, veteran, mfg, mentorship) | STRIVE ✓, VBRC ✓, Veteran Registry ✓, MEP ✓, iMpact ✓ | EXCELLENT |
-| Priya (revenue, SLC, SaaS, funding) | Salt Lake Angels ✓ rank 5, Park City Angels ✓ rank 2 | PASS |
-| David (growth, Provo, life sci, international) | WTC Utah ✓ rank 6, BIO Utah in results | PARTIAL |
-| Dr. Amir (idea, SLC, student, start) | Lassonde ✓ rank 1 | PASS |
-
-Missing: EPIC Ventures for Amir (appears if goal=Funding used), BIOHive for David.
-Wildcat MicroFund appears for David — minor tuning item.
-
-## Key decision this session
-DECISION-15: Community boost fires only when founder has community tags.
-"Any" resources were over-boosting for non-community founders (Priya), pushing VC resources out of top 8.
-Fixed in match.ts: `community.length > 0 && (commsData.includes("Any") || intersect)`.
-
-## Action required before Session 3
-1. Add GROQ_API_KEY to .env.local — explanations are currently using fallback text (truncated description)
-2. For teammate awareness: /api/match and /api/ping are live. POST body shape:
-   { stage, sector, city, goal, community? }
-   Response: { results[], profileString, county }
-
-## Architecture constants (do not change)
-- EMBEDDING_DIM = 3072 (gemini-embedding-001)
-- Resource count = 211
-- Statewide heuristic: locations.length >= 20
-- Community normalization: "Woman-owned" → "Women", "Veteran-owned" → "Veteran"
-- topK = 8 candidates returned (front-end renders 5–7)
-
-## Pick up here — Session 3
-Goal: Build /quiz and /results pages (UI).
-- Install shadcn components needed: Card, Badge, Button, Progress
-- src/app/quiz/page.tsx — 4-step quiz, client-side state, sessionStorage handoff
-- src/app/results/page.tsx — reads sessionStorage, calls /api/match, renders cards
-- src/components/ResultCard.tsx — title, explanation badge, link button
-- src/components/CategoryBadge.tsx — Funding/Community/Workspace/Growth/Events color map
-- Utah palette: red #CC0000, navy #003087
+## Must-know context
+1. EMBEDDING_DIM = 3072 — not 768, not 1536. Wrong value = broken cosine sim.
+2. Resource count = 211 — not 99, not 213.
+3. API response shape: { results[], profileString, county } — results have {id, title, description, explanation, link, email, topics, communities, score}
+4. Quiz answers → /api/match body: {stage, sector, city, goal, community[]}
+   Community labels from quiz must match: "Veteran-owned"→"Veteran", "Woman-owned"→"Women" (route.ts normalizes this)
+5. Groq LLM explanations now live — GROQ_API_KEY confirmed working in .env.local
+6. iHub is Utah County only — Jordan (SLC) won't see it. Known data issue, flagged to GOED.
 
 ## Open questions
-- iHub is Utah County only — Jordan (SLC) won't see it. Raise with GOED organizers.
-- GROQ_API_KEY needed in .env.local (add before demo)
+- Does any teammate have funded OpenAI/Anthropic keys? → 10-min swap if yes (PROVIDER-SWAP.md)
+- EPIC Ventures doesn't surface for Dr. Amir unless goal=Funding is selected — confirm with team what goal Amir should pick
 ---
