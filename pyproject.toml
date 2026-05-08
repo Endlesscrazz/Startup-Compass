@@ -11,6 +11,8 @@ dependencies = [
     "pandas>=2.2",           # dataframe helpers for spreadsheet inspection
     "numpy>=1.26",           # float32 array ops (used in embedding script)
     "rich>=13.0",            # pretty-print tables when inspecting resources
+    "google-generativeai>=0.8.6",
+    "google-genai>=2.0.0",
 ]
 
 [dependency-groups]
