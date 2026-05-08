@@ -1,5 +1,5 @@
 # Founder's Navigator — Claude Code Context
-# Place in: ~/founder-navigator/CLAUDE.md
+# Lives at: ~/Startup-Compass/CLAUDE.md (repo root — merged single app)
 # Claude Code reads this automatically when you cd into this directory
 # ──────────────────────────────────────────────────────────────────
 
@@ -15,19 +15,23 @@ system with hard location eligibility constraints and LLM-generated personalizat
 on top of ranked results.
 
 ## CURRENT STATE
-Built so far: nothing — this is the first Claude Code session.
-Next: resolve all [OPEN] items in architecture.md BEFORE writing any code.
+Session 1 complete. Merged into single root Next.js app (no more founder-navigator/ subdir).
+Built: parse_resources.py → 211 resources.json, generate_embeddings.py → embeddings.json (3072-dim),
+src/lib/index.ts (Float32Array singleton), GET /api/ping → { count: 211, dim: 3072 } ✓
+Next: Session 2 — /api/match pipeline (profile string, embed, cosine sim, location filter, boost, LLM).
 
 ## ARCHITECTURE
 ```
-Browser (Next.js)
-  └── Intake quiz (4 steps) → POST /api/match → Results cards
-                              POST /api/admin/reindex (protected)
+Browser (Next.js — single app at repo root, team shares one codebase)
+  └── /quiz (4 steps) → POST /api/match → /results cards
+                        POST /api/admin/reindex (protected)
+
+  Team split: teammates own landing page + map (/map). Shreyas owns /quiz, /results, /api/match.
 
 API layer (Next.js API routes)
   /api/match:
-    compose profile string → embed (OpenAI) → cosine sim (Float32Array)
-    → location filter (hard exclusion) → topic boost re-rank
+    compose profile string → embed (Gemini gemini-embedding-001, 3072-dim) → cosine sim (Float32Array)
+    → location filter (hard exclusion) → topic/industry/community boost re-rank
     → LLM explanations (Anthropic) → return top 5–7
 
 In-memory index (module-level singleton)

@@ -10,6 +10,8 @@
     "data": "node scripts/generate-companies.mjs"
   },
   "dependencies": {
+    "@google/genai": "^2.0.0",
+    "groq-sdk": "^1.1.2",
     "leaflet": "^1.9.4",
     "motion": "^12.38.0",
     "next": "16.2.6",

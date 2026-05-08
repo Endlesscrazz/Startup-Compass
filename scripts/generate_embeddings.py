@@ -18,6 +18,7 @@ from google import genai
 
 RESOURCES_PATH = Path(__file__).parent.parent / "data" / "resources.json"
 OUT_PATH = Path(__file__).parent.parent / "data" / "embeddings.json"
+# Note: paths resolve to repo root/data/ when run from repo root
 EMBEDDING_MODEL = "gemini-embedding-001"
 EMBEDDING_DIM = 3072
 RATE_LIMIT_DELAY = 0.75  # seconds between API calls

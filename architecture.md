@@ -58,8 +58,8 @@
 |-----------|-----------|------------|-----------------|
 | Framework | Next.js 14 (App Router) | Full-stack in one repo, Vercel deploy is one command, API routes co-located with UI | MEDIUM |
 | Styling | Tailwind CSS + shadcn/ui | shadcn gives production-quality components at copy-paste speed — Design is 25% of judging | MEDIUM |
-| Embedding API | **Gemini text-embedding-004** (768-dim, free) | No paid key needed; abstracted in lib/embed.ts — swap to OpenAI in 10 min, see PROVIDER-SWAP.md | HIGH — owns this logic |
-| Vector math | Plain Float32Array + cosine sim | 213 resources × 768-dim, brute-force loop is ~0.3ms — zero dependency needed | HIGH — owns this logic |
+| Embedding API | **Gemini gemini-embedding-001** (3072-dim, free) | text-embedding-004 retired; abstracted in lib/embed.ts — swap to OpenAI in 10 min, see PROVIDER-SWAP.md | HIGH — owns this logic |
+| Vector math | Plain Float32Array + cosine sim | 211 resources × 3072-dim, brute-force loop is ~1ms — zero dependency needed | HIGH — owns this logic |
 | LLM explanations | **Groq llama-3.3-70b** (free) | Fastest 70B inference available (~400ms); abstracted in lib/explain.ts — swap to Anthropic/OpenAI, see PROVIDER-SWAP.md | HIGH — owns this logic |
 | In-memory store | Module-level array, loaded at cold start | No DB needed at this scale, instant query time | HIGH |
 | Data source | resources.json (pre-parsed from spreadsheet) | 213 GOED resources, pipe-delimited → JSON transform done once | HIGH |
@@ -150,7 +150,7 @@ interface Resource {
 
 ### In-memory index (module-level, loaded at server cold start)
 ```typescript
-export const EMBEDDING_DIM = 768  // Gemini text-embedding-004. Change to 1536 for OpenAI.
+export const EMBEDDING_DIM = 3072  // gemini-embedding-001 (text-embedding-004 retired). Change to 1536 for OpenAI.
 
 interface IndexEntry {
   resource: Resource
@@ -265,7 +265,7 @@ Step 4 — Goal + Community tags:
 - Platform: Vercel (free tier is sufficient)
 - Build command: `next build`
 - Environment variables (default / free tier):
-  - `GEMINI_API_KEY`        — for embedding (text-embedding-004)
+  - `GEMINI_API_KEY`        — for embedding (gemini-embedding-001, 3072-dim)
   - `GROQ_API_KEY`          — for explanation generation (llama-3.3-70b)
   - `EMBEDDING_PROVIDER`    — "gemini" | "openai" | "cohere" (default: gemini)
   - `LLM_PROVIDER`          — "groq" | "anthropic" | "openai" (default: groq)
@@ -276,35 +276,38 @@ Step 4 — Goal + Community tags:
 
 ## FILE STRUCTURE
 ```
-founder-navigator/
-├── app/
-│   ├── page.tsx              # Landing page — mode selector (Founder / Investor)
-│   ├── quiz/
-│   │   └── page.tsx          # 4-step intake quiz
-│   ├── results/
-│   │   └── page.tsx          # Results cards
-│   └── admin/
-│       └── page.tsx          # Admin reindex UI
-├── app/api/
-│   ├── match/
-│   │   └── route.ts          # POST /api/match — core matching pipeline
-│   └── admin/
-│       └── reindex/
-│           └── route.ts      # POST /api/admin/reindex
-├── lib/
-│   ├── index.ts              # In-memory resource index (singleton)
-│   ├── embed.ts              # OpenAI embedding calls
-│   ├── match.ts              # Cosine sim + location filter + re-rank
-│   ├── explain.ts            # Anthropic LLM explanation generation
-│   ├── profile.ts            # Profile string composition from quiz answers
-│   └── counties.ts           # City → county lookup table [OPEN-5]
+Startup-Compass/  ← repo root, single Next.js app (merged)
+├── src/
+│   ├── app/
+│   │   ├── page.tsx              # Team landing page (teammates own this)
+│   │   ├── map/                  # Team map page (teammates own this)
+│   │   ├── quiz/
+│   │   │   └── page.tsx          # 4-step intake quiz (Shreyas)
+│   │   ├── results/
+│   │   │   └── page.tsx          # Results cards (Shreyas)
+│   │   └── api/
+│   │       ├── ping/route.ts     # GET /api/ping → {count, dim} ✓ DONE
+│   │       ├── match/route.ts    # POST /api/match — core pipeline (Session 2)
+│   │       └── admin/reindex/route.ts
+│   ├── lib/
+│   │   ├── index.ts              # In-memory resource index singleton ✓ DONE
+│   │   ├── embed.ts              # Gemini embed call (Session 2)
+│   │   ├── match.ts              # Cosine sim + filter + boost (Session 2)
+│   │   ├── explain.ts            # Groq LLM explanations (Session 2)
+│   │   ├── profile.ts            # Profile string composer (Session 2)
+│   │   └── counties.ts           # City → county lookup (Session 2)
+│   └── components/
+│       ├── ui/                   # shadcn components
+│       ├── QuizStep.tsx          # Session 3
+│       ├── ResultCard.tsx        # Session 3
+│       └── CategoryBadge.tsx     # Session 3
 ├── data/
-│   ├── resources.json        # 99 resources, pre-parsed from spreadsheet
-│   └── embeddings.json       # Pre-computed vectors (committed to repo) [OPEN-7]
-└── components/
-    ├── QuizStep.tsx           # Single step card component
-    ├── ResultCard.tsx         # One resource result card
-    └── CategoryBadge.tsx      # Colored badge (Funding / Community / etc)
+│   ├── resources.json            # 211 resources ✓ DONE
+│   └── embeddings.json           # 211 × 3072-dim vectors ✓ DONE
+└── scripts/
+    ├── parse_resources.py        # ✓ DONE — uv run scripts/parse_resources.py
+    ├── generate_embeddings.py    # ✓ DONE — uv run scripts/generate_embeddings.py
+    └── generate-companies.mjs   # Team script (do not modify)
 ```
 
 ## WHAT CLAUDE CODE SHOULD REVIEW

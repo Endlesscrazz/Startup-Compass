@@ -9,7 +9,7 @@ from pathlib import Path
 
 import openpyxl
 
-EXCEL_PATH = Path(__file__).parent.parent.parent / "dataset" / "Resources List - Builder Day.xlsx"
+EXCEL_PATH = Path(__file__).parent.parent / "dataset" / "Resources List - Builder Day.xlsx"
 OUT_PATH = Path(__file__).parent.parent / "data" / "resources.json"
 
 # Exact titles of the 2 known duplicates — keep first occurrence, drop second
