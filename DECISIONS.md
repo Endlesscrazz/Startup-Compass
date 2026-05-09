@@ -322,3 +322,38 @@ behavior — the boost is for alignment, not for openness.
 "We caught this during persona testing. A resource being open to everyone shouldn't give it a ranking
 advantage over specialized resources that are more relevant but more narrowly tagged. The community
 boost is for alignment, not openness — so we only apply it when the founder has community context."
+
+---
+
+### [DECISION-16] 2026-05-08 | "Utah" string in locations[] treated as statewide sentinel
+
+**What was built:**
+One-line fix to `isEligible()` in `src/lib/match.ts`.
+
+**The decision:**
+Resources with `locations: ["Utah"]` (3 resources: iHub, Startup Ignition Ventures, Salt Lake City
+Office Space for Rent) were being hard-excluded for every county because the statewide check only
+recognized resources with 20+ county entries. Added `locs.includes("Utah")` as a third pass condition.
+
+**Why this approach:**
+The GOED dataset uses two statewide encoding conventions: (1) list all 29 counties explicitly, or
+(2) use a single `"Utah"` entry. The original `STATEWIDE_MIN_LOCATIONS = 20` threshold caught
+convention 1 but silently dropped convention 2. iHub is a critical resource for the Jordan test
+case (idea-stage, SLC) — failing to surface it would fail the test case at judging.
+No data migration or re-embedding needed: `locations` is read from `resources.json` at runtime,
+not baked into the embeddings.
+
+**Alternatives considered:**
+Patch resources.json to add all 29 counties to iHub — rejected, more fragile and deviates from
+source data. The filter logic is the right place to fix this.
+
+**Trade-off accepted:**
+Any future resource the GOED team adds with `locations: ["Utah"]` will correctly pass as statewide
+without any code change. Correct behavior.
+
+**How to explain in an interview:**
+"During pre-launch validation we found that three resources including iHub were being filtered out
+for every user. The GOED dataset uses two statewide conventions — 29 explicit county entries, or a
+single 'Utah' string. Our filter only handled the first. One-line fix: check for 'Utah' before the
+county list length check. No re-embedding, no data change — the fix was in the query-time filter
+where it belonged."

@@ -21,7 +21,7 @@ function cosineSim(a: Float32Array, b: Float32Array): number {
 
 function isEligible(entry: IndexEntry, county: string): boolean {
   const locs = entry.locations;
-  return locs.length >= STATEWIDE_MIN_LOCATIONS || locs.includes(county);
+  return locs.includes("Utah") || locs.length >= STATEWIDE_MIN_LOCATIONS || locs.includes(county);
 }
 
 function boostMultiplier(
