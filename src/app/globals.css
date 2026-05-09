@@ -193,7 +193,12 @@
 
 .atlas-header-actions button.profile-menu-trigger {
   width: auto;
-  min-height: 0;
+  min-width: 0;
+  height: auto;
+  min-height: 40px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .atlas-brand {
@@ -280,7 +285,8 @@
   gap: 12px;
 }
 
-.atlas-header-actions button:not(.investor-pill) {
+/* Icon-only header buttons — exclude profile dropdown (needs full width/height) */
+.atlas-header-actions button:not(.investor-pill):not(.profile-menu-trigger) {
   display: inline-flex;
   width: 36px;
   height: 36px;

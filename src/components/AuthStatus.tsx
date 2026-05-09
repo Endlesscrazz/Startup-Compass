@@ -74,7 +74,7 @@ export function AuthStatus({ variant = "light" }: Props) {
   }
 
   const menuLinkClass = cn(
-    "block px-4 py-2.5 text-[13px] font-medium transition-colors",
+    "block w-full px-4 py-2.5 text-left text-[13px] font-medium transition-colors whitespace-normal",
     dark
       ? "text-white/95 hover:bg-white/10"
       : "text-ink hover:bg-surface-tint",
@@ -107,11 +107,23 @@ export function AuthStatus({ variant = "light" }: Props) {
         ) : (
           <span
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full text-[12px] font-bold text-white",
-              dark ? "bg-white/20" : "bg-utah-blue",
+              "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/25",
+              dark ? "bg-white/15" : "bg-surface-tint",
             )}
+            aria-hidden="true"
           >
-            {session.user?.name?.[0] ?? "U"}
+            <svg
+              className={cn("h-4 w-4", dark ? "text-white/90" : "text-ink-soft")}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
           </span>
         )}
         <span className="max-w-[9rem] truncate">{session.user?.name ?? "Profile"}</span>
@@ -138,7 +150,7 @@ export function AuthStatus({ variant = "light" }: Props) {
           role="menu"
           aria-labelledby="account-profile-button"
           className={cn(
-            "absolute right-0 top-[calc(100%+8px)] z-[100] min-w-[240px] overflow-hidden rounded-xl border-2 py-1 shadow-xl",
+            "absolute end-0 top-[calc(100%+8px)] z-[200] w-max min-w-[220px] max-w-[min(280px,calc(100vw-1.5rem))] rounded-xl border-2 py-1 shadow-xl",
             dark
               ? "border-gold bg-utah-blue text-white"
               : "border-gold bg-surface-elev text-ink shadow-[var(--shadow-card)]",
