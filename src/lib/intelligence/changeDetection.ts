@@ -5,12 +5,15 @@ import {
   addCompanyEvent,
   latestCompanySnapshot,
   saveCompanySnapshot,
-  getNotificationPreferences,
-  getWatchlistRow,
-  getAllWatchlistRows,
   canSendSmsToday,
   markSmsSentToday,
 } from "@/lib/intelligence/store";
+import type { NotificationPreferences } from "@/lib/intelligence/types";
+import {
+  getNotificationPreferencesResolved,
+  getWatchlistRowResolved,
+  listWatchlistUserIdsForCompany,
+} from "@/lib/intelligence/persistence";
 import { sendIntelSms } from "@/lib/intelligence/smsDelivery";
 
 function priorityFor(type: CompanyEventType): EventPriority {
@@ -116,7 +119,7 @@ export function mapEventToCondition(eventType: CompanyEventType): string | null 
   return m[eventType] ?? null;
 }
 
-function quietNow(prefs: ReturnType<typeof getNotificationPreferences>): boolean {
+function quietNow(prefs: NotificationPreferences): boolean {
   const qh = prefs.quiet_hours_json;
   if (!qh) return false;
   const [sh, sm] = qh.start.split(":").map(Number);
@@ -143,21 +146,15 @@ export async function dispatchWatchlistSmsForEvent(params: {
   const cond = mapEventToCondition(params.eventType);
   if (!cond) return;
 
-  const userIds = [
-    ...new Set(
-      getAllWatchlistRows()
-        .filter((w) => w.company_id === params.companyId)
-        .map((w) => w.user_id),
-    ),
-  ];
+  const userIds = await listWatchlistUserIdsForCompany(params.companyId);
 
   for (const userId of userIds) {
-    const row = getWatchlistRow(userId, params.companyId);
+    const row = await getWatchlistRowResolved(userId, params.companyId);
     if (!row || !row.sms_enabled) continue;
     if (!row.alert_conditions_json.includes(cond as (typeof row.alert_conditions_json)[number]))
       continue;
 
-    const prefs = getNotificationPreferences(userId);
+    const prefs = await getNotificationPreferencesResolved(userId);
     if (!prefs.sms_enabled || !prefs.phone_number) continue;
     if (quietNow(prefs)) continue;
 

@@ -6,22 +6,31 @@ import { cn } from "@/lib/utils";
 import { SECTOR_TO_INDUSTRY } from "@/lib/profile";
 import type { Stage, Goal } from "@/lib/profile";
 
-const STAGES: { value: Stage; label: string; sub: string }[] = [
-  { value: "idea", label: "Idea", sub: "Haven't started yet" },
-  { value: "building", label: "Building", sub: "Pre-revenue" },
-  { value: "revenue", label: "Revenue", sub: "Paying customers" },
-  { value: "growth", label: "Growing", sub: "Team & revenue" },
+/** Distinct UI stages; multiple keys may map to the same API `Stage`. */
+const STAGE_OPTIONS: { key: string; api: Stage; label: string; sub: string }[] = [
+  { key: "idea", api: "idea", label: "Idea", sub: "Haven't started yet" },
+  { key: "pre-seed", api: "building", label: "Pre-seed", sub: "Early product, pre-revenue" },
+  { key: "seed", api: "building", label: "Seed", sub: "Traction or seed fundraising" },
+  { key: "revenue", api: "revenue", label: "Growth", sub: "Paying customers" },
+  { key: "scaling", api: "growth", label: "Scaling", sub: "Team & revenue expansion" },
+  { key: "unsure", api: "idea", label: "Unsure", sub: "Not sure yet" },
 ];
 
 const SECTORS = Object.keys(SECTOR_TO_INDUSTRY);
 
-const GOALS: { value: Goal; label: string; sub: string }[] = [
-  { value: "Start a Business", label: "Start a Business", sub: "Launch guidance & basics" },
-  { value: "Funding", label: "Funding", sub: "Grants, angels & VCs" },
-  { value: "Mentorship", label: "Mentorship", sub: "Coaches & peer networks" },
-  { value: "Workspace", label: "Workspace", sub: "Co-working & incubators" },
-  { value: "International", label: "International", sub: "Export & trade support" },
-  { value: "Scaling", label: "Scaling", sub: "Growth & expansion" },
+const GOAL_OPTIONS: { id: string; value: Goal; label: string; sub: string }[] = [
+  { id: "validate", value: "Start a Business", label: "Validate an idea", sub: "Test and refine your concept" },
+  { id: "learn-basics", value: "Start a Business", label: "Learn startup basics", sub: "Founder 101 & launch guidance" },
+  { id: "funding", value: "Funding", label: "Find funding", sub: "Grants, angels, venture" },
+  { id: "grants", value: "Funding", label: "Apply for grants", sub: "Non-dilutive and competitions" },
+  { id: "investors", value: "Funding", label: "Meet investors", sub: "Pitch and relationship building" },
+  { id: "hire", value: "Scaling", label: "Hire talent", sub: "Growing the team" },
+  { id: "mentors", value: "Mentorship", label: "Find mentors", sub: "Coaching & advice" },
+  { id: "accelerator", value: "Mentorship", label: "Join an accelerator", sub: "Structured programs" },
+  { id: "events", value: "Mentorship", label: "Attend events", sub: "Community & networking" },
+  { id: "space", value: "Workspace", label: "Find office / lab space", sub: "Facilities & incubators" },
+  { id: "international", value: "International", label: "International trade", sub: "Export & global markets" },
+  { id: "scale-ops", value: "Scaling", label: "Scale operations", sub: "Systems & expansion" },
 ];
 
 const COMMUNITIES = [
@@ -33,13 +42,17 @@ const COMMUNITIES = [
 
 const STEP_LABELS = ["Stage", "Sector & City", "Goal", "Background"];
 
+const LOC_PREFS_KEY = "sc_location_prefs";
+
 interface QuizState {
-  stage: Stage | null;
+  stageKey: string | null;
   sector: string | null;
   city: string;
-  goal: Goal | null;
+  goalId: string | null;
   community: string[];
   founderName: string;
+  statewideBoost: boolean;
+  remotePrefer: boolean;
 }
 
 function OptionButton({
@@ -61,7 +74,7 @@ function OptionButton({
         "flex w-full flex-col items-start rounded-xl border px-4 py-3.5 text-left transition-all",
         selected
           ? "border-gold bg-gold-soft text-ink shadow-sm"
-          : "border-rule bg-surface-elev text-ink-soft hover:border-rule-strong hover:text-ink"
+          : "border-rule bg-surface-elev text-ink-soft hover:border-rule-strong hover:text-ink",
       )}
     >
       <span className="text-[14px] font-semibold leading-none">{label}</span>
@@ -91,7 +104,7 @@ function ToggleChip({
         "rounded-full border px-4 py-2 text-[13px] font-medium transition-all",
         selected
           ? "border-gold bg-gold-soft text-ink"
-          : "border-rule bg-surface-elev text-ink-soft hover:border-rule-strong hover:text-ink"
+          : "border-rule bg-surface-elev text-ink-soft hover:border-rule-strong hover:text-ink",
       )}
     >
       {selected && <span className="mr-1.5">✓</span>}
@@ -104,19 +117,21 @@ export function QuizClient() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [quiz, setQuiz] = useState<QuizState>({
-    stage: null,
+    stageKey: null,
     sector: null,
     city: "",
-    goal: null,
+    goalId: null,
     community: [],
     founderName: "",
+    statewideBoost: false,
+    remotePrefer: false,
   });
 
   function canAdvance() {
-    if (step === 0) return quiz.stage !== null;
+    if (step === 0) return quiz.stageKey !== null;
     if (step === 1) return quiz.sector !== null && quiz.city.trim().length >= 2;
-    if (step === 2) return quiz.goal !== null;
-    return true; // step 3 is optional
+    if (step === 2) return quiz.goalId !== null;
+    return true;
   }
 
   function advance() {
@@ -128,12 +143,25 @@ export function QuizClient() {
   }
 
   function submit() {
-    if (!quiz.stage || !quiz.sector || !quiz.goal) return;
+    const stageOpt = STAGE_OPTIONS.find((s) => s.key === quiz.stageKey);
+    const goalOpt = GOAL_OPTIONS.find((g) => g.id === quiz.goalId);
+    if (!stageOpt || !quiz.sector || !goalOpt) return;
+    try {
+      sessionStorage.setItem(
+        LOC_PREFS_KEY,
+        JSON.stringify({
+          statewideBoost: quiz.statewideBoost,
+          remotePrefer: quiz.remotePrefer,
+        }),
+      );
+    } catch {
+      /* ignore */
+    }
     const payload: Record<string, unknown> = {
-      stage: quiz.stage,
+      stage: stageOpt.api,
       sector: quiz.sector,
       city: quiz.city.trim(),
-      goal: quiz.goal,
+      goal: goalOpt.value,
       community: quiz.community,
     };
     if (quiz.founderName.trim()) payload.founderName = quiz.founderName.trim();
@@ -163,8 +191,8 @@ export function QuizClient() {
                   i < step
                     ? "bg-utah-blue text-white"
                     : i === step
-                    ? "bg-ink text-white"
-                    : "bg-rule text-ink-mute"
+                      ? "bg-ink text-white"
+                      : "bg-rule text-ink-mute",
                 )}
               >
                 {i < step ? "✓" : i + 1}
@@ -191,26 +219,26 @@ export function QuizClient() {
           </h2>
           <p className="mt-1.5 text-sm text-ink-mute">Select the one that best fits right now.</p>
           <div className="mt-6 grid grid-cols-2 gap-3">
-            {STAGES.map((s) => (
+            {STAGE_OPTIONS.map((s) => (
               <OptionButton
-                key={s.value}
+                key={s.key}
                 label={s.label}
                 sub={s.sub}
-                selected={quiz.stage === s.value}
-                onClick={() => setQuiz((q) => ({ ...q, stage: s.value }))}
+                selected={quiz.stageKey === s.key}
+                onClick={() => setQuiz((q) => ({ ...q, stageKey: s.key }))}
               />
             ))}
           </div>
         </div>
       )}
 
-      {/* Step 1 — Sector + City */}
+      {/* Step 1 — Sector + City + location prefs */}
       {step === 1 && (
         <div>
           <h2 className="font-display text-2xl font-semibold text-ink">
             What sector and where?
           </h2>
-          <p className="mt-1.5 text-sm text-ink-mute">Pick your industry and enter your city.</p>
+          <p className="mt-1.5 text-sm text-ink-mute">Pick your industry and enter your city or county.</p>
           <div className="mt-6 grid grid-cols-2 gap-2">
             {SECTORS.map((s) => (
               <OptionButton
@@ -223,7 +251,7 @@ export function QuizClient() {
           </div>
           <div className="mt-5">
             <label className="block text-[13px] font-medium text-ink-soft" htmlFor="city">
-              Your city or county
+              Your city or county in Utah
             </label>
             <input
               id="city"
@@ -234,6 +262,31 @@ export function QuizClient() {
               className="mt-1.5 w-full rounded-xl border border-rule bg-surface-elev px-4 py-3 text-[14px] text-ink placeholder:text-ink-mute focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25"
             />
           </div>
+          <div className="mt-4 space-y-2 rounded-xl border border-rule/60 bg-surface-tint/30 px-4 py-3">
+            <p className="text-[12px] font-medium text-ink-soft">How should we prioritize results?</p>
+            <label className="flex cursor-pointer items-center gap-2 text-[13px] text-ink-soft">
+              <input
+                type="checkbox"
+                checked={quiz.statewideBoost}
+                onChange={(e) => setQuiz((q) => ({ ...q, statewideBoost: e.target.checked }))}
+                className="rounded border-rule accent-gold"
+              />
+              Prefer statewide programs first
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 text-[13px] text-ink-soft">
+              <input
+                type="checkbox"
+                checked={quiz.remotePrefer}
+                onChange={(e) => setQuiz((q) => ({ ...q, remotePrefer: e.target.checked }))}
+                className="rounded border-rule accent-gold"
+              />
+              Emphasize remote / online-friendly programs
+            </label>
+            <p className="text-[11px] text-ink-mute">
+              Optional — on your results page, use the <strong>Quick-match order</strong> tab when these
+              are on.
+            </p>
+          </div>
         </div>
       )}
 
@@ -241,17 +294,19 @@ export function QuizClient() {
       {step === 2 && (
         <div>
           <h2 className="font-display text-2xl font-semibold text-ink">
-            What are you looking for?
+            What are you trying to do right now?
           </h2>
-          <p className="mt-1.5 text-sm text-ink-mute">We&apos;ll match resources to your specific need.</p>
+          <p className="mt-1.5 text-sm text-ink-mute">
+            We&apos;ll match resources to your need (same 5–7 ranked results as before).
+          </p>
           <div className="mt-6 grid grid-cols-2 gap-3">
-            {GOALS.map((g) => (
+            {GOAL_OPTIONS.map((g) => (
               <OptionButton
-                key={g.value}
+                key={g.id}
                 label={g.label}
                 sub={g.sub}
-                selected={quiz.goal === g.value}
-                onClick={() => setQuiz((q) => ({ ...q, goal: g.value }))}
+                selected={quiz.goalId === g.id}
+                onClick={() => setQuiz((q) => ({ ...q, goalId: g.id }))}
               />
             ))}
           </div>
@@ -316,7 +371,7 @@ export function QuizClient() {
             "inline-flex h-10 items-center gap-1.5 rounded-full px-6 text-[14px] font-semibold transition-all",
             canAdvance()
               ? "border-2 border-gold bg-utah-blue text-white hover:bg-utah-blue-hover"
-              : "cursor-not-allowed bg-rule text-ink-mute"
+              : "cursor-not-allowed bg-rule text-ink-mute",
           )}
         >
           {step === 3 ? "Find my resources →" : "Next →"}

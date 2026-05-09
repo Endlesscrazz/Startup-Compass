@@ -1,34 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useMap } from "react-leaflet";
+import { useEffect, useState, type ReactNode, type RefObject } from "react";
+import type { MapRef } from "react-map-gl/maplibre";
 
 /**
- * Renders children inside the Leaflet map container with z-index below the
- * popup pane so marker cards stay on top.
+ * Renders children inside the MapLibre map container under marker/popup UI.
  */
-export function MapChromePortal({ children }: { children: React.ReactNode }) {
-  const map = useMap();
+export function MapChromePortal({
+  children,
+  mapRef,
+  mapReady,
+}: {
+  children: ReactNode;
+  mapRef: RefObject<MapRef | null>;
+  mapReady: boolean;
+}) {
   const [node, setNode] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!mapReady) return;
+    const map = mapRef.current?.getMap();
+    if (!map) return;
     const container = map.getContainer();
     const layer = document.createElement("div");
     layer.className = "map-chrome-root";
     container.appendChild(layer);
-    /* Sync map host mount with Leaflet — portal target must exist after container is ready */
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- DOM node mount for createPortal
     setNode(layer);
     return () => {
       layer.remove();
+      setNode(null);
     };
-  }, [map]);
+  }, [mapReady, mapRef]);
 
   if (!node) return null;
 
   return createPortal(
-    <div className="flex h-full w-full flex-col pointer-events-none">{children}</div>,
+    <div className="flex h-full w-full flex-col pointer-events-none">
+      {children}
+    </div>,
     node,
   );
 }

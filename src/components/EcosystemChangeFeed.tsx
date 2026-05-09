@@ -4,8 +4,9 @@ import { useMemo } from "react";
 import Link from "next/link";
 import type { Company } from "@/lib/map-config";
 import { COMPANIES } from "@/lib/map-config";
-import { computeBadges } from "@/lib/map/opportunityBadges";
 import { inferHiringFromDescription } from "@/lib/investor/hiringHeuristic";
+import { useInvestorWatchlist } from "@/hooks/useInvestorWatchlist";
+import { freshnessFromIso, freshnessLabel } from "@/lib/pulse/freshness";
 
 interface ChangeSummary {
   hiringCount: number;
@@ -65,8 +66,36 @@ function computeChanges(companies: Company[]): ChangeSummary {
 
 export function EcosystemChangeFeed() {
   const changes = useMemo(() => computeChanges(COMPANIES), []);
+  const staleCount = useMemo(
+    () =>
+      COMPANIES.filter((c) => freshnessFromIso(c.lastUpdated) === "stale").length,
+    [],
+  );
+  const wl = useInvestorWatchlist();
+  /* eslint-disable react-hooks/exhaustive-deps -- watchlist meta/ids listed explicitly */
+  const watchlistPulse = useMemo(() => {
+    if (!wl.hydrated || wl.ids.length === 0) return [] as FeedItem[];
+    const watched = wl.resolveCompanies(COMPANIES);
+    const out: FeedItem[] = [];
+    for (const company of watched.slice(0, 4)) {
+      const deltas = wl.getChanges(company);
+      if (deltas.length === 0) continue;
+      const top = deltas[0]!;
+      out.push({
+        emoji: "👀",
+        headline: `Watchlist: ${company.name} · ${top.field} changed`,
+        sub: `${top.from} → ${top.to}`,
+        whyItMatters:
+          "Saved companies with deltas surface momentum you asked to track — cross-check before acting.",
+        href: `/search?company=${encodeURIComponent(company.id)}`,
+        freshness: freshnessLabel(freshnessFromIso(company.lastUpdated)),
+      });
+    }
+    return out;
+  }, [wl.hydrated, wl.ids, wl.meta, wl.resolveCompanies, wl.getChanges]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
-  const feedItems = buildFeedItems(changes);
+  const feedItems = [...watchlistPulse, ...buildFeedItems(changes, staleCount)];
 
   return (
     <div className="rounded-2xl border border-rule bg-surface-elev p-5 shadow-[var(--shadow-card)]">
@@ -101,6 +130,17 @@ export function EcosystemChangeFeed() {
               {item.sub && (
                 <p className="mt-0.5 text-[11.5px] text-ink-mute">{item.sub}</p>
               )}
+              {item.whyItMatters && (
+                <p className="mt-1 text-[11px] leading-snug text-ink-soft">
+                  <span className="font-semibold text-ink-mute">Why it matters: </span>
+                  {item.whyItMatters}
+                </p>
+              )}
+              {item.freshness && (
+                <p className="mt-1 text-[10px] uppercase tracking-wide text-ink-mute">
+                  {item.freshness}
+                </p>
+              )}
             </div>
             {item.href && (
               <Link
@@ -121,10 +161,12 @@ interface FeedItem {
   emoji: string;
   headline: string;
   sub?: string;
+  whyItMatters?: string;
   href?: string;
+  freshness?: string;
 }
 
-function buildFeedItems(c: ChangeSummary): FeedItem[] {
+function buildFeedItems(c: ChangeSummary, staleCount: number): FeedItem[] {
   const items: FeedItem[] = [];
 
   if (c.hiringCount > 0) {
@@ -132,6 +174,8 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
       emoji: "⚙️",
       headline: `${c.hiringCount} companies are actively hiring`,
       sub: "Based on company descriptions and hiring signals",
+      whyItMatters:
+        "Hiring signals help you prioritize who may be scaling — verify on the company site before outreach.",
       href: "/search",
     });
   }
@@ -141,13 +185,27 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
       emoji: "✨",
       headline: `${c.newThisWeek} companies updated this week`,
       sub: "New profiles and recently refreshed data",
+      whyItMatters: "Recent updates suggest fresher contact context than stale listings.",
       href: "/search",
     });
   } else if (c.newThisMonth > 0) {
     items.push({
       emoji: "📅",
       headline: `${c.newThisMonth} companies updated this month`,
+      whyItMatters: "Monthly activity shows parts of the dataset are still maintained.",
       href: "/search",
+    });
+  }
+
+  if (staleCount > 0) {
+    items.push({
+      emoji: "⏳",
+      headline: `${staleCount} profiles may be stale (90+ days without update)`,
+      sub: freshnessLabel("stale"),
+      whyItMatters:
+        "Treat these as starting points — confirm stage, hiring, and links on the primary source.",
+      href: "/search",
+      freshness: "stale",
     });
   }
 
@@ -157,6 +215,7 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
       emoji: "🏔️",
       headline: `${top.sector} is Utah's largest startup cluster`,
       sub: `${top.count} companies · growing fast`,
+      whyItMatters: "Sector density hints where talent, vendors, and customers cluster regionally.",
       href: "/search",
     });
   }
@@ -171,6 +230,7 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
       emoji: "🌱",
       headline: `${earlyCount} early-stage companies on the map`,
       sub: "Pre-Seed, Seed, and Bootstrapped",
+      whyItMatters: "Early-stage density matters for peer founders, accelerators, and pre-seed investors.",
       href: "/search",
     });
   }
@@ -186,6 +246,7 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
       emoji: "📈",
       headline: `${growthCount} growth-stage companies scaling in Utah`,
       sub: "Series A through Growth",
+      whyItMatters: "Growth-stage companies often drive hiring velocity and partner demand.",
       href: "/search",
     });
   }
@@ -195,9 +256,10 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
     items.push({
       emoji: "🗺️",
       headline: `Explore ${Object.values(c.sectorCounts).reduce((a, b) => a + b, 0)} Utah startups on the map`,
+      whyItMatters: "The map stays the source of truth for location, sector, and stage filters.",
       href: "/search",
     });
   }
 
-  return items.slice(0, 5);
+  return items.slice(0, 6);
 }

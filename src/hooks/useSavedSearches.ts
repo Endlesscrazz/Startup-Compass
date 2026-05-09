@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Filters } from "@/lib/map-config";
+import { loadRemoteAppState, patchRemoteAppState } from "@/hooks/userAppStateApi";
 
 const LS_KEY = "sc-saved-searches-v1";
 
@@ -89,6 +91,17 @@ function generateId(): string {
   return `ss-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+function parseSearchesFromRemote(raw: unknown): SavedSearch[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(
+    (x): x is SavedSearch =>
+      Boolean(x) &&
+      typeof x === "object" &&
+      typeof (x as SavedSearch).id === "string" &&
+      typeof (x as SavedSearch).label === "string",
+  );
+}
+
 /** Returns a short auto-label summarising active filters */
 export function autoLabel(filters: Filters): string {
   const parts: string[] = [];
@@ -103,8 +116,10 @@ export function autoLabel(filters: Filters): string {
 }
 
 export function useSavedSearches() {
+  const { status } = useSession();
   const [searches, setSearches] = useState<SavedSearch[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const remotePushReady = useRef(false);
 
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect */
@@ -114,9 +129,49 @@ export function useSavedSearches() {
   }, []);
 
   useEffect(() => {
+    if (!hydrated || status !== "authenticated") {
+      remotePushReady.current = false;
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const remote = await loadRemoteAppState();
+      if (cancelled || remote.persistence !== "database") {
+        remotePushReady.current = remote.persistence === "database";
+        return;
+      }
+      const parsed = parseSearchesFromRemote(remote.data.savedSearchesJson);
+      if (parsed.length > 0) {
+        setSearches(parsed);
+      } else {
+        const local = load();
+        if (local.length > 0) {
+          await patchRemoteAppState({ savedSearchesJson: local });
+        }
+      }
+      remotePushReady.current = true;
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated, status]);
+
+  useEffect(() => {
     if (!hydrated) return;
     persist(searches);
   }, [searches, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated || status !== "authenticated" || !remotePushReady.current) return;
+    const t = window.setTimeout(() => {
+      void (async () => {
+        const remote = await loadRemoteAppState();
+        if (remote.persistence !== "database") return;
+        await patchRemoteAppState({ savedSearchesJson: searches });
+      })();
+    }, 700);
+    return () => window.clearTimeout(t);
+  }, [searches, hydrated, status]);
 
   const saveSearch = useCallback((label: string, filters: Filters) => {
     const entry: SavedSearch = {

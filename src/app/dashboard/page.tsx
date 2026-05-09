@@ -3,9 +3,9 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { AtlasHeader } from "@/components/AtlasPages";
-import { AuthStatus } from "@/components/AuthStatus";
 import { useSavedSearches } from "@/hooks/useSavedSearches";
 import { useInvestorWatchlist } from "@/hooks/useInvestorWatchlist";
+import { loadRemoteAppState, patchRemoteAppState } from "@/hooks/userAppStateApi";
 import { COMPANIES } from "@/lib/map-config";
 import { useEffect, useState } from "react";
 
@@ -14,6 +14,20 @@ export default function DashboardPage() {
   const { searches, deleteSearch } = useSavedSearches();
   const { resolveCompanies, toggle } = useInvestorWatchlist();
   const [digestSubscribed, setDigestSubscribed] = useState(true);
+  const [digestMessage, setDigestMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    let cancelled = false;
+    (async () => {
+      const remote = await loadRemoteAppState();
+      if (cancelled || remote.persistence !== "database") return;
+      setDigestSubscribed(remote.data.digestSubscribed);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [status]);
   
   const trackedCompanies = resolveCompanies(COMPANIES);
 
@@ -98,8 +112,26 @@ export default function DashboardPage() {
               />
               <span className="text-[14px] font-medium text-ink">Weekly Pulse Digest</span>
             </label>
-            
-            <button className="w-full mt-4 py-2 border border-rule rounded-lg text-[13px] font-medium hover:bg-surface-tint transition-colors">
+            {digestMessage ? (
+              <p className="mt-2 text-[12px] text-ink-mute">{digestMessage}</p>
+            ) : null}
+            <button
+              type="button"
+              className="w-full mt-4 py-2 border border-rule rounded-lg text-[13px] font-medium hover:bg-surface-tint transition-colors"
+              onClick={async () => {
+                const remote = await loadRemoteAppState();
+                if (remote.persistence !== "database") {
+                  setDigestMessage(
+                    "Add DATABASE_URL on the server to persist digest preferences across devices.",
+                  );
+                  return;
+                }
+                const ok = await patchRemoteAppState({ digestSubscribed });
+                setDigestMessage(
+                  ok ? "Saved to your account." : "Could not save — try again.",
+                );
+              }}
+            >
               Save Preferences
             </button>
           </section>

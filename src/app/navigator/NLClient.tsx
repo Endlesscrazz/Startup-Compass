@@ -96,13 +96,43 @@ export function NLClient() {
     return m ? m[1].trim() : null;
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!description.trim() || !city.trim()) return;
+    let desc = description.trim();
+    try {
+      const res = await fetch("/api/match/parse-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: desc }),
+      });
+      if (res.ok) {
+        const j = (await res.json()) as {
+          chips?: string[];
+          appendToProfile?: string | null;
+        };
+        if (Array.isArray(j.chips)) {
+          try {
+            sessionStorage.setItem("sc_nl_chips", JSON.stringify(j.chips));
+          } catch {
+            /* ignore */
+          }
+        }
+        if (typeof j.appendToProfile === "string" && j.appendToProfile.trim()) {
+          desc = `${j.appendToProfile.trim()}\n\n${desc}`;
+        }
+      }
+    } catch {
+      try {
+        sessionStorage.removeItem("sc_nl_chips");
+      } catch {
+        /* ignore */
+      }
+    }
     const payload: Record<string, string> = {
-      description: description.trim(),
+      description: desc,
       city: city.trim(),
     };
-    const name = extractNameFromText(description);
+    const name = extractNameFromText(desc);
     if (name) payload.founderName = name;
     sessionStorage.setItem("sc_quiz", JSON.stringify(payload));
     router.push("/results");
@@ -184,10 +214,15 @@ export function NLClient() {
         </p>
       </div>
 
+      <p className="mt-3 text-[12px] text-ink-mute">
+        We extract searchable hints from your paragraph (and fall back to keyword rules if needed) before
+        matching.
+      </p>
+
       {/* Submit */}
       <button
         type="button"
-        onClick={handleSubmit}
+        onClick={() => void handleSubmit()}
         disabled={!canSubmit}
         className={cn(
           "mt-6 inline-flex h-10 w-full items-center justify-center rounded-full text-[14px] font-semibold transition-all",

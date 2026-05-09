@@ -1,7 +1,10 @@
 import { AtlasHeader } from "@/components/AtlasPages";
+import { isGoogleAuthConfigured } from "@/auth";
 import { LoginForm } from "./LoginForm";
 
 export default function LoginPage() {
+  const googleAuthEnabled = isGoogleAuthConfigured();
+
   return (
     <div className="atlas-page atlas-page-light flex min-h-0 flex-1 flex-col">
       <AtlasHeader />
@@ -13,7 +16,7 @@ export default function LoginPage() {
           <p className="mb-8 text-[14px] text-ink-mute">
             Sign in to save your watchlist, briefs, and alert preferences.
           </p>
-          <LoginForm />
+          <LoginForm googleAuthEnabled={googleAuthEnabled} />
         </div>
       </div>
     </div>

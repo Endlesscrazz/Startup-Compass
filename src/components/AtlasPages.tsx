@@ -170,14 +170,6 @@ export function LandingAtlasPage() {
           <EcosystemChangeFeed />
         </section>
 
-        <section className="atlas-trust">
-          <span>Powered by Utah startup map &amp; resource datasets</span>
-          <div>
-            {sources.map((source) => (
-              <strong key={source}>{source}</strong>
-            ))}
-          </div>
-        </section>
       </main>
     </div>
   );

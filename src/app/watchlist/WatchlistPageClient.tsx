@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { AtlasHeader } from "@/components/AtlasPages";
+import { readResponseJson } from "@/lib/client/readResponseJson";
 import { COMPANIES } from "@/lib/map-config";
 import type { WatchlistAlertCondition } from "@/lib/intelligence/types";
 
@@ -21,8 +22,8 @@ export function WatchlistPageClient() {
 
   const load = useCallback(async () => {
     const r = await fetch("/api/watchlist");
-    const j = await r.json();
-    if (j.success) setRows(j.data);
+    const j = await readResponseJson(r, { success: false } as { success: boolean; data?: Row[] });
+    if (j.success && Array.isArray(j.data)) setRows(j.data);
   }, []);
 
   useEffect(() => {

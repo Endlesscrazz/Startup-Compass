@@ -58,3 +58,6 @@ yarn-error.log*
 context-bridge-log.md
 context-bridge-state.db
 .claude/
+.vercel
+
+/src/generated/prisma

@@ -6,6 +6,7 @@ import { getSectorColor } from "@/lib/map-config";
 import { AtlasHeader } from "@/components/AtlasPages";
 import { EcosystemChangeFeed } from "@/components/EcosystemChangeFeed";
 import { DigestSignupCard } from "@/components/DigestSignupCard";
+import { WeeklyDigestPreview } from "@/components/pulse/WeeklyDigestPreview";
 import { computeBadges } from "@/lib/map/opportunityBadges";
 import { inferHiringFromDescription } from "@/lib/investor/hiringHeuristic";
 import type { UserRole } from "@/hooks/useUserRole";
@@ -61,7 +62,7 @@ export function PulsePageClient() {
             Utah Startup Pulse
           </h1>
           <p className="mt-3 mx-auto max-w-[560px] text-[16px] leading-relaxed text-ink">
-            Live signals from Utah's startup ecosystem. Hiring companies, sector trends,
+            Live signals from Utah&apos;s startup ecosystem. Hiring companies, sector trends,
             funding activity, and resources — all in one place.
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
@@ -230,6 +231,8 @@ export function PulsePageClient() {
           <div className="space-y-6">
             <DigestSignupCard onSubscribe={handleSubscribe} />
 
+            <WeeklyDigestPreview />
+
             {/* Quick Links */}
             <div className="rounded-2xl border border-rule bg-surface-elev p-5 shadow-sm">
               <h3 className="font-display text-[15px] font-semibold text-ink mb-3">
@@ -256,22 +259,6 @@ export function PulsePageClient() {
                   </Link>
                 ))}
               </div>
-            </div>
-
-            {/* For Founders */}
-            <div className="rounded-2xl border border-rule bg-surface-elev p-5 shadow-sm">
-              <h3 className="font-display text-[15px] font-semibold text-ink mb-1">
-                Founder?
-              </h3>
-              <p className="text-[12px] text-ink-mute mb-3">
-                Find grants, investors, and programs matched to your stage.
-              </p>
-              <Link
-                href="/navigator"
-                className="block w-full rounded-full border-2 border-gold bg-utah-blue py-2.5 text-center text-[13px] font-medium text-white hover:bg-utah-blue-hover"
-              >
-                Find resources →
-              </Link>
             </div>
           </div>
         </div>

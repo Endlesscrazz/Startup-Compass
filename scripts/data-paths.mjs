@@ -30,3 +30,9 @@ export const GENERATED_COMPANIES_JSON = resolve(
   "data",
   "companies.json",
 );
+
+/** Cache to avoid re-geocoding everything and hitting rate limits */
+export const GEOCODE_CACHE_JSON = resolve(
+  DATASET_DIR,
+  "geocode-cache.json"
+);

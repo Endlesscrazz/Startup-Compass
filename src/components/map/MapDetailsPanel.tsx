@@ -6,12 +6,15 @@ import {
   MAP_LAYER_OPTIONS,
   type MapLayerId,
 } from "@/lib/map/mapLayers";
+import type { MapViewMode } from "@/lib/map/mapViewStorage";
 
 type MapDetailsPanelProps = {
   activeLayerId: MapLayerId;
   onLayerChange: (id: MapLayerId) => void;
   measureActive: boolean;
   onMeasureToggle: () => void;
+  mapViewMode: MapViewMode;
+  onMapViewModeChange: (mode: MapViewMode) => void;
 };
 
 export function MapDetailsPanel({
@@ -19,18 +22,19 @@ export function MapDetailsPanel({
   onLayerChange,
   measureActive,
   onMeasureToggle,
+  mapViewMode,
+  onMapViewModeChange,
 }: MapDetailsPanelProps) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (containerRef.current && typeof window !== "undefined") {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const L = require("leaflet");
-      L.DomEvent.disableScrollPropagation(containerRef.current);
-      L.DomEvent.disableClickPropagation(containerRef.current);
-    }
+    if (!containerRef.current || typeof window === "undefined") return;
+    const el = containerRef.current;
+    const stopWheel = (e: Event) => e.stopPropagation();
+    el.addEventListener("wheel", stopWheel, { passive: false, capture: true });
+    return () => el.removeEventListener("wheel", stopWheel, { capture: true });
   }, [open]);
 
   const layerChoices = MAP_LAYER_OPTIONS.filter((o) => o.enabled);
@@ -81,6 +85,37 @@ export function MapDetailsPanel({
                   {layer.label}
                 </button>
               ))}
+            </div>
+          </div>
+          <div className="border-t border-rule/50 p-3 bg-surface-tint/30">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-ink-mute">
+              View
+            </p>
+            <div className="grid grid-cols-2 gap-1">
+              <button
+                type="button"
+                aria-pressed={mapViewMode === "2d"}
+                onClick={() => onMapViewModeChange("2d")}
+                className={`rounded-lg px-2 py-2 text-center text-[11px] font-semibold transition-colors ${
+                  mapViewMode === "2d"
+                    ? "bg-ink text-surface shadow-sm"
+                    : "bg-transparent text-ink hover:bg-surface-tint"
+                }`}
+              >
+                2D
+              </button>
+              <button
+                type="button"
+                aria-pressed={mapViewMode === "3d"}
+                onClick={() => onMapViewModeChange("3d")}
+                className={`rounded-lg px-2 py-2 text-center text-[11px] font-semibold transition-colors ${
+                  mapViewMode === "3d"
+                    ? "bg-ink text-surface shadow-sm"
+                    : "bg-transparent text-ink hover:bg-surface-tint"
+                }`}
+              >
+                3D
+              </button>
             </div>
           </div>
           <div className="border-t border-rule/50 p-3 bg-surface-tint/30">

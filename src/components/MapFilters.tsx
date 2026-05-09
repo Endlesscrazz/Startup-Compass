@@ -203,173 +203,178 @@ export function MapFilters({
         )}
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-5 py-5">
-        <FilterGroup
-          title="City"
-          options={cities.map((s) => ({ value: s.value, count: s.count }))}
-          active={filters.cities}
-          onToggle={(v) => toggle("cities", v)}
-        />
-
-        <FilterGroup
-          title="Sector"
-          options={sectors.map((s) => ({
-            value: s.value,
-            count: s.count,
-            color: getSectorColor(s.value),
-          }))}
-          active={filters.sectors}
-          onToggle={(v) => toggle("sectors", v)}
-          className="mt-7"
-        />
-
-        <FilterGroup
-          title="Stage"
-          options={stages.map((s) => ({ value: s.value, count: s.count }))}
-          active={filters.stages}
-          onToggle={(v) => toggle("stages", v)}
-          className="mt-7"
-        />
-
-        <FilterGroup
-          title="Team size"
-          options={employees.map((s) => ({ value: s.value, count: s.count }))}
-          active={filters.employees}
-          onToggle={(v) => toggle("employees", v)}
-          className="mt-7"
-        />
-
-        {/* ── Opportunity-based filters ── */}
-        <div className="mt-7">
-          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ink-mute">
-            Opportunities
-          </p>
-          <div className="mt-3 flex flex-col gap-2">
-            <OpportunityToggle
-              id="filter-hiring"
-              label="Hiring Now"
-              active={!!filters.hiringOnly}
-              onToggle={() =>
-                onChange({ ...filters, hiringOnly: filters.hiringOnly ? undefined : true })
-              }
-              emoji="⚙️"
-            />
-            <OpportunityToggle
-              id="filter-remote"
-              label="Remote / Hybrid"
-              active={!!filters.remoteOnly}
-              onToggle={() =>
-                onChange({ ...filters, remoteOnly: filters.remoteOnly ? undefined : true })
-              }
-              emoji="🏠"
-            />
-            <OpportunityToggle
-              id="filter-university"
-              label="University Connected"
-              active={!!filters.universityConnected}
-              onToggle={() =>
-                onChange({
-                  ...filters,
-                  universityConnected: filters.universityConnected ? undefined : true,
-                })
-              }
-              emoji="🎓"
-            />
-            <OpportunityToggle
-              id="filter-new"
-              label="New This Week"
-              active={filters.recentlyUpdatedDays === 7}
-              onToggle={() =>
-                onChange({
-                  ...filters,
-                  recentlyUpdatedDays:
-                    filters.recentlyUpdatedDays === 7 ? undefined : 7,
-                })
-              }
-              emoji="✨"
-            />
-            <OpportunityToggle
-              id="filter-claimed"
-              label="Founder Claimed"
-              active={!!filters.claimedOnly}
-              onToggle={() =>
-                onChange({ ...filters, claimedOnly: filters.claimedOnly ? undefined : true })
-              }
-              emoji="✅"
-            />
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
+        {detailSlot ? (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+            {detailSlot}
           </div>
-        </div>
-
-
-        {detailSlot}
-
-        {/* Saved Searches */}
-        {onApplySavedSearch && (
-          <div className="mt-6">
-            <SavedSearchDrawer
-              filters={filters}
-              onApply={onApplySavedSearch}
+        ) : (
+          <div className="px-5 py-5">
+            <FilterGroup
+              title="City"
+              options={cities.map((s) => ({ value: s.value, count: s.count }))}
+              active={filters.cities}
+              onToggle={(v) => toggle("cities", v)}
             />
+
+            <FilterGroup
+              title="Sector"
+              options={sectors.map((s) => ({
+                value: s.value,
+                count: s.count,
+                color: getSectorColor(s.value),
+              }))}
+              active={filters.sectors}
+              onToggle={(v) => toggle("sectors", v)}
+              className="mt-7"
+            />
+
+            <FilterGroup
+              title="Stage"
+              options={stages.map((s) => ({ value: s.value, count: s.count }))}
+              active={filters.stages}
+              onToggle={(v) => toggle("stages", v)}
+              className="mt-7"
+            />
+
+            <FilterGroup
+              title="Team size"
+              options={employees.map((s) => ({ value: s.value, count: s.count }))}
+              active={filters.employees}
+              onToggle={(v) => toggle("employees", v)}
+              className="mt-7"
+            />
+
+            {/* ── Opportunity-based filters ── */}
+            <div className="mt-7">
+              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ink-mute">
+                Opportunities
+              </p>
+              <div className="mt-3 flex flex-col gap-2">
+                <OpportunityToggle
+                  id="filter-hiring"
+                  label="Hiring Now"
+                  active={!!filters.hiringOnly}
+                  onToggle={() =>
+                    onChange({ ...filters, hiringOnly: filters.hiringOnly ? undefined : true })
+                  }
+                  emoji="⚙️"
+                />
+                <OpportunityToggle
+                  id="filter-remote"
+                  label="Remote / Hybrid"
+                  active={!!filters.remoteOnly}
+                  onToggle={() =>
+                    onChange({ ...filters, remoteOnly: filters.remoteOnly ? undefined : true })
+                  }
+                  emoji="🏠"
+                />
+                <OpportunityToggle
+                  id="filter-university"
+                  label="University Connected"
+                  active={!!filters.universityConnected}
+                  onToggle={() =>
+                    onChange({
+                      ...filters,
+                      universityConnected: filters.universityConnected ? undefined : true,
+                    })
+                  }
+                  emoji="🎓"
+                />
+                <OpportunityToggle
+                  id="filter-new"
+                  label="New This Week"
+                  active={filters.recentlyUpdatedDays === 7}
+                  onToggle={() =>
+                    onChange({
+                      ...filters,
+                      recentlyUpdatedDays:
+                        filters.recentlyUpdatedDays === 7 ? undefined : 7,
+                    })
+                  }
+                  emoji="✨"
+                />
+                <OpportunityToggle
+                  id="filter-claimed"
+                  label="Founder Claimed"
+                  active={!!filters.claimedOnly}
+                  onToggle={() =>
+                    onChange({ ...filters, claimedOnly: filters.claimedOnly ? undefined : true })
+                  }
+                  emoji="✅"
+                />
+              </div>
+            </div>
+
+            {/* Saved Searches */}
+            {onApplySavedSearch && (
+              <div className="mt-6">
+                <SavedSearchDrawer
+                  filters={filters}
+                  onApply={onApplySavedSearch}
+                />
+              </div>
+            )}
+
+            <div className="mt-8 border-t border-rule/70 pt-5">
+              <div className="flex items-center justify-between">
+                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ink-mute">
+                  Results ({visibleCompanies.length})
+                </p>
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    onClick={reset}
+                    className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold hover:text-gold-hover"
+                  >
+                    Reset all
+                  </button>
+                )}
+              </div>
+              <ul className="mt-3 space-y-1">
+                {visibleCompanies.slice(0, 80).map((c) => (
+                  <li key={c.id}>
+                    <button
+                      type="button"
+                      onClick={() => onFocus(c.id === focusedId ? null : c.id)}
+                      className={`group flex w-full items-start gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors ${
+                        c.id === focusedId
+                          ? "bg-ink/5"
+                          : "hover:bg-surface-tint/60"
+                      }`}
+                    >
+                      <span
+                        className="mt-1.5 inline-flex h-2 w-2 shrink-0 rounded-full"
+                        style={{ backgroundColor: getSectorColor(c.sector) }}
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-[13px] font-medium text-ink">
+                          {c.name}
+                        </span>
+                        <span className="block truncate text-[11px] text-ink-mute">
+                          {c.city} · {c.stage}
+                        </span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+                {visibleCompanies.length > 80 && (
+                  <li className="px-2 pt-2 text-[11px] text-ink-mute">
+                    + {visibleCompanies.length - 80} more — refine filters to narrow
+                    down
+                  </li>
+                )}
+                {visibleCompanies.length === 0 && (
+                  <li className="px-2 pt-2 text-[12.5px] text-ink-mute">
+                    No companies match these filters.
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
         )}
-
-
-        <div className="mt-8 border-t border-rule/70 pt-5">
-          <div className="flex items-center justify-between">
-            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ink-mute">
-              Results ({visibleCompanies.length})
-            </p>
-            {hasActiveFilters && (
-              <button
-                type="button"
-                onClick={reset}
-                className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold hover:text-gold-hover"
-              >
-                Reset all
-              </button>
-            )}
-          </div>
-          <ul className="mt-3 space-y-1">
-            {visibleCompanies.slice(0, 80).map((c) => (
-              <li key={c.id}>
-                <button
-                  type="button"
-                  onClick={() => onFocus(c.id === focusedId ? null : c.id)}
-                  className={`group flex w-full items-start gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors ${
-                    c.id === focusedId
-                      ? "bg-ink/5"
-                      : "hover:bg-surface-tint/60"
-                  }`}
-                >
-                  <span
-                    className="mt-1.5 inline-flex h-2 w-2 shrink-0 rounded-full"
-                    style={{ backgroundColor: getSectorColor(c.sector) }}
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[13px] font-medium text-ink">
-                      {c.name}
-                    </span>
-                    <span className="block truncate text-[11px] text-ink-mute">
-                      {c.city} · {c.stage}
-                    </span>
-                  </span>
-                </button>
-              </li>
-            ))}
-            {visibleCompanies.length > 80 && (
-              <li className="px-2 pt-2 text-[11px] text-ink-mute">
-                + {visibleCompanies.length - 80} more — refine filters to narrow
-                down
-              </li>
-            )}
-            {visibleCompanies.length === 0 && (
-              <li className="px-2 pt-2 text-[12.5px] text-ink-mute">
-                No companies match these filters.
-              </li>
-            )}
-          </ul>
-        </div>
       </div>
+
 
       <div className="border-t border-rule/70 bg-surface-tint/40 px-5 py-3 text-[11.5px] text-ink-mute">
         Showing{" "}

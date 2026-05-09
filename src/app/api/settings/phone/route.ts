@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUserId } from "@/lib/intelligence/session";
-import { upsertNotificationPreferences } from "@/lib/intelligence/store";
+import { upsertNotificationPreferencesResolved } from "@/lib/intelligence/persistence";
 
 export async function POST(req: NextRequest) {
   const userId = await getSessionUserId();
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     phone_number?: string | null;
     sms_verified?: boolean;
   };
-  const prefs = upsertNotificationPreferences(userId, {
+  const prefs = await upsertNotificationPreferencesResolved(userId, {
     phone_number: body.phone_number ?? null,
     sms_verified: Boolean(body.sms_verified),
   });
