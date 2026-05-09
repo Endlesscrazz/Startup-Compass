@@ -1,6 +1,6 @@
 # Startup Compass
 
-The official front door to Utah's startup ecosystem.
+The official front door to Utah's startup ecosystem!
 
 A two-product platform built for the Utah Governor's Office of Economic Development:
 
