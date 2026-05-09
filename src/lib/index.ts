@@ -22,6 +22,11 @@ export interface IndexEntry extends Resource {
 // Module-level singleton — survives across requests in the same serverless instance
 let _index: IndexEntry[] | null = null;
 
+export function reloadIndex(): IndexEntry[] {
+  _index = null;
+  return getIndex();
+}
+
 export function getIndex(): IndexEntry[] {
   if (_index) return _index;
 
