@@ -7,7 +7,8 @@ function getClient(): Groq {
   if (!_client) {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) throw new Error("GROQ_API_KEY is not set");
-    _client = new Groq({ apiKey });
+    // maxRetries: 0 prevents the SDK retrying on rate limits, which caused 40s+ latency
+    _client = new Groq({ apiKey, maxRetries: 0 });
   }
   return _client;
 }
@@ -52,18 +53,17 @@ export async function generateExplanations(
   try {
     const client = getClient();
     const response = await client.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "llama-3.1-8b-instant",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
       temperature: 0.3,
-      max_tokens: 1024,
+      max_tokens: 800,
     });
 
     const raw = response.choices[0]?.message?.content ?? "";
-    console.log("[explain] Groq raw response (first 200):", raw.slice(0, 200));
-    // Strip markdown fences if present (llama-3.3-70b occasionally wraps in ```json)
+    // Strip markdown fences if present
     const clean = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
     const parsed: ExplanationEntry[] = JSON.parse(clean);
 
