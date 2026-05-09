@@ -188,7 +188,7 @@ export function ClaimProfileModal({
               <div
                 key={s}
                 className={`h-1.5 flex-1 rounded-full transition-colors ${
-                  i <= stepIndex ? "bg-accent" : "bg-rule"
+                  i <= stepIndex ? "bg-utah-blue" : "bg-rule"
                 }`}
               />
             ))}
@@ -205,7 +205,7 @@ export function ClaimProfileModal({
               Your name
               <input
                 required
-                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-gold focus:outline-none"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -215,7 +215,7 @@ export function ClaimProfileModal({
               <input
                 required
                 type="email"
-                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-gold focus:outline-none"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -224,7 +224,7 @@ export function ClaimProfileModal({
               Role / title
               <input
                 required
-                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-gold focus:outline-none"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               />
@@ -232,7 +232,7 @@ export function ClaimProfileModal({
             <label className="block text-[12px] text-ink-soft">
               Company website (confirm)
               <input
-                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-gold focus:outline-none"
                 value={website}
                 placeholder={company.website ?? ""}
                 onChange={(e) => setWebsite(e.target.value)}
@@ -241,7 +241,7 @@ export function ClaimProfileModal({
             <label className="block text-[12px] text-ink-soft">
               Note (optional)
               <textarea
-                className="mt-1 min-h-[64px] w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-accent focus:outline-none"
+                className="mt-1 min-h-[64px] w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-gold focus:outline-none"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
@@ -276,8 +276,8 @@ export function ClaimProfileModal({
                     onClick={() => setHiringStatus(v)}
                     className={`flex-1 rounded-lg border py-2 text-[12px] font-medium transition-colors ${
                       hiringStatus === v
-                        ? "border-accent bg-accent-soft text-ink"
-                        : "border-rule bg-surface text-ink-soft hover:border-accent"
+                        ? "border-gold bg-gold-soft text-ink"
+                        : "border-rule bg-surface text-ink-soft hover:border-gold"
                     }`}
                   >
                     {v === "hiring" ? "Yes" : v === "not-hiring" ? "No" : "Unsure"}
@@ -305,8 +305,8 @@ export function ClaimProfileModal({
                     onClick={() => setRemotePolicy(v)}
                     className={`rounded-full border px-3 py-1 text-[11.5px] font-medium transition-colors ${
                       remotePolicy === v
-                        ? "border-accent bg-accent-soft text-ink"
-                        : "border-rule bg-surface text-ink-soft hover:border-accent"
+                        ? "border-gold bg-gold-soft text-ink"
+                        : "border-rule bg-surface text-ink-soft hover:border-gold"
                     }`}
                   >
                     {label}
@@ -327,8 +327,8 @@ export function ClaimProfileModal({
                     onClick={() => setInvestorInterest(v)}
                     className={`flex-1 rounded-lg border py-2 text-[12px] font-medium capitalize transition-colors ${
                       investorInterest === v
-                        ? "border-accent bg-accent-soft text-ink"
-                        : "border-rule bg-surface text-ink-soft hover:border-accent"
+                        ? "border-gold bg-gold-soft text-ink"
+                        : "border-rule bg-surface text-ink-soft hover:border-gold"
                     }`}
                   >
                     {v}
@@ -340,7 +340,7 @@ export function ClaimProfileModal({
             <label className="block text-[12px] text-ink-soft">
               Open roles (optional)
               <input
-                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-rule bg-surface px-3 py-2 text-[14px] text-ink focus:border-gold focus:outline-none"
                 placeholder="e.g. Senior Engineer, Product Designer"
                 value={openRoles}
                 onChange={(e) => setOpenRoles(e.target.value)}
@@ -385,7 +385,7 @@ export function ClaimProfileModal({
               <button
                 type="button"
                 onClick={onFinalSubmit}
-                className="flex-1 rounded-full bg-accent py-2.5 text-[13px] font-medium text-white hover:bg-accent-hover"
+                className="flex-1 rounded-full bg-utah-blue py-2.5 text-[13px] font-medium text-white hover:bg-utah-blue-hover"
               >
                 Submit claim
               </button>

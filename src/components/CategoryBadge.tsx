@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 const TOPIC_COLORS: Record<string, string> = {
   "Funding": "bg-amber-50 text-amber-800 border-amber-200",
   "Start a Business": "bg-emerald-50 text-emerald-800 border-emerald-200",
-  "Late Stage Growth": "bg-blue-50 text-blue-800 border-blue-200",
+  "Late Stage Growth": "bg-surface-tint text-ink border-gold/50",
   "International Trade": "bg-indigo-50 text-indigo-800 border-indigo-200",
   "Entrepreneurship Communities": "bg-purple-50 text-purple-800 border-purple-200",
   "Other": "bg-surface-tint text-ink-mute border-rule",

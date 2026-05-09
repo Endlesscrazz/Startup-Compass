@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import type { Filters } from "@/lib/map-config";
 import { useSavedSearches, autoLabel } from "@/hooks/useSavedSearches";
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export function SavedSearchDrawer({ filters, onApply }: Props) {
+  const { status } = useSession();
   const { searches, saveSearch, deleteSearch, resolveFilters, isSaved } =
     useSavedSearches();
   const [open, setOpen] = useState(false);
@@ -22,6 +24,18 @@ export function SavedSearchDrawer({ filters, onApply }: Props) {
   const handleSave = () => {
     const label = labelInput.trim() || autoLabel(filters);
     saveSearch(label, filters);
+    if (status === "authenticated") {
+      void fetch("/api/intelligence/activity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event_type: "saved_search_created",
+          entity_type: "search",
+          entity_id: null,
+          metadata_json: { label },
+        }),
+      });
+    }
     setLabelInput("");
     setSaving(false);
     setSavedFlash(true);
@@ -42,7 +56,7 @@ export function SavedSearchDrawer({ filters, onApply }: Props) {
         <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ink-mute">
           Saved Searches
           {searches.length > 0 && (
-            <span className="ml-1.5 rounded-full bg-accent text-surface px-1.5 py-0.5 text-[9px] font-bold">
+            <span className="ml-1.5 rounded-full bg-utah-blue text-surface px-1.5 py-0.5 text-[9px] font-bold">
               {searches.length}
             </span>
           )}
@@ -53,7 +67,7 @@ export function SavedSearchDrawer({ filters, onApply }: Props) {
               type="button"
               id="save-current-search"
               onClick={() => setSaving((v) => !v)}
-              className="text-[11px] font-semibold text-accent hover:text-accent-hover"
+              className="text-[11px] font-semibold text-gold hover:text-gold-hover"
             >
               {savedFlash ? "✓ Saved!" : "Save current"}
             </button>
@@ -82,7 +96,7 @@ export function SavedSearchDrawer({ filters, onApply }: Props) {
               if (e.key === "Enter") handleSave();
               if (e.key === "Escape") setSaving(false);
             }}
-            className="flex-1 rounded-lg border border-rule bg-surface px-3 py-1.5 text-[12px] text-ink placeholder:text-ink-mute focus:border-accent focus:outline-none"
+            className="flex-1 rounded-lg border border-rule bg-surface px-3 py-1.5 text-[12px] text-ink placeholder:text-ink-mute focus:border-gold focus:outline-none"
           />
           <button
             type="button"
@@ -106,7 +120,7 @@ export function SavedSearchDrawer({ filters, onApply }: Props) {
                 onClick={() => handleApply(s.id)}
                 className="flex-1 text-left"
               >
-                <span className="block text-[12.5px] font-medium text-ink group-hover:text-accent">
+                <span className="block text-[12.5px] font-medium text-ink group-hover:text-gold">
                   {s.label}
                 </span>
                 {s.lastUsedAt && (

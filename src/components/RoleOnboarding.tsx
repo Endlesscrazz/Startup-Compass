@@ -27,7 +27,7 @@ export function RoleOnboarding({ onSelect, onDismiss }: Props) {
         <div className="border-b border-rule px-6 py-5">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gold">
                 Startup State Atlas
               </p>
               <h2 className="mt-1 font-display text-[22px] font-semibold leading-tight text-ink">
@@ -67,7 +67,7 @@ export function RoleOnboarding({ onSelect, onDismiss }: Props) {
               onClick={() => onSelect(cfg.id)}
               className={`group flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-all duration-150 ${
                 hovered === cfg.id
-                  ? "border-accent bg-accent-soft/50 shadow-md"
+                  ? "border-gold bg-gold-soft/50 shadow-md"
                   : "border-rule bg-surface hover:border-rule-strong"
               }`}
             >

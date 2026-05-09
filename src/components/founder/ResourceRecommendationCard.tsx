@@ -59,7 +59,7 @@ export function ResourceRecommendationCard({
             href={resource.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex rounded-full border border-rule px-3 py-1.5 text-[12px] font-medium text-accent hover:border-accent"
+            className="inline-flex rounded-full border border-rule px-3 py-1.5 text-[12px] font-medium text-ink hover:border-gold"
           >
             Visit resource
           </a>

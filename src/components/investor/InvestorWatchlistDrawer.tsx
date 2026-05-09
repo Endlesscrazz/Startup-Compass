@@ -45,7 +45,7 @@ export function InvestorWatchlistDrawer({
           {companies.length > 0 && (
             <button
               type="button"
-              className="font-medium text-accent hover:text-accent-hover"
+              className="font-medium text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
               onClick={onClear}
             >
               Clear all
@@ -70,7 +70,7 @@ export function InvestorWatchlistDrawer({
                         href={c.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-accent hover:text-accent-hover"
+                        className="text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                       >
                         Website
                       </a>
@@ -80,7 +80,7 @@ export function InvestorWatchlistDrawer({
                         href={c.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-accent hover:text-accent-hover"
+                        className="text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                       >
                         LinkedIn
                       </a>

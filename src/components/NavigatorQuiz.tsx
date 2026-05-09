@@ -145,7 +145,7 @@ export function NavigatorQuiz() {
   return (
     <div className="navigator-quiz mx-auto max-w-3xl">
       <header className="navigator-quiz-head mb-8">
-        <p className="atlas-kicker text-[11px] uppercase tracking-[0.2em] text-accent">
+        <p className="atlas-kicker text-[11px] uppercase tracking-[0.2em] text-gold">
           Founder navigator
         </p>
         <h1 className="font-display text-3xl font-semibold text-ink md:text-4xl">
@@ -258,7 +258,7 @@ export function NavigatorQuiz() {
                   type="checkbox"
                   checked={community.includes(c.value)}
                   onChange={() => toggleCommunity(c.value)}
-                  className="rounded border-rule text-accent focus:ring-accent"
+                  className="rounded border-rule accent-gold focus:ring-gold"
                 />
                 {c.label}
               </label>

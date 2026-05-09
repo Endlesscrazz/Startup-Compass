@@ -35,7 +35,7 @@ export function DigestSignupCard({ onSubscribe }: Props) {
 
   return (
     <div className="rounded-2xl border border-rule bg-surface-elev p-5 shadow-[var(--shadow-card)]">
-      <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-accent">
+      <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-gold">
         Stay informed
       </p>
       <h3 className="mt-1 font-display text-[18px] font-semibold text-ink">
@@ -53,7 +53,7 @@ export function DigestSignupCard({ onSubscribe }: Props) {
           placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-rule bg-surface px-3 py-2.5 text-[14px] text-ink placeholder:text-ink-mute focus:border-accent focus:outline-none"
+          className="w-full rounded-lg border border-rule bg-surface px-3 py-2.5 text-[14px] text-ink placeholder:text-ink-mute focus:border-gold focus:outline-none"
         />
 
         <div>
@@ -68,8 +68,8 @@ export function DigestSignupCard({ onSubscribe }: Props) {
                 onClick={() => setRole(role === cfg.id ? null : cfg.id)}
                 className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors ${
                   role === cfg.id
-                    ? "border-accent bg-accent-soft text-ink"
-                    : "border-rule bg-surface text-ink-soft hover:border-accent"
+                    ? "border-gold bg-gold-soft text-ink"
+                    : "border-rule bg-surface text-ink-soft hover:border-gold"
                 }`}
               >
                 <span aria-hidden="true">{cfg.emoji}</span>

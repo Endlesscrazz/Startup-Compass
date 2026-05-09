@@ -48,23 +48,23 @@ export default function InvestorThesisPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Stage Focus</label>
-              <input value={stage} onChange={e => setStage(e.target.value)} placeholder="e.g. Seed, Series A" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={stage} onChange={e => setStage(e.target.value)} placeholder="e.g. Seed, Series A" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Target Sectors</label>
-              <input value={sectors} onChange={e => setSectors(e.target.value)} placeholder="e.g. B2B SaaS, Healthtech" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={sectors} onChange={e => setSectors(e.target.value)} placeholder="e.g. B2B SaaS, Healthtech" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Check Size</label>
-              <input value={checkSize} onChange={e => setCheckSize(e.target.value)} placeholder="e.g. $500k - $2M" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={checkSize} onChange={e => setCheckSize(e.target.value)} placeholder="e.g. $500k - $2M" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Traction Requirement</label>
-              <input value={traction} onChange={e => setTraction(e.target.value)} placeholder="e.g. $1M ARR, 10k MAU" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={traction} onChange={e => setTraction(e.target.value)} placeholder="e.g. $1M ARR, 10k MAU" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Excluded Sectors</label>
-              <input value={excluded} onChange={e => setExcluded(e.target.value)} placeholder="e.g. Web3, Crypto" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={excluded} onChange={e => setExcluded(e.target.value)} placeholder="e.g. Web3, Crypto" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             
             <button type="submit" disabled={loading} className="w-full mt-4 rounded-full bg-ink px-4 py-2.5 text-[13px] font-medium text-surface hover:bg-ink-soft disabled:opacity-50">
@@ -76,7 +76,7 @@ export default function InvestorThesisPage() {
         <div>
           {loading ? (
             <div className="flex items-center justify-center h-40">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
             </div>
           ) : results ? (
             <div className="space-y-4">
@@ -91,7 +91,7 @@ export default function InvestorThesisPage() {
                         <h3 className="font-semibold text-[16px] text-ink">{i + 1}. {r.company.name}</h3>
                         <p className="text-[12px] text-ink-mute">{r.company.sector} · {r.company.stage} · {r.company.city}</p>
                       </div>
-                      <div className="rounded-full bg-accent-soft px-2.5 py-1 text-[12px] font-bold text-accent">
+                      <div className="rounded-full bg-gold-soft/50 px-2.5 py-1 text-[12px] font-bold text-ink">
                         {r.fitScore}/100
                       </div>
                     </div>

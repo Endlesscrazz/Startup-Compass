@@ -79,7 +79,7 @@ export function CompanyCompareDrawer({
             <button
               type="button"
               onClick={() => downloadCsv(companies)}
-              className="flex items-center gap-1.5 rounded-full border border-rule px-3 py-1.5 text-[11px] font-semibold text-ink-soft hover:border-accent hover:text-ink"
+              className="flex items-center gap-1.5 rounded-full border border-rule px-3 py-1.5 text-[11px] font-semibold text-ink-soft hover:border-gold hover:text-ink"
             >
               <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none">
                 <path
@@ -191,7 +191,7 @@ export function CompanyCompareDrawer({
                               href={cellVal(c, f.key)!}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="break-all text-accent hover:text-accent-hover"
+                              className="break-all text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                             >
                               Link ↗
                             </a>
@@ -220,7 +220,7 @@ export function CompanyCompareDrawer({
             <button
               type="button"
               onClick={() => downloadCsv(companies)}
-              className="font-semibold text-accent hover:text-accent-hover"
+              className="font-semibold text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
             >
               Export as CSV
             </button>{" "}

@@ -19,7 +19,7 @@ export function ResultCard({ result, rank }: ResultCardProps) {
     <article className="group relative rounded-[14px] border border-rule bg-surface-elev p-6 shadow-card transition-shadow hover:shadow-card-hover">
       <div className="flex items-start gap-4">
         <span
-          className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[12px] font-bold text-surface"
+          className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gold bg-utah-blue text-[12px] font-bold text-white"
           aria-label={`Result ${rank}`}
         >
           {rank}
@@ -32,7 +32,7 @@ export function ResultCard({ result, rank }: ResultCardProps) {
 
           {/* When LLM explanation is available, show it prominently */}
           {!isFallback && (
-            <p className="mt-2 text-[14px] font-medium leading-relaxed text-accent-dark">
+            <p className="mt-2 text-[14px] font-medium leading-relaxed text-ink-soft">
               {explanation}
             </p>
           )}

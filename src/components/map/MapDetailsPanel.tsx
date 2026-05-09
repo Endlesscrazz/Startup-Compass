@@ -46,7 +46,7 @@ export function MapDetailsPanel({
           type="button"
           aria-expanded={open}
           aria-controls={panelId}
-          className={`flex h-11 w-11 items-center justify-center rounded-xl border border-rule/90 bg-surface-elev/96 text-ink shadow-[0_2px_12px_-2px_rgba(11,27,51,0.18)] backdrop-blur-md transition-all duration-200 hover:border-accent ${open ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
+          className={`flex h-11 w-11 items-center justify-center rounded-xl border border-rule/90 bg-surface-elev/96 text-ink shadow-[0_2px_12px_-2px_rgba(11,27,51,0.18)] backdrop-blur-md transition-all duration-200 hover:border-gold ${open ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
           aria-label="Map layers and tools"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,8 +93,8 @@ export function MapDetailsPanel({
               onClick={onMeasureToggle}
               className={`w-full rounded-lg border px-3 py-2 text-left text-[11px] font-medium transition-colors ${
                 measureActive
-                  ? "border-accent bg-accent-soft text-ink"
-                  : "border-rule bg-surface text-ink hover:border-accent hover:bg-surface-tint"
+                  ? "border-gold bg-gold-soft text-ink"
+                  : "border-rule bg-surface text-ink hover:border-gold hover:bg-surface-tint"
               }`}
             >
               Measure distance

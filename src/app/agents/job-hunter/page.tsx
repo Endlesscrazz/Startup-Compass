@@ -48,23 +48,23 @@ export default function JobHunterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Target Role</label>
-              <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Senior Frontend Engineer" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Senior Frontend Engineer" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Key Skills</label>
-              <input value={skills} onChange={e => setSkills(e.target.value)} placeholder="e.g. React, Node, AWS" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={skills} onChange={e => setSkills(e.target.value)} placeholder="e.g. React, Node, AWS" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Experience Level</label>
-              <input value={experience} onChange={e => setExperience(e.target.value)} placeholder="e.g. 5+ years" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={experience} onChange={e => setExperience(e.target.value)} placeholder="e.g. 5+ years" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Sector Interests</label>
-              <input value={sectors} onChange={e => setSectors(e.target.value)} placeholder="e.g. SaaS, Fintech" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={sectors} onChange={e => setSectors(e.target.value)} placeholder="e.g. SaaS, Fintech" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Remote Preference</label>
-              <input value={remotePreference} onChange={e => setRemotePreference(e.target.value)} placeholder="e.g. Fully Remote" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={remotePreference} onChange={e => setRemotePreference(e.target.value)} placeholder="e.g. Fully Remote" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             
             <button type="submit" disabled={loading} className="w-full mt-4 rounded-full bg-emerald-600 px-4 py-2.5 text-[13px] font-medium text-white hover:bg-emerald-700 disabled:opacity-50">

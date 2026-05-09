@@ -53,18 +53,18 @@ export function PulsePageClient() {
 
       <main className="w-full max-w-[1100px] mx-auto px-5 py-10">
         {/* Hero */}
-        <div className="mb-10">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+        <div className="mb-10 text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
             Weekly Intelligence
           </p>
-          <h1 className="mt-2 font-display text-[clamp(32px,5vw,52px)] font-bold leading-tight text-ink">
+          <h1 className="mt-2 font-display text-[clamp(32px,5vw,52px)] font-bold leading-tight text-gold">
             Utah Startup Pulse
           </h1>
-          <p className="mt-3 max-w-[560px] text-[16px] leading-relaxed text-ink-mute">
+          <p className="mt-3 mx-auto max-w-[560px] text-[16px] leading-relaxed text-ink">
             Live signals from Utah's startup ecosystem. Hiring companies, sector trends,
             funding activity, and resources — all in one place.
           </p>
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
               href="/search"
               className="atlas-btn atlas-btn-primary"
@@ -92,7 +92,7 @@ export function PulsePageClient() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl border border-rule bg-surface-elev px-4 py-3 text-center shadow-sm"
+              className="rounded-xl border-2 border-gold bg-surface-elev px-4 py-3 text-center shadow-sm"
             >
               <p className="font-display text-[28px] font-bold text-ink">
                 {stat.value}
@@ -113,12 +113,12 @@ export function PulsePageClient() {
             {/* Hiring Now */}
             <section>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-display text-[20px] font-semibold text-ink">
+                <h2 className="font-display text-[20px] font-semibold text-gold">
                   Hiring Now
                 </h2>
                 <Link
                   href="/search"
-                  className="text-[12px] font-semibold text-accent hover:text-accent-hover"
+                  className="text-[12px] font-semibold text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                 >
                   View all on map →
                 </Link>
@@ -136,14 +136,14 @@ export function PulsePageClient() {
                       <Link
                         key={c.id}
                         href={`/search?company=${c.id}`}
-                        className="group flex items-start gap-3 rounded-xl border border-rule bg-surface-elev p-3 hover:border-accent hover:shadow-md transition-all"
+                        className="group flex items-start gap-3 rounded-xl border border-rule bg-surface-elev p-3 hover:border-gold hover:shadow-md transition-all"
                       >
                         <span
                           className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full"
                           style={{ backgroundColor: color }}
                         />
                         <div className="min-w-0">
-                          <p className="truncate text-[13px] font-semibold text-ink group-hover:text-accent">
+                          <p className="truncate text-[13px] font-semibold text-ink group-hover:underline">
                             {c.name}
                           </p>
                           <p className="truncate text-[11px] text-ink-mute">
@@ -171,7 +171,7 @@ export function PulsePageClient() {
 
             {/* Sector Breakdown */}
             <section>
-              <h2 className="mb-4 font-display text-[20px] font-semibold text-ink">
+              <h2 className="mb-4 font-display text-[20px] font-semibold text-gold">
                 Sector Breakdown
               </h2>
               <div className="space-y-2">
@@ -208,7 +208,7 @@ export function PulsePageClient() {
 
             {/* Stage Distribution */}
             <section>
-              <h2 className="mb-4 font-display text-[20px] font-semibold text-ink">
+              <h2 className="mb-4 font-display text-[20px] font-semibold text-gold">
                 Stage Distribution
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -216,7 +216,7 @@ export function PulsePageClient() {
                   <Link
                     key={stage}
                     href={`/search`}
-                    className="flex items-center gap-2 rounded-xl border border-rule bg-surface-elev px-3 py-2 hover:border-accent transition-colors"
+                    className="flex items-center gap-2 rounded-xl border border-rule bg-surface-elev px-3 py-2 hover:border-gold transition-colors"
                   >
                     <span className="text-[14px] font-bold text-ink">{count}</span>
                     <span className="text-[11px] text-ink-mute">{stage}</span>
@@ -252,7 +252,7 @@ export function PulsePageClient() {
                       <p className="text-[12.5px] font-medium text-ink">{item.label}</p>
                       <p className="text-[11px] text-ink-mute">{item.desc}</p>
                     </div>
-                    <span className="ml-auto text-[11px] text-accent">→</span>
+                    <span className="ml-auto text-[11px] text-ink">→</span>
                   </Link>
                 ))}
               </div>
@@ -268,7 +268,7 @@ export function PulsePageClient() {
               </p>
               <Link
                 href="/navigator"
-                className="block w-full rounded-full bg-accent py-2.5 text-center text-[13px] font-medium text-white hover:bg-accent-hover"
+                className="block w-full rounded-full border-2 border-gold bg-utah-blue py-2.5 text-center text-[13px] font-medium text-white hover:bg-utah-blue-hover"
               >
                 Find resources →
               </Link>

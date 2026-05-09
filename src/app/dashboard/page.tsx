@@ -22,7 +22,7 @@ export default function DashboardPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-surface p-6">
         <h1 className="font-display text-2xl font-bold mb-4 text-ink">Sign in to view your dashboard</h1>
-        <Link href="/login" className="px-6 py-2 bg-accent text-white rounded-full font-medium">Log in</Link>
+        <Link href="/login" className="rounded-full border-2 border-gold bg-utah-blue px-6 py-2 font-medium text-white hover:bg-utah-blue-hover">Log in</Link>
       </div>
     );
   }
@@ -50,7 +50,7 @@ export default function DashboardPage() {
                       <p className="text-[14px] font-medium text-ink">{s.label}</p>
                     </div>
                     <div className="flex gap-2">
-                      <Link href={`/search?searchId=${s.id}`} className="px-3 py-1.5 bg-accent-soft text-accent rounded text-[12px] font-semibold">Run Search</Link>
+                      <Link href={`/search?searchId=${s.id}`} className="rounded-lg border-2 border-gold bg-utah-blue px-3 py-1.5 text-[12px] font-semibold text-white hover:bg-utah-blue-hover">Run Search</Link>
                       <button onClick={() => deleteSearch(s.id)} className="px-3 py-1.5 border border-rule rounded text-[12px] text-ink hover:border-red-500 hover:text-red-500">Remove</button>
                     </div>
                   </div>
@@ -94,7 +94,7 @@ export default function DashboardPage() {
                 type="checkbox" 
                 checked={digestSubscribed} 
                 onChange={(e) => setDigestSubscribed(e.target.checked)}
-                className="w-4 h-4 text-accent"
+                className="h-4 w-4 accent-gold"
               />
               <span className="text-[14px] font-medium text-ink">Weekly Pulse Digest</span>
             </label>
@@ -104,10 +104,10 @@ export default function DashboardPage() {
             </button>
           </section>
 
-          <section className="rounded-xl bg-accent-soft p-5 border border-accent/20">
-            <h3 className="font-display text-[16px] font-semibold text-accent mb-2">CRM Export</h3>
+          <section className="rounded-xl bg-gold-soft/50 p-5 border border-gold/40">
+            <h3 className="font-display text-[16px] font-semibold text-ink mb-2">CRM Export</h3>
             <p className="text-[12px] text-ink-mute mb-3">Download your entire watchlist and saved searches as a CSV for your CRM.</p>
-            <button className="w-full py-2 bg-accent text-white rounded-lg text-[13px] font-semibold hover:bg-accent/90 transition-colors">
+            <button className="w-full rounded-lg border-2 border-gold bg-utah-blue py-2 text-[13px] font-semibold text-white transition-colors hover:bg-utah-blue-hover">
               Export to CSV
             </button>
           </section>

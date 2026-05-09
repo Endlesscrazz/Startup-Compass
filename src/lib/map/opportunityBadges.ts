@@ -42,7 +42,7 @@ export const BADGE_DEFINITIONS: Record<string, Omit<OpportunityBadge, "id">> = {
   },
   "founder-claimed": {
     label: "Founder Claimed",
-    color: "bg-blue-500/15 text-blue-800 border-blue-300/60",
+    color: "bg-gold-soft/50 text-ink border-gold/50",
     description: "A founder has verified and claimed this profile.",
   },
   "new-this-week": {

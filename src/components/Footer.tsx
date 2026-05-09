@@ -1,118 +1,255 @@
 import Link from "next/link";
-import { CompassMark } from "./CompassMark";
 
+const UTAH_RED = "#bf0a30";
+const UTAH_GOLD = "#d4af37";
+
+const journeyLinks = [
+  {
+    label: "I'm thinking of starting my business",
+    href: "https://startup.utah.gov/find-idea/",
+  },
+  {
+    label: "Start my business",
+    href: "https://startup.utah.gov/entrepreneur-journey/#start-my-business",
+  },
+  {
+    label: "Grow my business",
+    href: "https://startup.utah.gov/entrepreneur-journey/#grow-my-business",
+  },
+  {
+    label: "Close or sell my business",
+    href: "https://startup.utah.gov/entrepreneur-journey/#sell-or-exit-my-business",
+  },
+] as const;
+
+const legalLinks = [
+  { label: "Utah.gov", href: "https://www.utah.gov" },
+  { label: "Home", href: "https://startup.utah.gov/" },
+  { label: "Media and Press", href: "https://business.utah.gov/news/" },
+  { label: "Terms of Use", href: "https://www.utah.gov/support/terms.html" },
+  { label: "Privacy Policy", href: "https://www.utah.gov/support/privacy.html" },
+  { label: "Accessibility Policy", href: "https://www.utah.gov/support/accessibility.html" },
+  { label: "Translate", href: "https://www.utah.gov/translate.html" },
+] as const;
+
+const socialLinks = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/UtahGOEO",
+    icon: IconFacebook,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/utahgoeo/",
+    icon: IconInstagram,
+  },
+  { label: "X (Twitter)", href: "https://x.com/UtahGOEO", icon: IconX },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/utah-governors-office-of-economic-opportunity/",
+    icon: IconLinkedIn,
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@UtahGOEO",
+    icon: IconYouTube,
+  },
+  {
+    label: "Email",
+    href: "mailto:startup@utah.gov",
+    icon: IconMail,
+  },
+  { label: "Phone", href: "tel:+18015388680", icon: IconPhone },
+] as const;
+
+/** Utah flag red field — all copy white; gold rules only (contrast). */
 export function Footer() {
   return (
-    <footer className="border-t border-rule/70 bg-surface">
-      <div className="mx-auto w-full max-w-6xl px-6 py-14 sm:px-8">
-        <div className="grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-surface">
-                <CompassMark className="h-5 w-5" />
-              </span>
-              <span className="font-display text-lg font-semibold tracking-tight text-ink">
+    <footer
+      className="utah-state-footer mt-auto border-t-2 text-white"
+      style={{ borderColor: UTAH_GOLD, backgroundColor: UTAH_RED }}
+    >
+      <div className="border-b-2 px-4 py-3 sm:px-8" style={{ borderColor: UTAH_GOLD }}>
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
+          <p className="text-[14px] font-semibold text-white">Let&apos;s connect</p>
+          <ul className="flex flex-wrap items-center gap-4" aria-label="Social and contact">
+            {socialLinks.map(({ label, href, icon: Icon }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white transition-opacity hover:opacity-90"
+                  aria-label={label}
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-8">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <p className="font-display text-[15px] font-bold text-white">Startup State</p>
+            <p className="mt-3 text-[14px] leading-relaxed text-white">
+              <Link href="/" className="font-semibold text-white underline-offset-2 hover:underline">
                 Startup Compass
-              </span>
-            </Link>
-            <p className="mt-5 max-w-sm text-[14px] leading-relaxed text-ink-soft">
-              The official front door to Utah&rsquo;s startup ecosystem. Built
-              with the Utah Governor&rsquo;s Office of Economic Development.
+              </Link>{" "}
+              is part of Utah&apos;s Startup State Initiative, connecting founders to companies and resources across
+              the state.
+            </p>
+            <p className="mt-4 text-[12px] leading-relaxed text-white/90">
+              Governor&apos;s Office of Economic Opportunity (GOEO)
             </p>
           </div>
 
-          <FooterCol
-            title="Products"
-            links={[
-              { label: "Founder's Navigator", href: "/navigator" },
-              { label: "Utah Startup Map", href: "/map" },
-            ]}
-            className="md:col-span-2"
-          />
+          <div>
+            <p className="text-[13px] font-bold text-white">Contact</p>
+            <address className="mt-3 not-italic text-[14px] leading-relaxed text-white">
+              Utah Governor&apos;s Office of Economic Opportunity (GOEO)
+              <br />
+              60 East South Temple, Suite 300
+              <br />
+              Salt Lake City, Utah 84111-1041
+            </address>
+            <a
+              href="mailto:startup@utah.gov"
+              className="mt-3 inline-flex items-center gap-1 text-[14px] font-medium text-white underline decoration-white/70 underline-offset-2 hover:decoration-white"
+            >
+              startup@utah.gov
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
 
-          <FooterCol
-            title="Resources"
-            links={[
-              {
-                label: "startup.utah.gov",
-                href: "https://startup.utah.gov",
-                external: true,
-              },
-              {
-                label: "GOED",
-                href: "https://goed.utah.gov",
-                external: true,
-              },
-              { label: "Add your company", href: "/map?claim=1" },
-            ]}
-            className="md:col-span-2"
-          />
+          <div>
+            <p className="text-[13px] font-bold text-white">Journey</p>
+            <ul className="mt-3 space-y-2">
+              {journeyLinks.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[14px] font-medium text-white underline decoration-white/60 underline-offset-2 hover:decoration-white"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <FooterCol
-            title="About"
-            links={[
-              { label: "Privacy", href: "/privacy" },
-              { label: "Accessibility", href: "/accessibility" },
-              { label: "Contact", href: "mailto:hello@startupcompass.utah.gov" },
-            ]}
-            className="md:col-span-3"
-          />
+          <div>
+            <p className="text-[13px] font-bold text-white">Email newsletters</p>
+            <p className="mt-3 text-[14px] leading-relaxed text-white">
+              Sign up for email newsletters to learn more about the Governor&apos;s Office of Economic Opportunity
+              and Utah&apos;s Startup State Initiative.
+            </p>
+            <a
+              href="https://startup.utah.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded border-2 px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-white/10"
+              style={{ borderColor: UTAH_GOLD }}
+            >
+              Subscribe to newsletter
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
+      </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-rule/70 pt-6 text-[12px] text-ink-mute sm:flex-row sm:items-center">
-          <p>
-            &copy; {new Date().getFullYear()} Startup Compass. An initiative of
-            the State of Utah.
+      <div className="border-t-2 px-4 py-6 sm:px-8" style={{ borderColor: UTAH_GOLD, backgroundColor: UTAH_RED }}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[13px] text-white">
+            <span className="font-black tracking-tight">UTAH</span>
+            <span className="mx-2 text-white/50">·</span>
+            <span>An official website of the State of Utah</span>
           </p>
-          <p className="inline-flex items-center gap-2">
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-            Made in Utah
-          </p>
+          <nav aria-label="Legal and utility" className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px]">
+            {legalLinks.map((link, i) => (
+              <span key={link.href} className="inline-flex items-center gap-2">
+                {i > 0 && (
+                  <span className="text-white/40" aria-hidden="true">
+                    |
+                  </span>
+                )}
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-white underline decoration-white/50 underline-offset-2 hover:decoration-white"
+                >
+                  {link.label}
+                </a>
+              </span>
+            ))}
+          </nav>
         </div>
+        <p className="mx-auto mt-4 max-w-6xl text-center text-[12px] text-white/85 sm:text-left">
+          &copy; {new Date().getFullYear()} State of Utah · Startup Compass
+        </p>
       </div>
     </footer>
   );
 }
 
-type FooterLink = { label: string; href: string; external?: boolean };
-
-function FooterCol({
-  title,
-  links,
-  className,
-}: {
-  title: string;
-  links: FooterLink[];
-  className?: string;
-}) {
+function IconFacebook({ className }: { className?: string }) {
   return (
-    <div className={className}>
-      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ink-mute">
-        {title}
-      </p>
-      <ul className="mt-4 space-y-3">
-        {links.map((link) => (
-          <li key={link.label}>
-            {link.external ? (
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[14px] text-ink-soft hover:text-ink"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                href={link.href}
-                className="text-[14px] text-ink-soft hover:text-ink"
-              >
-                {link.label}
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    </svg>
+  );
+}
+
+function IconInstagram({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+    </svg>
+  );
+}
+
+function IconX({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function IconLinkedIn({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
+
+function IconYouTube({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+    </svg>
+  );
+}
+
+function IconMail({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+      <path d="m22 6-10 7L2 6" />
+    </svg>
+  );
+}
+
+function IconPhone({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
   );
 }

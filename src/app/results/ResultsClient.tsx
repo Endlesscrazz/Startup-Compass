@@ -241,7 +241,7 @@ export function ResultsClient() {
   if (status === "loading") {
     return (
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <div className="mx-auto mb-6 h-10 w-10 animate-spin rounded-full border-4 border-rule border-t-accent" />
+        <div className="mx-auto mb-6 h-10 w-10 animate-spin rounded-full border-4 border-rule border-t-gold" />
         <p className="text-[15px] font-medium text-ink">Finding your resources…</p>
         <p className="mt-1 text-[13px] text-ink-mute">Matching across 211 Utah programs</p>
       </div>

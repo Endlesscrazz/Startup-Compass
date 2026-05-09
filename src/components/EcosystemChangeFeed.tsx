@@ -72,7 +72,7 @@ export function EcosystemChangeFeed() {
     <div className="rounded-2xl border border-rule bg-surface-elev p-5 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-accent">
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-ink-mute">
             Ecosystem Pulse
           </p>
           <h2 className="mt-1 font-display text-[18px] font-semibold text-ink">
@@ -81,7 +81,7 @@ export function EcosystemChangeFeed() {
         </div>
         <Link
           href="/pulse"
-          className="shrink-0 rounded-full border border-rule px-3 py-1.5 text-[11px] font-medium text-ink-soft hover:border-accent hover:text-ink"
+          className="shrink-0 rounded-full border border-rule px-3 py-1.5 text-[11px] font-medium text-ink hover:border-rule-strong hover:text-ink"
         >
           Full pulse →
         </Link>
@@ -105,7 +105,7 @@ export function EcosystemChangeFeed() {
             {item.href && (
               <Link
                 href={item.href}
-                className="ml-auto shrink-0 text-[11px] font-semibold text-accent hover:text-accent-hover"
+                className="ml-auto shrink-0 text-[11px] font-semibold text-ink underline decoration-ink/35 underline-offset-2 hover:decoration-ink"
               >
                 Explore →
               </Link>
@@ -155,7 +155,7 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
     const top = c.clusterGrowth[0]!;
     items.push({
       emoji: "🏔️",
-      headline: `${top.sector} is Utah&apos;s largest startup cluster`,
+      headline: `${top.sector} is Utah's largest startup cluster`,
       sub: `${top.count} companies · growing fast`,
       href: "/search",
     });

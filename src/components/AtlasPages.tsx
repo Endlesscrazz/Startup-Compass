@@ -69,7 +69,7 @@ export function LandingAtlasPage() {
         <section
           className="atlas-hero"
           style={{
-            backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.94) 38%, rgba(255,255,255,0.38) 70%, rgba(255,255,255,0.08) 100%), url(${heroImage})`,
+            backgroundImage: `radial-gradient(ellipse 58% 95% at 50% 42%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.72) 38%, rgba(255,255,255,0.28) 58%, rgba(255,255,255,0.06) 78%, transparent 100%), url(${heroImage})`,
           }}
         >
           <div className="atlas-hero-copy">
@@ -80,7 +80,7 @@ export function LandingAtlasPage() {
                 <button
                   type="button"
                   onClick={clearRole}
-                  className="ml-1 text-accent hover:text-accent-hover text-[11px]"
+                  className="ml-1 text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink text-[11px]"
                   title="Change my role"
                 >
                   Change
@@ -96,7 +96,7 @@ export function LandingAtlasPage() {
               <Link className="atlas-btn atlas-btn-ghost" href="/navigator">
                 {secondaryLabel}
               </Link>
-              <Link className="atlas-btn atlas-btn-gold" href="/pulse">
+              <Link className="atlas-btn atlas-btn-red" href="/pulse">
                 Weekly Pulse
               </Link>
             </div>
@@ -261,7 +261,7 @@ export function FounderCompassPage() {
 
 export function SearchAtlasPage() {
   return (
-    <div className="atlas-page atlas-page-dark atlas-search-live">
+    <div className="atlas-page atlas-page-light atlas-search-live">
       <AtlasHeader />
       <main className="search-shell atlas-search-shell-live">
         <InvestorMapExplorer variant="atlas" />
@@ -275,13 +275,9 @@ export function NavigatorAtlasPage() {
     <div className="atlas-page atlas-page-light">
       <AtlasHeader />
       <main>
-        <div style={{ borderBottom: "1px solid rgba(8,38,83,0.1)", padding: "2rem 1.5rem 1.75rem", textAlign: "center" }}>
-          <h1 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(1.7rem, 4vw, 2.4rem)", fontWeight: 700, color: "#062a52", lineHeight: 1.15 }}>
-            Find your resources
-          </h1>
-          <p style={{ marginTop: "0.5rem", fontSize: "0.9rem", color: "#4a6080", maxWidth: "36rem", marginInline: "auto" }}>
-            5–7 Utah programs matched to your situation · 30 seconds
-          </p>
+        <div className="atlas-navigator-hero">
+          <h1>Find your resources</h1>
+          <p>5–7 Utah programs matched to your situation · 30 seconds</p>
         </div>
         <NavigatorTabs />
       </main>
@@ -306,7 +302,6 @@ export function AtlasHeader() {
     ["Map", "/search"],
     ["Find Resources", "/navigator"],
     ["Pulse", "/pulse"],
-    ["AI Agents", "/agents"],
   ];
 
 
@@ -314,7 +309,10 @@ export function AtlasHeader() {
     <header className="atlas-header">
       <Link className="atlas-brand" href="/">
         <MountainMark />
-        <span>Startup Compass</span>
+        <span className="atlas-brand-lockup flex flex-col leading-tight">
+          <span className="atlas-brand-title">Startup Compass</span>
+          <span className="atlas-brand-kicker">Utah · Startup State</span>
+        </span>
       </Link>
       <nav aria-label="Primary navigation">
         {nav.map(([label, href]) => (
@@ -328,7 +326,7 @@ export function AtlasHeader() {
         ))}
       </nav>
       <div className="atlas-header-actions">
-        <AuthStatus />
+        <AuthStatus variant="dark" />
       </div>
     </header>
   );

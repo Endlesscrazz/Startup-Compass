@@ -59,7 +59,7 @@ function OptionButton({
       className={cn(
         "flex w-full flex-col items-start rounded-xl border px-4 py-3.5 text-left transition-all",
         selected
-          ? "border-accent bg-accent-soft text-ink shadow-sm"
+          ? "border-gold bg-gold-soft text-ink shadow-sm"
           : "border-rule bg-surface-elev text-ink-soft hover:border-rule-strong hover:text-ink"
       )}
     >
@@ -89,7 +89,7 @@ function ToggleChip({
       className={cn(
         "rounded-full border px-4 py-2 text-[13px] font-medium transition-all",
         selected
-          ? "border-accent bg-accent-soft text-ink"
+          ? "border-gold bg-gold-soft text-ink"
           : "border-rule bg-surface-elev text-ink-soft hover:border-rule-strong hover:text-ink"
       )}
     >
@@ -160,9 +160,9 @@ export function QuizClient() {
                 className={cn(
                   "flex h-7 w-7 items-center justify-center rounded-full text-[12px] font-semibold transition-colors",
                   i < step
-                    ? "bg-accent text-[#fbf7f0]"
+                    ? "bg-utah-blue text-white"
                     : i === step
-                    ? "bg-ink text-[#fbf7f0]"
+                    ? "bg-ink text-white"
                     : "bg-rule text-ink-mute"
                 )}
               >
@@ -176,7 +176,7 @@ export function QuizClient() {
         </div>
         <div className="relative mt-3 h-1 rounded-full bg-rule">
           <div
-            className="absolute left-0 top-0 h-1 rounded-full bg-accent transition-all duration-300"
+            className="absolute left-0 top-0 h-1 rounded-full bg-gold transition-all duration-300"
             style={{ width: `${(step / 3) * 100}%` }}
           />
         </div>
@@ -230,7 +230,7 @@ export function QuizClient() {
               placeholder="e.g. Salt Lake City, Provo, St. George…"
               value={quiz.city}
               onChange={(e) => setQuiz((q) => ({ ...q, city: e.target.value }))}
-              className="mt-1.5 w-full rounded-xl border border-rule bg-surface-elev px-4 py-3 text-[14px] text-ink placeholder:text-ink-mute focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+              className="mt-1.5 w-full rounded-xl border border-rule bg-surface-elev px-4 py-3 text-[14px] text-ink placeholder:text-ink-mute focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25"
             />
           </div>
         </div>
@@ -300,7 +300,7 @@ export function QuizClient() {
           className={cn(
             "inline-flex h-10 items-center gap-1.5 rounded-full px-6 text-[14px] font-semibold transition-all",
             canAdvance()
-              ? "bg-ink text-[#fbf7f0] hover:bg-ink-soft"
+              ? "border-2 border-gold bg-utah-blue text-white hover:bg-utah-blue-hover"
               : "cursor-not-allowed bg-rule text-ink-mute"
           )}
         >

@@ -87,7 +87,7 @@ export function MapFilters({
     <aside className="flex h-full w-full min-h-0 flex-col overflow-hidden border-r border-rule/70 bg-surface-elev shadow-[4px_0_24px_-8px_rgba(11,27,51,0.15)] md:w-[360px]">
       <div className="flex shrink-0 items-start justify-between gap-2 border-b border-rule/70 px-4 py-3 md:px-5 md:py-4">
         <div className="min-w-0">
-          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-accent">
+          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-gold">
             Utah Startup Map
           </p>
           <h1 className="mt-1 font-display text-[22px] font-semibold leading-tight tracking-tight text-ink md:text-[26px]">
@@ -98,7 +98,7 @@ export function MapFilters({
           <button
             type="button"
             onClick={onRequestHide}
-            className="shrink-0 rounded-full border border-rule px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-mute hover:border-accent hover:text-ink"
+            className="shrink-0 rounded-full border border-rule px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-mute hover:border-gold hover:text-ink"
             aria-label="Hide list and show full map"
           >
             Hide
@@ -133,7 +133,7 @@ export function MapFilters({
               onChange({ ...filters, search: e.target.value })
             }
             placeholder="Search name, city, sector, stage, website…"
-            className="h-10 w-full rounded-full border border-rule bg-surface pl-9 pr-3 text-[13px] text-ink placeholder:text-ink-mute/80 focus:border-accent focus:outline-none focus-visible:outline-none"
+            className="h-10 w-full rounded-full border border-rule bg-surface pl-9 pr-3 text-[13px] text-ink placeholder:text-ink-mute/80 focus:border-gold focus:outline-none focus-visible:outline-none"
           />
         </label>
 
@@ -144,7 +144,7 @@ export function MapFilters({
             <select
               value={sortMode}
               onChange={(e) => onSortChange(e.target.value as SortMode)}
-              className="rounded-full border border-rule bg-surface px-2 py-1 text-[12px] text-ink focus:border-accent focus:outline-none"
+              className="rounded-full border border-rule bg-surface px-2 py-1 text-[12px] text-ink focus:border-gold focus:outline-none"
             >
               <option value="relevance">Smart order</option>
               <option value="name">Name A–Z</option>
@@ -157,7 +157,7 @@ export function MapFilters({
               type="button"
               onClick={onRequestNearMe}
               disabled={nearMePending}
-              className="rounded-full border border-rule bg-surface px-2.5 py-1 text-[11px] font-medium text-ink-soft hover:border-accent hover:text-ink disabled:opacity-50"
+              className="rounded-full border border-rule bg-surface px-2.5 py-1 text-[11px] font-medium text-ink-soft hover:border-gold hover:text-ink disabled:opacity-50"
             >
               {nearMePending ? "Locating…" : "Near me"}
             </button>
@@ -165,13 +165,13 @@ export function MapFilters({
         </div>
 
         {filters.geoFilter && (
-          <div className="mt-2 flex items-center justify-between gap-2 rounded-lg border border-accent/40 bg-accent-soft/50 px-3 py-2 text-[11px] text-ink">
+          <div className="mt-2 flex items-center justify-between gap-2 rounded-lg border border-gold/50 bg-gold-soft/40 px-3 py-2 text-[11px] text-ink">
             <span>
               Within ~{filters.geoFilter.maxKm} km of your location
             </span>
             <button
               type="button"
-              className="shrink-0 font-semibold text-accent hover:text-accent-hover"
+              className="shrink-0 font-semibold text-gold hover:text-gold-hover"
               onClick={() =>
                 onChange({ ...filters, geoFilter: undefined })
               }
@@ -193,7 +193,7 @@ export function MapFilters({
                   type="button"
                   title={p.description}
                   onClick={() => onDiscoveryPreset(p)}
-                  className="shrink-0 rounded-full border border-rule bg-surface px-2.5 py-1 text-[11px] font-medium text-ink-soft hover:border-accent hover:text-ink"
+                  className="shrink-0 rounded-full border border-rule bg-surface px-2.5 py-1 text-[11px] font-medium text-ink-soft hover:border-gold hover:text-ink"
                 >
                   {p.label}
                 </button>
@@ -323,7 +323,7 @@ export function MapFilters({
               <button
                 type="button"
                 onClick={reset}
-                className="text-[11px] font-medium uppercase tracking-[0.16em] text-accent hover:text-accent-hover"
+                className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold hover:text-gold-hover"
               >
                 Reset all
               </button>
@@ -460,7 +460,7 @@ function OpportunityToggle({
       aria-pressed={active}
       className={`flex w-full items-center gap-2.5 rounded-xl border px-3 py-2 text-[12px] font-medium transition-colors ${
         active
-          ? "border-accent bg-accent-soft text-ink"
+          ? "border-gold bg-gold-soft text-ink"
           : "border-rule bg-surface text-ink-soft hover:border-rule-strong hover:text-ink"
       }`}
     >
@@ -470,7 +470,7 @@ function OpportunityToggle({
       <span className="flex-1 text-left">{label}</span>
       <span
         className={`h-3.5 w-3.5 rounded-full border-2 transition-colors ${
-          active ? "border-accent bg-accent" : "border-rule"
+          active ? "border-gold bg-utah-blue" : "border-rule bg-surface"
         }`}
         aria-hidden="true"
       />

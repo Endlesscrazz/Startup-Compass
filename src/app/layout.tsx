@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b1b33",
+  themeColor: "#0c2856",
   width: "device-width",
   initialScale: 1,
 };
@@ -75,7 +76,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-surface text-ink">
         <SessionProvider>
-          {children}
+          <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+          <Footer />
         </SessionProvider>
       </body>
     </html>

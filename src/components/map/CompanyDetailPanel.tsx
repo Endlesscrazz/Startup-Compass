@@ -22,6 +22,10 @@ type Props = {
   onToggleCompare: () => void;
   claimStatus: ClaimStatus;
   onClaimClick: () => void;
+  /** Signed-in map personalization */
+  isSignedIn?: boolean;
+  showBriefCta?: boolean;
+  onEmailBrief?: () => void;
 };
 
 export function CompanyDetailPanel({
@@ -37,6 +41,9 @@ export function CompanyDetailPanel({
   onToggleCompare,
   claimStatus,
   onClaimClick,
+  isSignedIn = false,
+  showBriefCta = false,
+  onEmailBrief,
 }: Props) {
   const pathname = usePathname();
   const hiringSignal = inferHiringFromDescription(company.description);
@@ -96,7 +103,7 @@ export function CompanyDetailPanel({
         <button
           type="button"
           onClick={onClose}
-          className="shrink-0 rounded-full border border-rule px-2 py-1 text-[11px] text-ink-soft hover:border-accent hover:text-ink"
+          className="shrink-0 rounded-full border border-rule px-2 py-1 text-[11px] text-ink-soft hover:border-gold hover:text-ink"
           aria-label="Close details"
         >
           Close
@@ -137,7 +144,7 @@ export function CompanyDetailPanel({
             href={directions.googleMaps}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center rounded-full border border-accent/40 bg-accent-soft px-3 py-1.5 text-[11px] font-medium text-ink hover:border-accent"
+            className="inline-flex items-center rounded-full border border-gold/50 bg-gold-soft/50 px-3 py-1.5 text-[11px] font-medium text-ink hover:border-gold"
           >
             Directions
           </a>
@@ -145,7 +152,7 @@ export function CompanyDetailPanel({
         <button
           type="button"
           onClick={copyShare}
-          className="rounded-full border border-rule px-3 py-1.5 text-[11px] font-medium text-ink-soft hover:border-accent hover:text-ink"
+          className="rounded-full border border-rule px-3 py-1.5 text-[11px] font-medium text-ink-soft hover:border-gold hover:text-ink"
         >
           Copy share link
         </button>
@@ -154,11 +161,11 @@ export function CompanyDetailPanel({
           onClick={onToggleWatchlist}
           className={`rounded-full px-3 py-1.5 text-[11px] font-medium ${
             inWatchlist
-              ? "border border-accent bg-accent-soft text-ink"
-              : "border border-rule bg-surface text-ink-soft hover:border-accent"
+              ? "border border-gold bg-gold-soft text-ink"
+              : "border border-rule bg-surface text-ink-soft hover:border-gold"
           }`}
         >
-          {inWatchlist ? "Saved" : "Save"}
+          {inWatchlist ? "Following" : "Follow"}
         </button>
         <button
           type="button"
@@ -172,6 +179,15 @@ export function CompanyDetailPanel({
         >
           {compareSelected ? "In compare" : "Compare"}
         </button>
+        {isSignedIn && showBriefCta && onEmailBrief && (
+          <button
+            type="button"
+            onClick={onEmailBrief}
+            className="rounded-full border border-ink/20 bg-surface-elev px-3 py-1.5 text-[11px] font-medium text-ink hover:border-gold"
+          >
+            Email me a brief
+          </button>
+        )}
       </div>
 
       <details className="mt-4 rounded-lg border border-rule/70 bg-surface-elev/60 px-3 py-2">
@@ -205,7 +221,7 @@ export function CompanyDetailPanel({
             <li>
               <a
                 href={company.website}
-                className="text-accent hover:text-accent-hover"
+                className="text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -217,7 +233,7 @@ export function CompanyDetailPanel({
             <li>
               <a
                 href={company.linkedin}
-                className="text-accent hover:text-accent-hover"
+                className="text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -269,7 +285,7 @@ export function CompanyDetailPanel({
       <button
         type="button"
         onClick={onClaimClick}
-        className="mt-4 w-full rounded-lg border border-dashed border-accent/50 bg-accent-soft/40 py-2 text-[12px] font-medium text-ink hover:border-accent"
+        className="mt-4 w-full rounded-lg border border-dashed border-gold/50 bg-gold-soft/40 py-2 text-[12px] font-medium text-ink hover:border-gold"
       >
         Claim this profile
       </button>

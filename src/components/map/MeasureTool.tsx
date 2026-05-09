@@ -58,7 +58,7 @@ export function MeasureDistanceTool({ active }: { active: boolean }) {
         <Polyline
           positions={positions}
           pathOptions={{
-            color: "var(--accent, #b8542a)",
+            color: "var(--gold)",
             weight: 3,
             opacity: 0.92,
           }}

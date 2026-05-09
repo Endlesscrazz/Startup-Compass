@@ -14,7 +14,7 @@ export function FounderPathway({ steps }: { steps: PathwayStep[] }) {
             key={s.key}
             className={`min-w-[130px] flex-1 rounded-xl border px-3 py-3 transition-colors ${
               s.active
-                ? "border-accent bg-accent-soft/40"
+                ? "border-gold bg-gold-soft/40"
                 : "border-rule bg-surface"
             }`}
           >
@@ -24,7 +24,7 @@ export function FounderPathway({ steps }: { steps: PathwayStep[] }) {
             <p className="mt-1 text-[11px] leading-snug text-ink-mute">
               {s.description}
             </p>
-            <p className="mt-2 text-[11px] font-medium text-accent">
+            <p className="mt-2 text-[11px] font-medium text-ink-mute">
               {s.matchingResourceCount} matches
             </p>
           </div>

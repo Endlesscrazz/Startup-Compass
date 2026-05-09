@@ -59,21 +59,21 @@ export function ActionPlanPanel({ plan }: { plan: FounderActionPlan }) {
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
-            className="rounded-full border border-rule bg-surface px-3 py-1.5 text-[12px] font-medium text-ink hover:border-accent"
+            className="rounded-full border border-rule bg-surface px-3 py-1.5 text-[12px] font-medium text-ink hover:border-gold"
             onClick={() => void copyText()}
           >
             {copied ? "Copied" : "Copy to clipboard"}
           </button>
           <button
             type="button"
-            className="rounded-full border border-rule bg-surface px-3 py-1.5 text-[12px] font-medium text-ink hover:border-accent"
+            className="rounded-full border border-rule bg-surface px-3 py-1.5 text-[12px] font-medium text-ink hover:border-gold"
             onClick={downloadTxt}
           >
             Download .txt
           </button>
           <button
             type="button"
-            className="rounded-full border border-rule bg-surface px-3 py-1.5 text-[12px] font-medium text-ink hover:border-accent"
+            className="rounded-full border border-rule bg-surface px-3 py-1.5 text-[12px] font-medium text-ink hover:border-gold"
             onClick={downloadJson}
           >
             Download .json

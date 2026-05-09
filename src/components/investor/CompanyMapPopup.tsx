@@ -98,8 +98,8 @@ export function CompanyMapPopup({
           type="button"
           className={`rounded-full px-3 py-1.5 text-[11px] font-medium ${
             inWatchlist
-              ? "border border-accent bg-accent-soft text-ink"
-              : "border border-rule bg-surface text-ink-soft hover:border-accent"
+              ? "border border-gold bg-gold-soft text-ink"
+              : "border border-rule bg-surface text-ink-soft hover:border-gold"
           }`}
           onClick={onToggleWatchlist}
         >
@@ -119,7 +119,7 @@ export function CompanyMapPopup({
         </button>
         <button
           type="button"
-          className="rounded-full border border-rule px-3 py-1.5 text-[11px] font-medium text-ink-soft hover:border-accent"
+          className="rounded-full border border-rule px-3 py-1.5 text-[11px] font-medium text-ink-soft hover:border-gold"
           onClick={onClaimClick}
         >
           {claimStatus === "verified" ? "Edit profile" : "Claim this profile"}

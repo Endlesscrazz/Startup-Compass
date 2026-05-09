@@ -53,10 +53,10 @@ export function FounderNeedsPanel({ selected, onChange, readonly = false }: Prop
               aria-pressed={active}
               className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11.5px] font-medium transition-colors ${
                 active
-                  ? "border-accent bg-accent-soft text-ink"
+                  ? "border-gold bg-gold-soft text-ink"
                   : readonly
                   ? "border-rule bg-surface text-ink-mute cursor-default"
-                  : "border-rule bg-surface text-ink-soft hover:border-accent hover:text-ink"
+                  : "border-rule bg-surface text-ink-soft hover:border-gold hover:text-ink"
               }`}
             >
               <span aria-hidden="true">{opt.emoji}</span>

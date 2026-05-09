@@ -28,7 +28,7 @@ export function FounderNextMoves({ moves }: { moves: FounderMove[] }) {
                   href={m.resourceLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex text-[12px] font-medium text-accent hover:text-accent-hover"
+                  className="mt-2 inline-flex text-[12px] font-medium text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                 >
                   Open related resource
                 </a>

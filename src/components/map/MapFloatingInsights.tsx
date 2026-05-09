@@ -47,9 +47,9 @@ export function MapFloatingInsights({
           <button
             type="button"
             onClick={onToggleExpanded}
-            className="pointer-events-auto rounded-full border border-rule/90 bg-surface-elev/96 px-4 py-2.5 text-[11px] font-semibold text-ink shadow-[0_2px_12px_-2px_rgba(11,27,51,0.18)] backdrop-blur-md transition-all duration-200 hover:border-accent hover:bg-surface-elev flex items-center gap-2"
+            className="pointer-events-auto rounded-full border border-rule/90 bg-surface-elev/96 px-4 py-2.5 text-[11px] font-semibold text-ink shadow-[0_2px_12px_-2px_rgba(11,27,51,0.18)] backdrop-blur-md transition-all duration-200 hover:border-gold hover:bg-surface-elev flex items-center gap-2"
           >
-            <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
             Ecosystem Stats
@@ -64,7 +64,7 @@ export function MapFloatingInsights({
         >
           <div className="flex items-center justify-between border-b border-rule/60 bg-surface-tint/50 px-3 py-2">
             <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink flex items-center gap-2">
-              <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
               Ecosystem Stats

@@ -121,7 +121,7 @@ export function NLClient() {
           onChange={(e) => setDescription(e.target.value.slice(0, MAX_CHARS))}
           placeholder={PLACEHOLDER}
           rows={5}
-          className="w-full resize-none rounded-xl border border-rule bg-surface-elev px-4 py-3 pr-12 text-[14px] leading-relaxed text-ink placeholder:text-ink-mute focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+          className="w-full resize-none rounded-xl border border-rule bg-surface-elev px-4 py-3 pr-12 text-[14px] leading-relaxed text-ink placeholder:text-ink-mute focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25"
         />
 
         {/* Mic button — inside textarea, bottom-right */}
@@ -134,7 +134,7 @@ export function NLClient() {
               "absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full transition-colors",
               isRecording
                 ? "bg-red-500 text-white animate-pulse"
-                : "bg-surface-tint text-ink-mute hover:bg-accent hover:text-[#fbf7f0]"
+                : "bg-surface-tint text-ink-mute hover:bg-utah-blue hover:text-white"
             )}
           >
             {isRecording ? <StopIcon className="h-3.5 w-3.5" /> : <MicIcon className="h-4 w-4" />}
@@ -153,7 +153,7 @@ export function NLClient() {
             {speechAvailable ? "Or click the mic to speak" : ""}
           </span>
         )}
-        <span className={cn("text-[12px]", charsLeft < 50 ? "text-accent" : "text-ink-mute")}>
+        <span className={cn("text-[12px]", charsLeft < 50 ? "text-gold" : "text-ink-mute")}>
           {charsLeft} chars left
         </span>
       </div>
@@ -169,7 +169,7 @@ export function NLClient() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           placeholder="e.g. Salt Lake City, Provo, Ogden…"
-          className="mt-1.5 w-full rounded-xl border border-rule bg-surface-elev px-4 py-3 text-[14px] text-ink placeholder:text-ink-mute focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+          className="mt-1.5 w-full rounded-xl border border-rule bg-surface-elev px-4 py-3 text-[14px] text-ink placeholder:text-ink-mute focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25"
         />
         <p className="mt-1 text-[12px] text-ink-mute">
           Needed to filter resources to your area.

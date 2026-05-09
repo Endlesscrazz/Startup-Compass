@@ -94,7 +94,7 @@ export function NavigatorTabs() {
               className={cn(
                 "flex-1 py-3 text-[13px] font-medium transition-colors",
                 tab === t
-                  ? "border-b-2 border-accent text-ink"
+                  ? "border-b-2 border-gold text-ink"
                   : "text-ink-mute hover:text-ink"
               )}
             >

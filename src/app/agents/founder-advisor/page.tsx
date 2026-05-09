@@ -48,19 +48,19 @@ export default function FounderAdvisorPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Your Stage</label>
-              <input value={stage} onChange={e => setStage(e.target.value)} placeholder="e.g. Pre-Seed, Series A" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={stage} onChange={e => setStage(e.target.value)} placeholder="e.g. Pre-Seed, Series A" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Your Sector</label>
-              <input value={sector} onChange={e => setSector(e.target.value)} placeholder="e.g. Cleantech, Edtech" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={sector} onChange={e => setSector(e.target.value)} placeholder="e.g. Cleantech, Edtech" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">City</label>
-              <input value={city} onChange={e => setCity(e.target.value)} placeholder="e.g. Provo, Salt Lake City" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none" />
+              <input value={city} onChange={e => setCity(e.target.value)} placeholder="e.g. Provo, Salt Lake City" className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none" />
             </div>
             <div>
               <label className="block text-[11px] font-medium uppercase tracking-widest text-ink-mute mb-1">Biggest Challenge</label>
-              <textarea value={challenge} onChange={e => setChallenge(e.target.value)} placeholder="e.g. I need non-dilutive funding to build my MVP." className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-accent outline-none min-h-[80px]" />
+              <textarea value={challenge} onChange={e => setChallenge(e.target.value)} placeholder="e.g. I need non-dilutive funding to build my MVP." className="w-full rounded-lg border border-rule px-3 py-2 text-[13px] text-ink focus:border-gold outline-none min-h-[80px]" />
             </div>
             
             <button type="submit" disabled={loading} className="w-full mt-4 rounded-full bg-amber-600 px-4 py-2.5 text-[13px] font-medium text-white hover:bg-amber-700 disabled:opacity-50">

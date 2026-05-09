@@ -21,7 +21,7 @@ export function ThesisPresetsBar({
             key={p.id}
             type="button"
             title={p.description}
-            className="shrink-0 rounded-full border border-rule bg-surface-elev px-3 py-1 text-[11px] font-medium text-ink-soft hover:border-accent hover:text-ink"
+            className="shrink-0 rounded-full border border-rule bg-surface-elev px-3 py-1 text-[11px] font-medium text-ink-soft hover:border-gold hover:text-ink"
             onClick={() => onApply(p)}
           >
             {p.label}
