@@ -20,7 +20,12 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 const CSV_PATH = resolve(ROOT, "Map Data for Builder Day  - Sheet1.csv");
+const RESOURCES_CSV_PATH = resolve(
+  ROOT,
+  "Resources List - Builder Day - Sheet1.csv",
+);
 const OUT_PATH = resolve(ROOT, "src/data/companies.json");
+const RESOURCES_OUT_PATH = resolve(ROOT, "src/data/resources.json");
 
 // ---------------------------------------------------------------------------
 // Utah city centroids (lat, lng).
@@ -158,6 +163,13 @@ function slugify(name) {
 function extractCity(address) {
   if (!address) return null;
   const a = address.replace(/\s+/g, " ").trim();
+  const knownCity = Object.keys(CITY_CENTROIDS)
+    .sort((a, b) => b.length - a.length)
+    .find((city) => {
+      const escaped = city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return new RegExp(`\\b${escaped}\\b\\s*,?\\s+UT(AH)?\\b`, "i").test(a);
+    });
+  if (knownCity) return knownCity;
   // First, try `, City, UT[ ZIP]` pattern (most common)
   const m1 = a.match(/,\s*([A-Za-z][A-Za-z .'-]+?)\s*,\s*UT(AH)?\b/i);
   if (m1) return m1[1].toLowerCase().trim();
@@ -235,10 +247,17 @@ function normalizeLinkedIn(url) {
   return `https://${u.replace(/^\/+/, "")}`;
 }
 
+function splitPipe(value) {
+  return clean(value)
+    .split("|")
+    .map((part) => clean(part))
+    .filter(Boolean);
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
-function main() {
+function buildCompanies() {
   const csv = readFileSync(CSV_PATH, "utf8");
   const rows = parseCSV(csv);
   const [header, ...body] = rows;
@@ -274,6 +293,7 @@ function main() {
     const stage = normalizeStage(r[idx.stage]);
     const employees = normalizeEmployees(r[idx.employees]);
     const sector = normalizeSector(r[idx.sector]);
+    const displayType = clean(r[idx.displayType]) || null;
 
     const cityKey = extractCity(address);
     let centroid = null;
@@ -317,6 +337,7 @@ function main() {
       stage,
       employees,
       sector,
+      displayType,
     });
   }
 
@@ -357,6 +378,95 @@ function main() {
       .map(([k, v]) => `${k} (${v})`)
       .join(", ")}`,
   );
+
+  return companies;
+}
+
+function buildResources() {
+  const csv = readFileSync(RESOURCES_CSV_PATH, "utf8");
+  const rows = parseCSV(csv);
+  const [header, ...body] = rows;
+
+  const idx = {};
+  header.forEach((h, i) => {
+    const key = h.toLowerCase().trim();
+    if (key === "id") idx.id = i;
+    else if (key === "title") idx.title = i;
+    else if (key === "description") idx.description = i;
+    else if (key === "communities") idx.communities = i;
+    else if (key === "industries") idx.industries = i;
+    else if (key === "locations") idx.locations = i;
+    else if (key === "topics") idx.topics = i;
+    else if (key === "link") idx.link = i;
+    else if (key === "email") idx.email = i;
+  });
+
+  const seenIds = new Set();
+  const resources = [];
+  for (const r of body) {
+    if (!r || r.length === 0) continue;
+    const title = clean(r[idx.title]);
+    if (!title) continue;
+
+    let id = clean(r[idx.id]) || slugify(title);
+    if (!id) id = `resource-${resources.length}`;
+    while (seenIds.has(id)) id = `${id}-x`;
+    seenIds.add(id);
+
+    resources.push({
+      id,
+      title,
+      description: clean(r[idx.description]) || null,
+      communities: splitPipe(r[idx.communities]),
+      industries: splitPipe(r[idx.industries]),
+      locations: splitPipe(r[idx.locations]),
+      topics: splitPipe(r[idx.topics]),
+      link: normalizeWebsite(r[idx.link]),
+      email: clean(r[idx.email]) || null,
+    });
+  }
+
+  resources.sort((a, b) => a.title.localeCompare(b.title));
+  mkdirSync(dirname(RESOURCES_OUT_PATH), { recursive: true });
+  writeFileSync(
+    RESOURCES_OUT_PATH,
+    JSON.stringify(resources, null, 2) + "\n",
+    "utf8",
+  );
+
+  const topics = new Map();
+  const industries = new Map();
+  for (const resource of resources) {
+    for (const topic of resource.topics) {
+      topics.set(topic, (topics.get(topic) || 0) + 1);
+    }
+    for (const industry of resource.industries) {
+      industries.set(industry, (industries.get(industry) || 0) + 1);
+    }
+  }
+
+  console.log(`Wrote ${resources.length} resources → ${RESOURCES_OUT_PATH}`);
+  console.log(
+    `  Top resource topics: ${[...topics.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([k, v]) => `${k} (${v})`)
+      .join(", ")}`,
+  );
+  console.log(
+    `  Top resource industries: ${[...industries.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([k, v]) => `${k} (${v})`)
+      .join(", ")}`,
+  );
+
+  return resources;
+}
+
+function main() {
+  buildCompanies();
+  buildResources();
 }
 
 main();

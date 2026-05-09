@@ -11,7 +11,8 @@
     "linkedin": "http://www.linkedin.com/company/3helix-inc",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "addax-overland",
@@ -25,21 +26,23 @@
     "linkedin": "https://www.linkedin.com/company/addax-overland",
     "stage": "Series A",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "adminify-ai",
     "name": "Adminify AI",
     "address": "1250 e 200 s Lehi Utah 84043",
-    "city": "S Lehi",
-    "lat": 40.764742,
-    "lng": -111.903835,
+    "city": "Lehi",
+    "lat": 40.395542,
+    "lng": -111.863635,
     "description": "The all-in-one AI communication platform built to make your business ridiculously easy to communicate with!",
     "website": "https://adminify.ai/",
     "linkedin": "https://www.linkedin.com/company/adminify-ai",
     "stage": "Bootstrapped",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "after-com",
@@ -53,7 +56,8 @@
     "linkedin": "http://www.linkedin.com/company/after-com",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "airbatch",
@@ -67,7 +71,8 @@
     "linkedin": "https://www.linkedin.com/company/airbatch/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "alcomy",
@@ -81,7 +86,8 @@
     "linkedin": "http://www.linkedin.com/company/alcomy",
     "stage": "Unknown",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "alcomy-x",
@@ -95,7 +101,8 @@
     "linkedin": "https://www.linkedin.com/company/alcomy/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "alianza",
@@ -109,7 +116,8 @@
     "linkedin": "http://www.linkedin.com/company/alianza",
     "stage": "Series D+",
     "employees": "201-500",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "alphamountain",
@@ -123,7 +131,8 @@
     "linkedin": "http://www.linkedin.com/company/alphamountain",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "alpyne",
@@ -137,7 +146,8 @@
     "linkedin": "https://www.linkedin.com/company/getalpyne/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "altitude-ai",
@@ -151,7 +161,8 @@
     "linkedin": "http://www.linkedin.com/company/altitude-ai",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "alysio",
@@ -165,7 +176,8 @@
     "linkedin": "http://www.linkedin.com/company/alysio",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "american-battery-factory",
@@ -179,7 +191,8 @@
     "linkedin": "http://www.linkedin.com/company/american-battery-factory-inc",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "applause",
@@ -193,7 +206,8 @@
     "linkedin": "http://www.linkedin.com/company/applausehq",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "askelephant",
@@ -207,7 +221,8 @@
     "linkedin": "https://www.linkedin.com/company/askelephant/posts/?feedView=all",
     "stage": "Pre-Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "atomic",
@@ -221,7 +236,8 @@
     "linkedin": "http://www.linkedin.com/company/atomic-fi",
     "stage": "Series C",
     "employees": "51-200",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "attestiv",
@@ -235,7 +251,8 @@
     "linkedin": "http://www.linkedin.com/company/attestiv",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "avy",
@@ -249,7 +266,8 @@
     "linkedin": null,
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "awardco",
@@ -263,7 +281,8 @@
     "linkedin": "https://www.linkedin.com/company/awardco/",
     "stage": "Series A",
     "employees": "501-1K",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "awsm",
@@ -277,7 +296,8 @@
     "linkedin": "http://www.linkedin.com/company/realawsm",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "bacon",
@@ -291,7 +311,8 @@
     "linkedin": "http://www.linkedin.com/company/bacon-inc",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "bandwango",
@@ -305,21 +326,23 @@
     "linkedin": "http://www.linkedin.com/company/bandwango",
     "stage": "Seed",
     "employees": "51-200",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "benji-card",
     "name": "Benji Card",
     "address": "1117 E Yard Row Saratoga Springs, UT 84045",
-    "city": "Salt Lake City",
-    "lat": 40.761507,
-    "lng": -111.89832,
+    "city": "Saratoga Springs",
+    "lat": 40.350607,
+    "lng": -111.91192,
     "description": "Transforming the way healthcare is paid for with innovative payment solutions that simplify healthcare payments, providing flexibility, transparency, and cost control.",
     "website": "https://benjicard.com",
     "linkedin": "https://www.linkedin.com/company/benji-card/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "blue-eye",
@@ -333,7 +356,8 @@
     "linkedin": "http://www.linkedin.com/company/go-blue-eye",
     "stage": "Seed",
     "employees": "201-500",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "bookclub",
@@ -347,7 +371,8 @@
     "linkedin": "https://www.linkedin.com/company/bookclubdotcom/",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "boostly",
@@ -361,7 +386,8 @@
     "linkedin": "http://www.linkedin.com/company/goboostly",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "bracket-labs",
@@ -375,7 +401,8 @@
     "linkedin": "http://www.linkedin.com/company/bracket-labs",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "brite",
@@ -389,7 +416,8 @@
     "linkedin": "http://www.linkedin.com/company/getbritehr",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "brooksee",
@@ -403,7 +431,8 @@
     "linkedin": "http://www.linkedin.com/company/brooksee",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "built-for-teams",
@@ -417,7 +446,8 @@
     "linkedin": "http://www.linkedin.com/company/builtforteams",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "canopy-tax",
@@ -431,7 +461,8 @@
     "linkedin": "https://www.linkedin.com/company/canopy-inc/",
     "stage": "Series C",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "cardagraph",
@@ -445,21 +476,23 @@
     "linkedin": "http://www.linkedin.com/company/cardagraph",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "carketa",
     "name": "Carketa",
     "address": "3400 Ashton Blvd Suite 450 Lehi, UT 84043",
-    "city": "Salt Lake City",
-    "lat": 40.763018,
-    "lng": -111.888798,
+    "city": "Lehi",
+    "lat": 40.393818,
+    "lng": -111.848598,
     "description": "Automotive Data and Insights Platform",
     "website": "https://carketa.com/",
     "linkedin": "https://www.linkedin.com/company/carketa",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "chargezoom",
@@ -473,7 +506,8 @@
     "linkedin": "http://www.linkedin.com/company/chargezoom",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "cinch",
@@ -487,7 +521,8 @@
     "linkedin": "http://www.linkedin.com/company/cinchplatform",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "clientbook",
@@ -501,7 +536,8 @@
     "linkedin": "https://www.linkedin.com/company/clientbook-retail",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "cloud-storage-security",
@@ -515,7 +551,8 @@
     "linkedin": "http://www.linkedin.com/company/cloud-storage-security",
     "stage": "Series B",
     "employees": "11-50",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "continuum",
@@ -529,21 +566,23 @@
     "linkedin": "http://www.linkedin.com/company/joincontinuum",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "controlqore",
     "name": "ControlQore",
     "address": "905 N Marshall Way, Suite C Layton, Utah 84041",
-    "city": "Suite C Layton",
-    "lat": 40.758728,
-    "lng": -111.887975,
+    "city": "Layton",
+    "lat": 41.058128,
+    "lng": -111.968075,
     "description": "Comprehensive financial management and accounting solution for construction. Replaces QuickBooks for construction and brings all financial transactions for a construction company under one roof.",
     "website": "https://www.controlqore.com/",
     "linkedin": "https://www.linkedin.com/company/controlqore/?viewAsMember=true",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "cotopaxi",
@@ -557,21 +596,23 @@
     "linkedin": "http://www.linkedin.com/company/cotopaxi-com",
     "stage": "Series C",
     "employees": "201-500",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "cove",
     "name": "Cove",
     "address": "14015 minuteman Dr Draper, UT 84020",
-    "city": "Salt Lake City",
-    "lat": 40.765109,
-    "lng": -111.893929,
+    "city": "Draper",
+    "lat": 40.529009,
+    "lng": -111.866729,
     "description": "DIY home security company",
     "website": "https://covesmart.com",
     "linkedin": "https://www.linkedin.com/company/covesmart",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "crew",
@@ -585,21 +626,23 @@
     "linkedin": "http://www.linkedin.com/company/trycrew",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "cupbop",
     "name": "Cupbop",
     "address": "593 E 12300 S Ste B Draper, UT, 84020",
-    "city": "Salt Lake City",
-    "lat": 40.765124,
-    "lng": -111.892759,
+    "city": "Draper",
+    "lat": 40.529024,
+    "lng": -111.865559,
     "description": "Korean BBQ in a Cup. We're here to end your boredom with the same old food choices. The Cupbop menu is our own delicious take on Korean cuisine. Exotically flavorful, naturally healthy dishes you've never had a chance to try—and we make them all affordable, fresh, and lightning fast.",
     "website": "https://www.cupbop.com",
     "linkedin": "http://www.linkedin.com/company/cupbop",
     "stage": "Seed",
     "employees": "201-500",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "data-quality-co-op",
@@ -613,7 +656,8 @@
     "linkedin": "http://www.linkedin.com/company/data-quality-co-op",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "deeppower",
@@ -627,7 +671,8 @@
     "linkedin": "http://www.linkedin.com/company/deeppowerinc",
     "stage": "Series A",
     "employees": "2-10",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "deepsee",
@@ -641,7 +686,8 @@
     "linkedin": "https://www.linkedin.com/company/deepsee/",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "devote",
@@ -655,7 +701,8 @@
     "linkedin": "https://www.linkedin.com/company/usedevote/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "distro",
@@ -669,7 +716,8 @@
     "linkedin": "https://www.linkedin.com/company/distroio/about/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "domus-diagnostics",
@@ -683,7 +731,8 @@
     "linkedin": "http://www.linkedin.com/company/domusdx",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "donde",
@@ -697,7 +746,8 @@
     "linkedin": "http://www.linkedin.com/company/dónde",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "dorai",
@@ -711,7 +761,8 @@
     "linkedin": "http://www.linkedin.com/company/dorai-home",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "dree",
@@ -725,7 +776,8 @@
     "linkedin": "http://www.linkedin.com/company/joindree",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "driven",
@@ -739,7 +791,8 @@
     "linkedin": "http://www.linkedin.com/company/bemoredriven",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "droplet",
@@ -753,7 +806,8 @@
     "linkedin": "http://www.linkedin.com/company/dropletforms",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "drumcv",
@@ -767,7 +821,8 @@
     "linkedin": "http://www.linkedin.com/company/drumcv",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "eaglecorps",
@@ -781,7 +836,8 @@
     "linkedin": "http://www.linkedin.com/company/eaglecorps",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "ednition",
@@ -795,21 +851,23 @@
     "linkedin": "http://www.linkedin.com/company/ednition",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "elektrik-app-inc",
     "name": "Elektrik App Inc",
     "address": "1396 W 200 S Bldg 2 Unit E Lindon UT 84042",
-    "city": "Unit E Lindon",
-    "lat": 40.767836,
-    "lng": -111.882602,
+    "city": "Lindon",
+    "lat": 40.348136,
+    "lng": -111.712402,
     "description": "Marketplaces for Medium and High Voltage electrical equipment. Transformers, cable, connectivity… we make it so easy.",
     "website": "https://Elektrikapp.com",
     "linkedin": "https://www.linkedin.com/company/elektrikapp?trk=profile-position",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "elements",
@@ -823,7 +881,8 @@
     "linkedin": "http://www.linkedin.com/company/getelements",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "elizachat",
@@ -837,7 +896,8 @@
     "linkedin": "https://www.linkedin.com/company/eliza-chat/?viewAsMember=true",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "ember",
@@ -851,7 +911,8 @@
     "linkedin": "http://www.linkedin.com/company/emberhome",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "enzo-health",
@@ -865,7 +926,8 @@
     "linkedin": "https://www.linkedin.com/company/enzo-health",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "errand",
@@ -879,7 +941,8 @@
     "linkedin": "http://www.linkedin.com/company/goerrand",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "filevine",
@@ -893,7 +956,8 @@
     "linkedin": "https://www.linkedin.com/company/filevine/",
     "stage": "Series D+",
     "employees": "501-1K",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "flowell",
@@ -907,7 +971,8 @@
     "linkedin": "http://www.linkedin.com/company/flowell-inc",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "fluentworlds",
@@ -921,21 +986,23 @@
     "linkedin": "http://www.linkedin.com/company/fluentworlds",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "fluid",
     "name": "Fluid",
     "address": "139 Hunter’s Grove Ln STE 207 Lehi, UT 84043",
-    "city": "Salt Lake City",
-    "lat": 40.760255,
-    "lng": -111.895762,
+    "city": "Lehi",
+    "lat": 40.391055,
+    "lng": -111.855562,
     "description": "Fluid is the e-commerce, sales, and marketing platform powering the next generation of direct sales companies.",
     "website": "https://www.fluid.app",
     "linkedin": "https://www.linkedin.com/company/fluid-livefree/",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "funner",
@@ -949,7 +1016,8 @@
     "linkedin": "http://www.linkedin.com/company/funner",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "gabb-wireless",
@@ -963,7 +1031,8 @@
     "linkedin": "http://www.linkedin.com/company/gabb-wireless",
     "stage": "Series A",
     "employees": "201-500",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "gauge",
@@ -977,7 +1046,8 @@
     "linkedin": "http://www.linkedin.com/company/sellgauge",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "giddy",
@@ -991,7 +1061,8 @@
     "linkedin": "http://www.linkedin.com/company/giddydefi",
     "stage": "Series A",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "grain",
@@ -1005,7 +1076,8 @@
     "linkedin": "https://www.linkedin.com/company/grainhq/?viewAsMember=true",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "guard-iq",
@@ -1019,7 +1091,8 @@
     "linkedin": "https://www.linkedin.com/company/guard-iq?trk=blended-typeahead",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "halda",
@@ -1033,7 +1106,8 @@
     "linkedin": "http://www.linkedin.com/company/heyhalda",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "halosight",
@@ -1047,21 +1121,23 @@
     "linkedin": "http://www.linkedin.com/company/halosight",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "helperly",
     "name": "Helperly",
     "address": "9547 S 700 E STE 201 Sandy, UT 84070",
-    "city": "Salt Lake City",
-    "lat": 40.769655,
-    "lng": -111.878135,
+    "city": "Sandy",
+    "lat": 40.573755,
+    "lng": -111.826035,
     "description": "Helperly is transforming the way the seniors age. We honor senior's unique purpose through true connection. We utilize AI to help seniors live longer, healthier, and more connected lives. Seniors connect with others virtually through interest based micro communities, then within the software we utilize AI to predict the physical, mental, and emotional needs of each user based on their use of the app, equipped with that information we work with senior care services that are free to the senior through their insurance to help them get the care they need, before they're in crisis.",
     "website": "https://helperly.com",
     "linkedin": "https://www.linkedin.com/company/helperlycare/?viewAsMember=true",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "herodevs",
@@ -1075,7 +1151,8 @@
     "linkedin": "http://www.linkedin.com/company/herodevs",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "homie",
@@ -1089,7 +1166,8 @@
     "linkedin": "http://www.linkedin.com/company/homie-com",
     "stage": "Series C",
     "employees": "201-500",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "hona",
@@ -1103,7 +1181,8 @@
     "linkedin": "http://www.linkedin.com/company/honasoftware",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "hypercraft",
@@ -1117,7 +1196,8 @@
     "linkedin": "http://www.linkedin.com/company/hypercraftusa",
     "stage": "Seed",
     "employees": "51-200",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "idrive-logistics",
@@ -1131,7 +1211,8 @@
     "linkedin": "http://www.linkedin.com/company/i-drive-logistics",
     "stage": "Seed",
     "employees": "51-200",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "inherent-biosciences",
@@ -1145,7 +1226,8 @@
     "linkedin": "http://www.linkedin.com/company/inherent-biosciences-inc",
     "stage": "Series A",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "isotalent",
@@ -1159,7 +1241,8 @@
     "linkedin": "http://www.linkedin.com/company/isotalent",
     "stage": "Seed",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "jipe",
@@ -1173,7 +1256,8 @@
     "linkedin": "http://www.linkedin.com/company/jipejobs",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "jobnimbus",
@@ -1187,7 +1271,8 @@
     "linkedin": "https://www.linkedin.com/company/jobnimbus/posts/?feedView=all",
     "stage": "Series B",
     "employees": "201-500",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "jump",
@@ -1201,7 +1286,8 @@
     "linkedin": "https://www.linkedin.com/company/jump-app-ai/",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "ketonatural-pet-foods",
@@ -1215,7 +1301,8 @@
     "linkedin": "http://www.linkedin.com/company/ketonatural-pet-foods",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "kolla",
@@ -1229,7 +1316,8 @@
     "linkedin": "http://www.linkedin.com/company/getkolla",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "krado",
@@ -1243,7 +1331,8 @@
     "linkedin": "http://www.linkedin.com/company/kradoinc",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "kuali",
@@ -1257,21 +1346,23 @@
     "linkedin": "https://www.linkedin.com/company/kualico",
     "stage": "Series D+",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "learnie",
     "name": "Learnie",
     "address": "705 Matterhorn dr. Park City, UT 84098",
-    "city": "Salt Lake City",
-    "lat": 40.764772,
-    "lng": -111.89769,
+    "city": "Park City",
+    "lat": 40.650072,
+    "lng": -111.50469,
     "description": "Peer to peer microlearning platform. Capture the knowledge of your people, improve performance and create community learning.",
     "website": "https://mylearnie.com",
     "linkedin": "https://www.linkedin.com/company/learnie/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "leash-bio",
@@ -1285,7 +1376,8 @@
     "linkedin": "http://www.linkedin.com/company/leash-laboratories",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "leeway",
@@ -1299,7 +1391,8 @@
     "linkedin": "http://www.linkedin.com/company/leewayhq",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "leland",
@@ -1313,7 +1406,8 @@
     "linkedin": "http://www.linkedin.com/company/joinleland",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "lendio",
@@ -1327,7 +1421,8 @@
     "linkedin": "https://www.linkedin.com/company/lendio/",
     "stage": "Series D+",
     "employees": "201-500",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "limit-break",
@@ -1341,7 +1436,8 @@
     "linkedin": "http://www.linkedin.com/company/limit-break",
     "stage": "Series B",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "listo-global",
@@ -1355,7 +1451,8 @@
     "linkedin": "https://www.linkedin.com/company/listo-global",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "literal",
@@ -1369,21 +1466,23 @@
     "linkedin": "http://www.linkedin.com/company/literalapp",
     "stage": "Series A",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "liveview-technologies",
     "name": "Liveview Technologies",
     "address": "802 E 1050 S American Fork, Utah 84003 US",
-    "city": "Salt Lake City",
-    "lat": 40.750027,
-    "lng": -111.885067,
+    "city": "American Fork",
+    "lat": 40.366027,
+    "lng": -111.789767,
     "description": "LVT provides rapidly-deployable surveillance hardware that runs on our proprietary SaaS platform. Our enterprise-grade safety and security ecosystem makes it easy to secure virtually any physical environment through intelligent automation and actionable insights.",
     "website": "https://www.lvt.com/",
     "linkedin": "https://www.linkedin.com/company/lvt/",
     "stage": "Series B",
     "employees": "501-1K",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "looloo",
@@ -1397,7 +1496,8 @@
     "linkedin": "http://www.linkedin.com/company/looloo-us",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "lucid",
@@ -1411,7 +1511,8 @@
     "linkedin": "https://www.linkedin.com/company/lucidsoftware/",
     "stage": "Series D+",
     "employees": "1K-5K",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "mallow",
@@ -1425,7 +1526,8 @@
     "linkedin": "https://www.linkedin.com/company/getmallow/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "masset",
@@ -1439,7 +1541,8 @@
     "linkedin": "http://www.linkedin.com/company/massetai",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "metrodora-institute",
@@ -1453,7 +1556,8 @@
     "linkedin": "http://www.linkedin.com/company/metrodorainstitute",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "mindless-labs",
@@ -1467,7 +1571,8 @@
     "linkedin": "https://www.linkedin.com/company/mindlesslabs",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "mindsmith",
@@ -1481,7 +1586,8 @@
     "linkedin": "http://www.linkedin.com/company/mindsmith1",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "mobly",
@@ -1495,7 +1601,8 @@
     "linkedin": "http://www.linkedin.com/company/getmobly",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "modal-living",
@@ -1509,7 +1616,8 @@
     "linkedin": "http://www.linkedin.com/company/livemodal",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "monarx",
@@ -1523,7 +1631,8 @@
     "linkedin": "http://www.linkedin.com/company/monarx",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "moneta",
@@ -1537,7 +1646,8 @@
     "linkedin": "https://www.linkedin.com/company/monetacloud/?viewAsMember=true",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "monovo",
@@ -1551,7 +1661,8 @@
     "linkedin": "https://www.linkedin.com/company/monovotech/",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "motionops",
@@ -1565,7 +1676,8 @@
     "linkedin": "http://www.linkedin.com/company/motionops",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "motivhealth",
@@ -1579,7 +1691,8 @@
     "linkedin": "http://www.linkedin.com/company/motivhealth",
     "stage": "Seed",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "murf",
@@ -1593,7 +1706,8 @@
     "linkedin": "http://www.linkedin.com/company/murf-ai",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "music-ai",
@@ -1607,7 +1721,8 @@
     "linkedin": "http://www.linkedin.com/company/moises",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "mx",
@@ -1621,7 +1736,8 @@
     "linkedin": "https://www.linkedin.com/company/mxenabled/",
     "stage": "Series D+",
     "employees": "501-1K",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "nanospot-ai",
@@ -1635,7 +1751,8 @@
     "linkedin": "http://www.linkedin.com/company/nanospot-ai",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "nectar-hr",
@@ -1649,7 +1766,8 @@
     "linkedin": "http://www.linkedin.com/company/nectarhr",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "neighbor",
@@ -1663,7 +1781,8 @@
     "linkedin": "https://www.linkedin.com/company/neighbor/",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "neighbor-x",
@@ -1677,7 +1796,8 @@
     "linkedin": "https://www.linkedin.com/company/neighbor/",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "nivati",
@@ -1691,7 +1811,8 @@
     "linkedin": "http://www.linkedin.com/company/nivati-co",
     "stage": "Seed",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "nodal-power",
@@ -1705,13 +1826,14 @@
     "linkedin": "http://www.linkedin.com/company/nodal-power",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "nodal-power-inc",
     "name": "Nodal Power Inc",
     "address": "250 E 200 S Salt Lake City UT 84111",
-    "city": "S Salt Lake City",
+    "city": "Salt Lake City",
     "lat": 40.769779,
     "lng": -111.897222,
     "description": "Landfill Gas-to-Energy Microgrids and Power Plants",
@@ -1719,7 +1841,8 @@
     "linkedin": "https://www.linkedin.com/company/nodal-power-systems/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "nomi-health",
@@ -1733,7 +1856,8 @@
     "linkedin": "http://www.linkedin.com/company/nomi-health",
     "stage": "Series B",
     "employees": "501-1K",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "nomyx",
@@ -1747,7 +1871,8 @@
     "linkedin": "http://www.linkedin.com/company/nomyx",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "nursa",
@@ -1761,7 +1886,8 @@
     "linkedin": "http://www.linkedin.com/company/nursaapp",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "observepoint",
@@ -1775,7 +1901,8 @@
     "linkedin": "https://www.linkedin.com/company/observepoint/",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "ogdenxr",
@@ -1789,7 +1916,8 @@
     "linkedin": "https://www.linkedin.com/company/ogdenxr",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "oka",
@@ -1803,7 +1931,8 @@
     "linkedin": "http://www.linkedin.com/company/oka-the-carbon-insurance-company",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "oliver-iq",
@@ -1817,7 +1946,8 @@
     "linkedin": "http://www.linkedin.com/company/oliveriq",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "olumo",
@@ -1831,7 +1961,8 @@
     "linkedin": "http://www.linkedin.com/company/olumo",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "ovation",
@@ -1845,7 +1976,8 @@
     "linkedin": "http://www.linkedin.com/company/ovationup",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "pageport",
@@ -1859,7 +1991,8 @@
     "linkedin": "http://www.linkedin.com/company/pageport",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "paiv",
@@ -1873,7 +2006,8 @@
     "linkedin": "http://www.linkedin.com/company/gogamify",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "pale-blue",
@@ -1887,7 +2021,8 @@
     "linkedin": "http://www.linkedin.com/company/pale-blue-earth",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "parakeet-financial",
@@ -1901,7 +2036,8 @@
     "linkedin": "https://www.linkedin.com/company/parakeet-financial/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "parallel",
@@ -1915,7 +2051,8 @@
     "linkedin": "https://www.linkedin.com/company/getparallel/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "paramify",
@@ -1929,7 +2066,8 @@
     "linkedin": "http://www.linkedin.com/company/paramify",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "particl",
@@ -1943,7 +2081,8 @@
     "linkedin": "http://www.linkedin.com/company/getparticl",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "paterna-biosciences",
@@ -1957,7 +2096,8 @@
     "linkedin": "http://www.linkedin.com/company/paternabiosciences",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "paykeeper",
@@ -1971,7 +2111,8 @@
     "linkedin": "http://www.linkedin.com/company/paykeeper",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "pestie",
@@ -1985,7 +2126,8 @@
     "linkedin": "http://www.linkedin.com/company/pestie",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "pillow-cube",
@@ -1999,7 +2141,8 @@
     "linkedin": "http://www.linkedin.com/company/pillow-cube",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "plansight",
@@ -2013,7 +2156,8 @@
     "linkedin": "https://www.linkedin.com/company/plansight/posts/?feedView=all",
     "stage": "Series B",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "plotline",
@@ -2027,7 +2171,8 @@
     "linkedin": "http://www.linkedin.com/company/plot-line",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "pocketbook",
@@ -2041,7 +2186,8 @@
     "linkedin": "https://linkedin.com/company/pocketbk",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "powder-watts",
@@ -2055,7 +2201,8 @@
     "linkedin": "http://www.linkedin.com/company/powderwatts",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "powerbx",
@@ -2069,7 +2216,8 @@
     "linkedin": "https://www.linkedin.com/company/6426403/admin/dashboard/",
     "stage": "Bootstrapped",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "previ",
@@ -2083,7 +2231,8 @@
     "linkedin": "https://www.linkedin.com/company/previbenefit/",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "project-solar",
@@ -2097,7 +2246,8 @@
     "linkedin": "http://www.linkedin.com/company/project-solar",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "pura",
@@ -2111,7 +2261,8 @@
     "linkedin": "http://www.linkedin.com/company/pura-scents",
     "stage": "Series A",
     "employees": "201-500",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "pyrofex",
@@ -2125,7 +2276,8 @@
     "linkedin": "http://www.linkedin.com/company/pyrofex",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "qualiti",
@@ -2139,7 +2291,8 @@
     "linkedin": "http://www.linkedin.com/company/qualiti",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "rasa",
@@ -2153,7 +2306,8 @@
     "linkedin": "http://www.linkedin.com/company/rasa-legal",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "redo",
@@ -2167,7 +2321,8 @@
     "linkedin": "http://www.linkedin.com/company/redo-tech",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "referpro-x",
@@ -2181,7 +2336,8 @@
     "linkedin": "https://www.linkedin.com/company/refer-pro/",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "referpro",
@@ -2195,7 +2351,8 @@
     "linkedin": "http://www.linkedin.com/company/refer-pro",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "relay-health",
@@ -2209,7 +2366,8 @@
     "linkedin": "https://www.linkedin.com/company/74098548",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "remi",
@@ -2223,7 +2381,8 @@
     "linkedin": "http://www.linkedin.com/company/remilabs",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "renew-biotechnologies",
@@ -2237,7 +2396,8 @@
     "linkedin": "https://www.linkedin.com/company/renew-biotechnologies/",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "ripe",
@@ -2251,7 +2411,8 @@
     "linkedin": "http://www.linkedin.com/company/rootrez",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "rivet-health",
@@ -2265,7 +2426,8 @@
     "linkedin": "http://www.linkedin.com/company/rivethealth",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "roger",
@@ -2279,7 +2441,8 @@
     "linkedin": "http://www.linkedin.com/company/iristechs",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "roster",
@@ -2293,7 +2456,8 @@
     "linkedin": "http://www.linkedin.com/company/getroster",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "route",
@@ -2307,7 +2471,8 @@
     "linkedin": "http://www.linkedin.com/company/route-app",
     "stage": "Series C",
     "employees": "201-500",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "sabx",
@@ -2321,7 +2486,8 @@
     "linkedin": "http://www.linkedin.com/company/sabx",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "safety-mojo",
@@ -2335,7 +2501,8 @@
     "linkedin": "http://www.linkedin.com/company/get-mojo-ai",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "salad",
@@ -2349,7 +2516,8 @@
     "linkedin": "http://www.linkedin.com/company/salad-technologies",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "salesrabbit",
@@ -2363,7 +2531,8 @@
     "linkedin": "https://www.linkedin.com/company/salesrabbit",
     "stage": "Series D+",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "sameday",
@@ -2377,7 +2546,8 @@
     "linkedin": "http://www.linkedin.com/company/samedayservices",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "savvos",
@@ -2391,7 +2561,8 @@
     "linkedin": "http://www.linkedin.com/company/savvos",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "schoolai",
@@ -2405,7 +2576,8 @@
     "linkedin": "http://www.linkedin.com/company/getschoolai",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "seis",
@@ -2419,7 +2591,8 @@
     "linkedin": "http://www.linkedin.com/company/seis-card",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "signalhero",
@@ -2433,7 +2606,8 @@
     "linkedin": "https://www.linkedin.com/company/signalhero/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "skill-struck",
@@ -2447,7 +2621,8 @@
     "linkedin": "http://www.linkedin.com/company/skill-struck",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "slipstream-medical",
@@ -2461,7 +2636,8 @@
     "linkedin": "https://www.linkedin.com/company/slipstream-medical/",
     "stage": "Series A",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "snoball",
@@ -2475,7 +2651,8 @@
     "linkedin": "https://www.linkedin.com/company/snoballplatform/",
     "stage": "Series B",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "solo",
@@ -2489,7 +2666,8 @@
     "linkedin": "http://www.linkedin.com/company/solo-backoffice",
     "stage": "Series C",
     "employees": "201-500",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "solo-x",
@@ -2503,7 +2681,8 @@
     "linkedin": "https://www.linkedin.com/company/36086542",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "spaceagent",
@@ -2517,7 +2696,8 @@
     "linkedin": "https://www.linkedin.com/company/97418896/admin/dashboard/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "sponsorcx",
@@ -2531,7 +2711,8 @@
     "linkedin": "https://www.linkedin.com/company/sponsorcx",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "squarepeg",
@@ -2545,7 +2726,8 @@
     "linkedin": "https://www.linkedin.com/company/squarepeg-hires",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "stay-ai",
@@ -2559,7 +2741,8 @@
     "linkedin": "http://www.linkedin.com/company/stayai",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "streamos",
@@ -2573,7 +2756,8 @@
     "linkedin": "http://www.linkedin.com/company/stream-os",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "strider",
@@ -2587,7 +2771,8 @@
     "linkedin": "http://www.linkedin.com/company/teamstrider",
     "stage": "Series C",
     "employees": "51-200",
-    "sector": "Security"
+    "sector": "Security",
+    "displayType": "profile"
   },
   {
     "id": "stumbl",
@@ -2601,7 +2786,8 @@
     "linkedin": "http://www.linkedin.com/company/stumblofficial",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "swell",
@@ -2615,7 +2801,8 @@
     "linkedin": "https://www.linkedin.com/company/swell-cx/",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "swyf",
@@ -2629,7 +2816,8 @@
     "linkedin": "https://www.linkedin.com/company/swyf-inc/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "syncware",
@@ -2643,7 +2831,8 @@
     "linkedin": "http://www.linkedin.com/company/getsyncware",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "tava-health",
@@ -2657,7 +2846,8 @@
     "linkedin": "http://www.linkedin.com/company/tava-health",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "tellus",
@@ -2671,7 +2861,8 @@
     "linkedin": "http://www.linkedin.com/company/tellus-sensors",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "territories-ai",
@@ -2685,7 +2876,8 @@
     "linkedin": "https://www.linkedin.com/company/territories-ai/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "the-picklr",
@@ -2699,7 +2891,8 @@
     "linkedin": "http://www.linkedin.com/company/thepicklr",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "therapro-ai",
@@ -2713,21 +2906,23 @@
     "linkedin": "https://www.linkedin.com/company/theraproai/posts/?feedView=all",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "thymeless-enterprises",
     "name": "Thymeless Enterprises",
     "address": "231 N University Ave Provo, UT 84601",
-    "city": "Salt Lake City",
-    "lat": 40.767791,
-    "lng": -111.898708,
+    "city": "Provo",
+    "lat": 40.240791,
+    "lng": -111.666208,
     "description": "We streamline all operational aspects for wedding vendors and are building a \"one-stop shop\" for clients through our in-house vendor network, thus making wedding planning, easier, cheaper, and less stressful. Check out our brands: ⌛️ Rosie Rue Floral Co: https://www.rosierue.com/ ⌛️ White Poppy Preservation: https://shop.whitepoppypreservation.com/",
     "website": "https://Rosie Rue Floral Co: https://www.rosierue.com/ | White Poppy Preservation: https://shop.whitepoppypreservation.com/",
     "linkedin": "https://www.linkedin.com/company/thymeless/?viewAsMember=true",
     "stage": "Bootstrapped",
     "employees": "51-200",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "torus",
@@ -2741,7 +2936,8 @@
     "linkedin": "http://www.linkedin.com/company/torusrev",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "treads",
@@ -2755,7 +2951,8 @@
     "linkedin": "http://www.linkedin.com/company/gettreads",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "trinsic",
@@ -2769,7 +2966,8 @@
     "linkedin": "https://www.linkedin.com/company/14820679/",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "troomi",
@@ -2783,7 +2981,8 @@
     "linkedin": "http://www.linkedin.com/company/troomi",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "upkid",
@@ -2797,7 +2996,8 @@
     "linkedin": "http://www.linkedin.com/company/upkid",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Marketplaces"
+    "sector": "Marketplaces",
+    "displayType": "profile"
   },
   {
     "id": "vanderhall",
@@ -2811,7 +3011,8 @@
     "linkedin": "http://www.linkedin.com/company/vanderhall-motor-works-inc.",
     "stage": "Series C",
     "employees": "201-500",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "vanilla",
@@ -2825,7 +3026,8 @@
     "linkedin": "http://www.linkedin.com/company/justvanilla",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "FinTech"
+    "sector": "FinTech",
+    "displayType": "profile"
   },
   {
     "id": "vasion",
@@ -2839,7 +3041,8 @@
     "linkedin": "https://www.linkedin.com/company/vasion-software/",
     "stage": "Series A",
     "employees": "201-500",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "velocity-access",
@@ -2853,7 +3056,8 @@
     "linkedin": "http://www.linkedin.com/company/velocity-access",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "velosimo",
@@ -2867,7 +3071,8 @@
     "linkedin": "http://www.linkedin.com/company/velosimoinc",
     "stage": "Series A",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "veras",
@@ -2881,7 +3086,8 @@
     "linkedin": "http://www.linkedin.com/company/jobwise-recruiting",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "videra-health",
@@ -2895,7 +3101,8 @@
     "linkedin": "http://www.linkedin.com/company/viderahealth",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "viori",
@@ -2909,7 +3116,8 @@
     "linkedin": "http://www.linkedin.com/company/viori-beauty",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "vius",
@@ -2923,7 +3131,8 @@
     "linkedin": "https://www.linkedin.com/company/viusbuilt/",
     "stage": "Pre-Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "voze",
@@ -2937,7 +3146,8 @@
     "linkedin": "http://www.linkedin.com/company/usevoze",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "wander",
@@ -2951,7 +3161,8 @@
     "linkedin": "http://www.linkedin.com/company/wander-app-inc",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "wasatch-biolabs",
@@ -2965,7 +3176,8 @@
     "linkedin": "http://www.linkedin.com/company/wasatch-biolabs",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "whistic",
@@ -2979,7 +3191,8 @@
     "linkedin": "https://www.linkedin.com/company/whistic/posts/?feedView=all",
     "stage": "Series B",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "xenter",
@@ -2993,7 +3206,8 @@
     "linkedin": "http://www.linkedin.com/company/xenter-corp",
     "stage": "Series B",
     "employees": "11-50",
-    "sector": "Bio/Medical Tech"
+    "sector": "Bio/Medical Tech",
+    "displayType": "profile"
   },
   {
     "id": "xevant",
@@ -3007,7 +3221,8 @@
     "linkedin": "http://www.linkedin.com/company/xevant",
     "stage": "Series D+",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "yoodlize",
@@ -3021,7 +3236,8 @@
     "linkedin": "http://www.linkedin.com/company/yoodlize",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "Consumer"
+    "sector": "Consumer",
+    "displayType": "profile"
   },
   {
     "id": "zanskar",
@@ -3035,7 +3251,8 @@
     "linkedin": "http://www.linkedin.com/company/zanskar",
     "stage": "Series B",
     "employees": "11-50",
-    "sector": "Energy"
+    "sector": "Energy",
+    "displayType": "profile"
   },
   {
     "id": "zapmoto",
@@ -3049,7 +3266,8 @@
     "linkedin": "http://www.linkedin.com/company/zapmoto",
     "stage": "Seed",
     "employees": "11-50",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "zartico",
@@ -3063,7 +3281,8 @@
     "linkedin": "http://www.linkedin.com/company/zartico",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "zaymo",
@@ -3077,7 +3296,8 @@
     "linkedin": "http://www.linkedin.com/company/getzaymo",
     "stage": "Seed",
     "employees": "2-10",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   },
   {
     "id": "zonos",
@@ -3091,6 +3311,7 @@
     "linkedin": "https://www.linkedin.com/company/zonos/",
     "stage": "Series A",
     "employees": "51-200",
-    "sector": "B2B Software"
+    "sector": "B2B Software",
+    "displayType": "profile"
   }
 ]

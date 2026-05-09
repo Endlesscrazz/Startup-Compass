@@ -17,6 +17,7 @@ export type Company = {
   stage: string;
   employees: string;
   sector: string;
+  displayType?: string | null;
 };
 
 export const COMPANIES: Company[] = companiesJson as Company[];

@@ -15,17 +15,17 @@ const fraunces = Fraunces({
   axes: ["opsz", "SOFT"],
 });
 
-const SITE_URL = "https://startupcompass.utah.gov";
+const SITE_URL = "https://startupstateatlas.utah.gov";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Startup Compass — Utah's Founder Platform",
-    template: "%s · Startup Compass",
+    default: "Startup State Atlas",
+    template: "%s · Startup State Atlas",
   },
   description:
-    "The official front door to Utah's startup ecosystem. Find every program, dollar, and mentor the state has to offer — and explore the companies being built here.",
-  applicationName: "Startup Compass",
+    "The official dealflow and founder-discovery layer for Utah. Explore startups, investors, resources, and founder matches.",
+  applicationName: "Startup State Atlas",
   keywords: [
     "Utah startups",
     "Utah Governor's Office of Economic Development",
@@ -39,16 +39,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Startup Compass",
-    title: "Startup Compass — Utah's Founder Platform",
+    siteName: "Startup State Atlas",
+    title: "Startup State Atlas",
     description:
-      "Built in Utah. Found in seconds. The official front door to every program, dollar, and mentor the state has to offer.",
+      "The official dealflow and founder-discovery layer for Utah.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Startup Compass — Utah's Founder Platform",
+    title: "Startup State Atlas",
     description:
-      "Built in Utah. Found in seconds. The official front door to Utah's startup ecosystem.",
+      "Invest in what Utah is building with verified startup, investor, and founder-resource intelligence.",
   },
   robots: {
     index: true,

@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     "Search verified Utah startups and investors in the Startup State Atlas.",
 };
 
-export default function MapPage() {
+export default function SearchRoute() {
   return <SearchAtlasPage />;
 }
