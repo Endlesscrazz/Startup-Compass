@@ -15,6 +15,7 @@ import { dirname } from "node:path";
 import {
   GENERATED_COMPANIES_JSON,
   MAP_COMPANIES_CSV,
+  GEOCODE_CACHE_JSON,
 } from "./data-paths.mjs";
 
 const CSV_PATH = MAP_COMPANIES_CSV;
@@ -234,9 +235,38 @@ function normalizeLinkedIn(url) {
 }
 
 // ---------------------------------------------------------------------------
+// Geocoding with US Census Geocoder
+// ---------------------------------------------------------------------------
+const CENSUS_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress";
+
+async function geocodeAddress(address) {
+  if (!address) return null;
+  const url = `${CENSUS_URL}?address=${encodeURIComponent(address)}&benchmark=2020&format=json`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.warn(`Geocode failed for ${address}: HTTP ${res.status}`);
+      return null;
+    }
+    const data = await res.json();
+    if (data && data.result && data.result.addressMatches && data.result.addressMatches.length > 0) {
+      const coords = data.result.addressMatches[0].coordinates;
+      return {
+        lat: parseFloat(coords.y),
+        lng: parseFloat(coords.x),
+      };
+    }
+    return null;
+  } catch (err) {
+    console.error(`Error geocoding ${address}:`, err);
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
-function main() {
+async function main() {
   if (!existsSync(CSV_PATH)) {
     console.error(
       `Missing map companies CSV:\n  ${CSV_PATH}\n` +
@@ -267,6 +297,20 @@ function main() {
   const seenIds = new Set();
   const companies = [];
   let unmatched = 0;
+  let geocodedCount = 0;
+
+  let geocodeCache = {};
+  if (existsSync(GEOCODE_CACHE_JSON)) {
+    try {
+      geocodeCache = JSON.parse(readFileSync(GEOCODE_CACHE_JSON, "utf8"));
+    } catch (err) {
+      console.warn("Failed to parse geocode cache, starting fresh.");
+    }
+  }
+
+  function saveCache() {
+    writeFileSync(GEOCODE_CACHE_JSON, JSON.stringify(geocodeCache, null, 2), "utf8");
+  }
 
   for (const r of body) {
     if (!r || r.length === 0) continue;
@@ -301,9 +345,43 @@ function main() {
       unmatched += 1;
     }
 
-    const [jx, jy] = jitter(name + "::" + (address || ""));
-    const lat = centroid[0] + jx * LAT_JITTER;
-    const lng = centroid[1] + jy * LNG_JITTER;
+    let lat = null;
+    let lng = null;
+    let usedGeocode = false;
+
+    if (address) {
+      // Use full address to query, if cached, use it
+      if (geocodeCache[address]) {
+        if (geocodeCache[address].lat !== null) {
+          lat = geocodeCache[address].lat;
+          lng = geocodeCache[address].lng;
+          usedGeocode = true;
+          geocodedCount += 1;
+        }
+      } else {
+        console.log(`Geocoding: ${address}`);
+        const result = await geocodeAddress(address);
+        if (result) {
+          geocodeCache[address] = result;
+          lat = result.lat;
+          lng = result.lng;
+          usedGeocode = true;
+          geocodedCount += 1;
+        } else {
+          // Cache misses too to avoid retrying bad addresses
+          geocodeCache[address] = { lat: null, lng: null };
+        }
+        saveCache();
+        // Rate limit: 100ms for Census Geocoder
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+    }
+
+    if (!usedGeocode) {
+      const [jx, jy] = jitter(name + "::" + (address || ""));
+      lat = centroid[0] + jx * LAT_JITTER;
+      lng = centroid[1] + jy * LNG_JITTER;
+    }
 
     let id = slugify(name);
     if (!id) id = `company-${companies.length}`;
@@ -343,6 +421,7 @@ function main() {
   }
 
   console.log(`Wrote ${companies.length} companies → ${OUT_PATH}`);
+  console.log(`  ${geocodedCount} successfully geocoded via Census Geocoder`);
   console.log(`  ${unmatched} fell back to default city centroid`);
   console.log(
     `  Sectors: ${[...sectors.entries()]
