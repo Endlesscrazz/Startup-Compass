@@ -9,7 +9,7 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap, ZoomControl } from "react-leaflet";
 import { CompanyMapPopup } from "@/components/investor/CompanyMapPopup";
 import { MapChromePortal } from "@/components/map/MapChromePortal";
 import { MapLayoutSync } from "@/components/map/MapLayoutSync";
@@ -95,8 +95,9 @@ export default function StartupMap(props: Props) {
       className="relative z-0 h-full w-full bg-surface-tint"
       attributionControl
       worldCopyJump={false}
-      zoomControl
+      zoomControl={false}
     >
+      <ZoomControl position="bottomleft" />
       <StartupMapInner {...props} />
     </MapContainer>
   );
@@ -116,7 +117,7 @@ function StartupMapInner({
   mapLayoutRevision = 0,
   mapChrome,
 }: Props) {
-  const [layerId, setLayerId] = useState<MapLayerId>("terrain");
+  const [layerId, setLayerId] = useState<MapLayerId>("default");
   const [measureActive, setMeasureActive] = useState(false);
 
   const clusterOptions = useMemo(

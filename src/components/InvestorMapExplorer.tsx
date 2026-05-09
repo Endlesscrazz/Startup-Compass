@@ -317,20 +317,26 @@ function InvestorMapExplorerInner({ variant = "main" }: Props) {
           mapChrome={mapChrome}
         />
 
-        <div className="pointer-events-none absolute right-3 top-14 z-[600] flex flex-col items-end gap-2 md:right-4 md:top-4">
+        <div className="pointer-events-none absolute right-3 top-14 z-[600] flex flex-row items-center justify-end gap-3 md:right-4 md:top-4">
           <button
             type="button"
-            className="pointer-events-auto rounded-full border border-rule/90 bg-surface-elev/96 px-3 py-2 text-[11px] font-semibold text-ink shadow-md backdrop-blur-md hover:border-accent"
+            className="pointer-events-auto rounded-full border border-rule/90 bg-surface-elev/96 px-4 py-2.5 text-[11px] font-semibold text-ink shadow-md backdrop-blur-md transition-all duration-200 hover:border-accent hover:bg-surface-elev flex items-center gap-2"
             onClick={() => setWatchOpen(true)}
           >
+            <svg className="w-3.5 h-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
             Saved ({watchlist.count})
           </button>
           <button
             type="button"
             disabled={compareIds.length === 0}
-            className="pointer-events-auto rounded-full border border-rule/90 bg-surface-elev/96 px-3 py-2 text-[11px] font-semibold text-ink shadow-md backdrop-blur-md hover:border-accent disabled:opacity-40"
+            className="pointer-events-auto rounded-full border border-rule/90 bg-surface-elev/96 px-4 py-2.5 text-[11px] font-semibold text-ink shadow-md backdrop-blur-md transition-all duration-200 hover:border-accent hover:bg-surface-elev flex items-center gap-2 disabled:opacity-40"
             onClick={() => setCompareOpen(true)}
           >
+            <svg className="w-3.5 h-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
             Compare ({compareIds.length})
           </button>
         </div>
