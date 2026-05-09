@@ -378,7 +378,7 @@ test.describe("QUALITY — Differentiators judges will ask about", () => {
     });
     const data = await res.json();
 
-    const results: { explanation: string; description: string }[] = data.results;
+    const results: { explanation: string; description: string; title: string }[] = data.results;
     console.log("\n📝 Explanations from API:");
     results.forEach((r, i) => console.log(`  ${i + 1}. ${r.explanation}`));
 
