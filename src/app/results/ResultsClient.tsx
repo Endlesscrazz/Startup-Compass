@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ResultCard } from "@/components/ResultCard";
-import type { MatchResponse } from "@/app/api/match/route";
+import type { MatchResponse, MatchResultItem } from "@/app/api/match/route";
 
 // Quiz path storage shape
 type QuizStorage = {
@@ -27,6 +27,65 @@ function isNLStorage(s: StorageShape): s is NLStorage {
 }
 
 type Status = "loading" | "success" | "error" | "no-answers";
+
+function buildShareText(results: MatchResultItem[]): string {
+  const lines = results.slice(0, 5).map((r, i) => {
+    const url = r.link ? `\n   ${r.link}` : "";
+    return `${i + 1}. ${r.title}\n   ${r.explanation}${url}`;
+  });
+  return `My top Utah startup resources:\n\n${lines.join("\n\n")}\n\nFound via Startup Compass — startupcompass.vercel.app`;
+}
+
+function ShareButtons({ results }: { results: MatchResultItem[] }) {
+  const [copied, setCopied] = useState(false);
+
+  const text = buildShareText(results);
+  const mailtoHref = `mailto:?subject=My%20Utah%20startup%20resources&body=${encodeURIComponent(text)}`;
+
+  function handleCopy() {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      <a
+        href={mailtoHref}
+        className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rule px-4 text-[13px] font-medium text-ink-soft transition-colors hover:border-rule-strong hover:text-ink"
+      >
+        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <rect width="20" height="16" x="2" y="4" rx="2" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+        </svg>
+        Email results
+      </a>
+      <button
+        type="button"
+        onClick={handleCopy}
+        className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rule px-4 text-[13px] font-medium text-ink-soft transition-colors hover:border-rule-strong hover:text-ink"
+      >
+        {copied ? (
+          <>
+            <svg className="h-3.5 w-3.5 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            Copied!
+          </>
+        ) : (
+          <>
+            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <rect width="14" height="14" x="8" y="8" rx="2" />
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+            </svg>
+            Copy list
+          </>
+        )}
+      </button>
+    </div>
+  );
+}
 
 const STAGE_LABEL: Record<string, string> = {
   idea: "Idea stage",
@@ -150,7 +209,11 @@ export function ResultsClient() {
         </button>
       </div>
 
-      <div className="mt-8 flex flex-col gap-4">
+      <div className="mt-5">
+        <ShareButtons results={data.results} />
+      </div>
+
+      <div className="mt-6 flex flex-col gap-4">
         {data.results.map((r, i) => (
           <ResultCard key={r.id} result={r} rank={i + 1} />
         ))}
