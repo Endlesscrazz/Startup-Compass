@@ -1,4 +1,4 @@
-import type { DivIcon } from "leaflet";
+import { getBuildingScale } from "@/lib/map/buildingScale";
 import {
   getCompanyInitials,
   getCompanyLogoUrl,
@@ -16,16 +16,15 @@ function escapeAttr(s: string): string {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconCache = new Map<string, any>();
 
-/**
- * Circular logo / initials marker with a sector-colored ring (colors from dataset palette).
- */
+/** Leaflet `DivIcon` for startup pin (2D map). */
 export function getStartupMarkerIcon(
   company: Company,
   opts: { focused: boolean; saved: boolean },
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any {
   const logoUrl = getCompanyLogoUrl(company) ?? "";
-  const key = `${company.id}:${opts.focused}:${opts.saved}:${logoUrl}`;
+  const { towerHeight, towerWidth } = getBuildingScale(company);
+  const key = `${company.id}:${opts.focused}:${opts.saved}:${logoUrl}:${towerHeight}x${towerWidth}`;
   const hit = iconCache.get(key);
   if (hit) return hit;
 
@@ -34,6 +33,7 @@ export function getStartupMarkerIcon(
   const size = opts.focused ? 42 : 34;
   const ring = opts.focused ? 3 : 2;
   const pulse = opts.focused ? " startup-marker-logo--pulse" : "";
+  const roofOverlap = 9;
 
   const bookmark = opts.saved
     ? `<span class="startup-marker-bookmark" aria-hidden="true">★</span>`
@@ -44,22 +44,34 @@ export function getStartupMarkerIcon(
     : `<span class="startup-marker-initials startup-marker-initials--show">${initials}</span>`;
 
   const html = `
-    <div class="startup-marker-logo${pulse}" style="width:${size}px;height:${size}px;--sector:${color};--ring:${ring}px">
-      ${bookmark}
-      <div class="startup-marker-logo__inner">
-        ${imgBlock}
+    <div class="startup-marker-pin">
+      <div class="startup-marker-pin__roof">
+        <div class="startup-marker-logo${pulse}" style="width:${size}px;height:${size}px;--sector:${color};--ring:${ring}px">
+          ${bookmark}
+          <div class="startup-marker-logo__inner">
+            ${imgBlock}
+          </div>
+        </div>
+      </div>
+      <div class="startup-marker-tower" style="--tower-h:${towerHeight}px;--tower-w:${towerWidth}px;--sector:${color};--roof-overlap:${roofOverlap}px" aria-hidden="true">
+        <span class="startup-marker-tower__face"></span>
+        <span class="startup-marker-tower__side"></span>
+        <span class="startup-marker-tower__cap"></span>
       </div>
     </div>
   `;
+
+  const totalH = size + towerHeight - roofOverlap;
+  const totalW = Math.max(size, towerWidth + 10);
 
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const L = require("leaflet");
   const icon = L.divIcon({
     html,
     className: "startup-marker-logo-wrap",
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-    popupAnchor: [0, -size / 2],
+    iconSize: [totalW, totalH],
+    iconAnchor: [totalW / 2, totalH],
+    popupAnchor: [0, -totalH + Math.round(size * 0.35)],
   });
   iconCache.set(key, icon);
   return icon;

@@ -1,12 +1,16 @@
 /*
- * Brand-matched overrides for Leaflet's default chrome.
- * Base tiles use OpenTopoMap (terrain-style); controls, popups, and
- * attribution follow the cream / ink / terracotta palette.
+ * Map UI: MapLibre GL controls/popups + shared DOM marker visuals.
+ * WebGL terrain and startup fill-extrusions are set in StartupMap.
  */
+
+.maplibregl-map {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
 
 .leaflet-container {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   background: var(--surface-tint);
+  --startup-marker-zoom-scale: 1;
 }
 
 /* Portal host for floating UI — must stay below .leaflet-popup-pane (650) */
@@ -17,15 +21,117 @@
   z-index: 500;
 }
 
-/* Marker hover lift */
+.startup-marker-logo-wrap--maplibre .startup-marker-pin {
+  transform: none;
+}
+
+/* Marker hover lift — whole pin (logo + 3D tower) */
 .startup-marker-logo-wrap {
   cursor: pointer;
   transition: transform 0.18s ease;
-  filter: drop-shadow(0 2px 5px rgba(11, 27, 51, 0.22));
+  filter: drop-shadow(0 3px 8px rgba(11, 27, 51, 0.26));
 }
 .startup-marker-logo-wrap:hover {
-  transform: scale(1.08);
+  transform: scale(1.06);
   z-index: 1000 !important;
+}
+
+.startup-marker-pin {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  pointer-events: auto;
+  transform: scale(var(--startup-marker-zoom-scale, 1));
+  transform-origin: bottom center;
+}
+
+.startup-marker-pin__roof {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Pseudo-3D tower: chamfered-massing read — lit face + depth side + roof cap */
+.startup-marker-tower {
+  --roof-overlap: 9px;
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+  width: var(--tower-w);
+  height: var(--tower-h);
+  margin-top: calc(-1 * var(--roof-overlap));
+  flex-shrink: 0;
+  transform: perspective(88px) rotateX(16deg);
+  transform-origin: top center;
+  filter: saturate(1.05);
+}
+
+.startup-marker-tower__face {
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: 0 0 8px 8px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--sector) 55%, #fff) 0%,
+      transparent 28%
+    ),
+    linear-gradient(
+      108deg,
+      color-mix(in srgb, var(--sector) 32%, #050912),
+      color-mix(in srgb, var(--sector) 62%, #faf6ef) 48%,
+      color-mix(in srgb, var(--sector) 48%, #b8afa2) 100%
+    );
+  box-shadow:
+    inset 0 -12px 18px rgba(4, 10, 22, 0.38),
+    inset 3px 0 0 rgba(255, 255, 255, 0.09),
+    inset -2px 0 6px rgba(4, 10, 22, 0.12);
+}
+
+.startup-marker-tower__side {
+  display: block;
+  position: absolute;
+  top: 4px;
+  right: -7px;
+  width: 10px;
+  height: calc(100% - 8px);
+  border-radius: 0 4px 5px 0;
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--sector) 14%, #020509),
+    color-mix(in srgb, var(--sector) 36%, #0e1828)
+  );
+  transform: skewY(46deg);
+  transform-origin: top left;
+  opacity: 0.94;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+.startup-marker-tower__cap {
+  display: block;
+  position: absolute;
+  top: -5px;
+  left: 1px;
+  right: 1px;
+  height: 7px;
+  border-radius: 5px 5px 2px 2px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--sector) 92%, #fff) 0%,
+    color-mix(in srgb, var(--sector) 64%, #e8e0d4) 100%
+  );
+  transform: perspective(40px) rotateX(-26deg);
+  transform-origin: center bottom;
+  box-shadow:
+    0 2px 4px rgba(11, 27, 51, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .startup-marker-logo {
@@ -140,6 +246,64 @@
 }
 .leaflet-popup-close-button:hover {
   color: var(--ink) !important;
+}
+
+/* MapLibre GL popup (CompanyMapPopup) */
+.maplibregl-popup.startup-maplibre-popup .maplibregl-popup-content {
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  box-shadow:
+    0 1px 0 rgba(11, 27, 51, 0.04),
+    0 18px 36px -16px rgba(11, 27, 51, 0.28);
+  padding: 4px;
+  background: var(--surface-elev);
+  max-height: min(58vh, 480px);
+  overflow: hidden;
+}
+.maplibregl-popup.startup-maplibre-popup .maplibregl-popup-tip {
+  border: 1px solid var(--rule);
+}
+.maplibregl-popup.startup-maplibre-popup .maplibregl-popup-close-button {
+  color: var(--ink-mute);
+  font-size: 18px;
+  padding: 8px;
+}
+
+.maplibregl-ctrl-group {
+  border-radius: 999px !important;
+  border: none !important;
+  box-shadow:
+    0 1px 0 rgba(11, 27, 51, 0.04),
+    0 8px 18px -10px rgba(11, 27, 51, 0.22) !important;
+  overflow: hidden;
+}
+.maplibregl-ctrl-group button {
+  width: 34px !important;
+  height: 34px !important;
+  background: var(--surface-elev) !important;
+  color: var(--ink) !important;
+  border-bottom: 1px solid var(--rule) !important;
+}
+.maplibregl-ctrl-group button:last-child {
+  border-bottom: none !important;
+}
+
+.maplibregl-ctrl-attrib {
+  background: rgba(251, 247, 240, 0.92) !important;
+  color: var(--ink-mute) !important;
+  font-size: 10.5px !important;
+  padding: 3px 8px !important;
+  border-top-left-radius: 6px;
+}
+.maplibregl-ctrl-attrib a {
+  color: var(--ink) !important;
+}
+
+.maplibregl-map,
+.maplibregl-popup-content,
+.maplibregl-ctrl-attrib {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Zoom controls */

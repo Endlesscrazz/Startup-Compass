@@ -1,18 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
-import { useMap } from "react-leaflet";
+import { useEffect, type RefObject } from "react";
+import type { MapRef } from "react-map-gl/maplibre";
 
 /** Call when sidebar or other chrome changes the map container size. */
-export function MapLayoutSync({ revision }: { revision: number }) {
-  const map = useMap();
-
+export function MapLayoutSync({
+  mapRef,
+  revision,
+}: {
+  mapRef: RefObject<MapRef | null>;
+  revision: number;
+}) {
   useEffect(() => {
     const id = requestAnimationFrame(() => {
-      map.invalidateSize({ animate: false });
+      mapRef.current?.resize();
     });
     return () => cancelAnimationFrame(id);
-  }, [map, revision]);
+  }, [mapRef, revision]);
 
   return null;
 }

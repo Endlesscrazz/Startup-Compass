@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { ClaimStatus } from "@/hooks/useCompanyClaims";
 import { ProfileCompletenessCard } from "@/components/investor/ProfileCompletenessCard";
@@ -28,6 +28,11 @@ type Props = {
   onEmailBrief?: () => void;
 };
 
+type IntelligenceData = {
+  events: any[];
+  insight: string;
+};
+
 export function CompanyDetailPanel({
   company,
   similar,
@@ -48,6 +53,21 @@ export function CompanyDetailPanel({
   const pathname = usePathname();
   const hiringSignal = inferHiringFromDescription(company.description);
   const directions = buildDirectionsUrls(company);
+
+  const [intel, setIntel] = useState<IntelligenceData | null>(null);
+  const [loadingIntel, setLoadingIntel] = useState(false);
+
+  useEffect(() => {
+    setIntel(null);
+    setLoadingIntel(true);
+    fetch(`/api/intelligence/company-detail?id=${encodeURIComponent(company.id)}`)
+      .then((r) => r.json())
+      .then((j) => {
+        if (j.success) setIntel(j.data);
+      })
+      .catch(() => {})
+      .finally(() => setLoadingIntel(false));
+  }, [company.id]);
 
   const shareUrl =
     typeof window !== "undefined"
@@ -116,9 +136,76 @@ export function CompanyDetailPanel({
         </p>
       )}
 
+      {/* Intelligence Insight Block (Enhanced Visibility) */}
+      <div className="mt-6 rounded-xl border-2 border-indigo-500/20 bg-indigo-50/50 p-4 shadow-[0_4px_12px_-2px_rgba(79,70,229,0.1)]">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] text-white">
+              ✦
+            </span>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-indigo-700">
+              Intelligence Insight
+            </p>
+          </div>
+          {loadingIntel && (
+            <div className="h-3 w-3 animate-spin rounded-full border-2 border-indigo-200 border-t-indigo-500" />
+          )}
+        </div>
+        
+        <div className="mt-3 min-h-[40px]">
+          {loadingIntel ? (
+            <p className="text-[12px] text-indigo-400 animate-pulse italic">
+              Analyzing signals for {company.name}...
+            </p>
+          ) : intel?.insight ? (
+            <p className="text-[13px] font-medium leading-relaxed text-indigo-900">
+              &ldquo;{intel.insight}&rdquo;
+            </p>
+          ) : (
+            <p className="text-[12px] italic text-indigo-400">
+              No specific intelligence insight available at this time.
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Signal Feed Block */}
+      <div className="mt-4 rounded-xl border border-rule/70 bg-surface-elev/60 p-4 shadow-sm">
+        <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-ink-mute">
+          Recent Signal Feed
+        </p>
+        <ul className="mt-3 space-y-3">
+          {intel?.events && intel.events.length > 0 ? (
+            intel.events.map((e) => (
+              <li key={e.id} className="flex items-start gap-3">
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                <div className="min-w-0">
+                  <p className="text-[12.5px] font-medium leading-tight text-ink">
+                    {e.summary}
+                  </p>
+                  <p className="mt-1 text-[10px] text-ink-mute">
+                    {new Date(e.created_at).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric"
+                    })} · {e.event_type.replace(/_/g, " ")}
+                  </p>
+                </div>
+              </li>
+            ))
+          ) : !loadingIntel ? (
+            <li className="text-[12px] text-ink-mute italic">
+              No recent signals detected in the ecosystem stream.
+            </li>
+          ) : (
+            <li className="h-12 animate-pulse rounded bg-ink/5" />
+          )}
+        </ul>
+      </div>
+
       <ProfileCompletenessCard company={company} />
 
-      <div className="mt-4 flex flex-wrap gap-2 border-t border-rule/70 pt-4">
+      <div className="mt-6 flex flex-wrap gap-2 border-t border-rule/70 pt-5">
         {company.website && (
           <a
             href={company.website}
@@ -154,7 +241,7 @@ export function CompanyDetailPanel({
           onClick={copyShare}
           className="rounded-full border border-rule px-3 py-1.5 text-[11px] font-medium text-ink-soft hover:border-gold hover:text-ink"
         >
-          Copy share link
+          Copy link
         </button>
         <button
           type="button"
@@ -179,18 +266,9 @@ export function CompanyDetailPanel({
         >
           {compareSelected ? "In compare" : "Compare"}
         </button>
-        {isSignedIn && showBriefCta && onEmailBrief && (
-          <button
-            type="button"
-            onClick={onEmailBrief}
-            className="rounded-full border border-ink/20 bg-surface-elev px-3 py-1.5 text-[11px] font-medium text-ink hover:border-gold"
-          >
-            Email me a brief
-          </button>
-        )}
       </div>
 
-      <details className="mt-4 rounded-lg border border-rule/70 bg-surface-elev/60 px-3 py-2">
+      <details className="mt-5 rounded-lg border border-rule/70 bg-surface-elev/60 px-3 py-2">
         <summary className="cursor-pointer text-[11px] font-semibold text-ink">
           Overview & facts
         </summary>
@@ -205,74 +283,11 @@ export function CompanyDetailPanel({
             label="Hiring signals"
             value={
               hiringSignal
-                ? "Description mentions hiring / careers language"
+                ? "Description mentions hiring language"
                 : "No hiring keywords in description"
             }
           />
         </dl>
-      </details>
-
-      <details className="mt-2 rounded-lg border border-rule/70 bg-surface-elev/60 px-3 py-2">
-        <summary className="cursor-pointer text-[11px] font-semibold text-ink">
-          Links
-        </summary>
-        <ul className="mt-2 space-y-1 text-[12px]">
-          {company.website && (
-            <li>
-              <a
-                href={company.website}
-                className="text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Website
-              </a>
-            </li>
-          )}
-          {company.linkedin && (
-            <li>
-              <a
-                href={company.linkedin}
-                className="text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn
-              </a>
-            </li>
-          )}
-          {directions && (
-            <li className="flex flex-wrap gap-x-3 gap-y-1">
-              <a
-                href={directions.googleMaps}
-                className="text-ink-soft hover:text-ink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Google Maps directions
-              </a>
-              <a
-                href={directions.appleMaps}
-                className="text-ink-soft hover:text-ink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Apple Maps
-              </a>
-              <a
-                href={directions.osm}
-                className="text-ink-soft hover:text-ink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                OpenStreetMap
-              </a>
-            </li>
-          )}
-          {!company.website && !company.linkedin && !directions && (
-            <li className="text-ink-mute">No external links in this export.</li>
-          )}
-        </ul>
       </details>
 
       <SimilarCompaniesBlock
@@ -285,7 +300,7 @@ export function CompanyDetailPanel({
       <button
         type="button"
         onClick={onClaimClick}
-        className="mt-4 w-full rounded-lg border border-dashed border-gold/50 bg-gold-soft/40 py-2 text-[12px] font-medium text-ink hover:border-gold"
+        className="mt-6 w-full rounded-lg border border-dashed border-gold/50 bg-gold-soft/40 py-2.5 text-[12px] font-medium text-ink hover:border-gold"
       >
         Claim this profile
       </button>
@@ -311,17 +326,17 @@ function NearbyBlock({
 }) {
   if (companies.length === 0) return null;
   return (
-    <div className="nearby-startups mt-3 border-t border-rule/70 pt-3">
+    <div className="nearby-startups mt-4 border-t border-rule/70 pt-4">
       <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-ink-mute">
         Nearby startups
       </p>
-      <ul className="mt-2 space-y-1">
+      <ul className="mt-2.5 space-y-1.5">
         {companies.map((c) => (
           <li key={c.id}>
             <button
               type="button"
               onClick={() => onSelect(c)}
-              className="w-full rounded-md px-1 py-1 text-left text-[12px] text-ink-soft hover:bg-surface-tint/80"
+              className="w-full rounded-md px-1.5 py-1 text-left text-[12px] text-ink-soft hover:bg-surface-tint/80"
             >
               <span className="font-medium text-ink">{c.name}</span>
               <span className="text-ink-mute">

@@ -28,12 +28,11 @@ export function MapFloatingInsights({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (containerRef.current && typeof window !== "undefined") {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const L = require("leaflet");
-      L.DomEvent.disableScrollPropagation(containerRef.current);
-      L.DomEvent.disableClickPropagation(containerRef.current);
-    }
+    if (!containerRef.current || typeof window === "undefined") return;
+    const el = containerRef.current;
+    const stopWheel = (e: Event) => e.stopPropagation();
+    el.addEventListener("wheel", stopWheel, { passive: false, capture: true });
+    return () => el.removeEventListener("wheel", stopWheel, { capture: true });
   }, [expanded]);
 
   return (
