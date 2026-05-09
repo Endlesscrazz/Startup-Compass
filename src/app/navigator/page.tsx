@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { QuizClient } from "./QuizClient";
+import { NavigatorTabs } from "./NavigatorTabs";
 
 export const metadata: Metadata = {
   title: "Find Your Resources",
-  description: "Answer 4 quick questions and get 5–7 Utah startup resources matched to your stage, sector, and goals.",
+  description: "Answer 4 quick questions or describe your situation — get 5–7 Utah startup resources matched to you.",
 };
 
 export default function NavigatorPage() {
@@ -18,10 +18,10 @@ export default function NavigatorPage() {
             Find your resources
           </h1>
           <p className="mx-auto mt-2 max-w-md text-[15px] text-ink-mute">
-            4 questions · 30 seconds · 5–7 resources matched to you
+            5–7 Utah programs matched to your situation · 30 seconds
           </p>
         </div>
-        <QuizClient />
+        <NavigatorTabs />
       </main>
       <Footer />
     </>

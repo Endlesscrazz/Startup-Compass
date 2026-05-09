@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ResultCard } from "@/components/ResultCard";
 import type { MatchResponse } from "@/app/api/match/route";
 
+// Quiz path storage shape
 type QuizStorage = {
   stage: string;
   sector: string;
@@ -13,23 +14,39 @@ type QuizStorage = {
   community: string[];
 };
 
+// NL path storage shape
+type NLStorage = {
+  description: string;
+  city: string;
+};
+
+type StorageShape = QuizStorage | NLStorage;
+
+function isNLStorage(s: StorageShape): s is NLStorage {
+  return "description" in s;
+}
+
 type Status = "loading" | "success" | "error" | "no-answers";
+
+const STAGE_LABEL: Record<string, string> = {
+  idea: "Idea stage",
+  building: "Building",
+  revenue: "Revenue stage",
+  growth: "Growth stage",
+};
 
 export function ResultsClient() {
   const router = useRouter();
   const [status, setStatus] = useState<Status>("loading");
   const [data, setData] = useState<MatchResponse | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
-  const [quizAnswers, setQuizAnswers] = useState<QuizStorage | null>(null);
+  const [stored, setStored] = useState<StorageShape | null>(null);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("sc_quiz");
-    if (!raw) {
-      setStatus("no-answers");
-      return;
-    }
+    if (!raw) { setStatus("no-answers"); return; }
 
-    let answers: QuizStorage;
+    let answers: StorageShape;
     try {
       answers = JSON.parse(raw);
     } catch {
@@ -37,7 +54,7 @@ export function ResultsClient() {
       return;
     }
 
-    setQuizAnswers(answers);
+    setStored(answers);
 
     fetch("/api/match", {
       method: "POST",
@@ -51,27 +68,18 @@ export function ResultsClient() {
         }
         return res.json() as Promise<MatchResponse>;
       })
-      .then((json) => {
-        setData(json);
-        setStatus("success");
-      })
-      .catch((err: Error) => {
-        setErrorMsg(err.message);
-        setStatus("error");
-      });
+      .then((json) => { setData(json); setStatus("success"); })
+      .catch((err: Error) => { setErrorMsg(err.message); setStatus("error"); });
   }, []);
 
   if (status === "no-answers") {
     return (
       <div className="mx-auto max-w-xl px-4 py-16 text-center">
-        <p className="text-lg font-semibold text-ink">No quiz answers found.</p>
-        <p className="mt-2 text-sm text-ink-mute">Please complete the quiz first.</p>
-        <button
-          type="button"
-          onClick={() => router.push("/navigator")}
-          className="mt-6 inline-flex h-10 items-center rounded-full bg-ink px-6 text-[14px] font-semibold text-surface hover:bg-ink-soft"
-        >
-          Take the quiz →
+        <p className="text-lg font-semibold text-ink">No answers found.</p>
+        <p className="mt-2 text-sm text-ink-mute">Please complete the quiz or describe your situation first.</p>
+        <button type="button" onClick={() => router.push("/navigator")}
+          className="mt-6 inline-flex h-10 items-center rounded-full bg-ink px-6 text-[14px] font-semibold text-[#fbf7f0] hover:bg-ink-soft">
+          Find my resources →
         </button>
       </div>
     );
@@ -92,60 +100,60 @@ export function ResultsClient() {
       <div className="mx-auto max-w-xl px-4 py-16 text-center">
         <p className="text-lg font-semibold text-ink">Something went wrong</p>
         <p className="mt-2 text-sm text-ink-mute">{errorMsg}</p>
-        <button
-          type="button"
-          onClick={() => router.push("/navigator")}
-          className="mt-6 inline-flex h-10 items-center rounded-full bg-ink px-6 text-[14px] font-semibold text-surface hover:bg-ink-soft"
-        >
+        <button type="button" onClick={() => router.push("/navigator")}
+          className="mt-6 inline-flex h-10 items-center rounded-full bg-ink px-6 text-[14px] font-semibold text-[#fbf7f0] hover:bg-ink-soft">
           ← Try again
         </button>
       </div>
     );
   }
 
-  if (!data) return null;
+  if (!data || !stored) return null;
 
-  const stageLabel: Record<string, string> = {
-    idea: "Idea stage",
-    building: "Building",
-    revenue: "Revenue stage",
-    growth: "Growth stage",
-  };
+  // Build the summary line based on which path was used
+  const summaryParts: string[] = isNLStorage(stored)
+    ? [stored.description.slice(0, 80) + (stored.description.length > 80 ? "…" : ""), `${data.county} County`]
+    : [
+        STAGE_LABEL[stored.stage] ?? stored.stage,
+        stored.sector,
+        `${data.county} County`,
+        stored.goal,
+      ];
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
-      {/* Summary header */}
-      <div className="mb-2 flex items-center gap-2 text-[12px] uppercase tracking-[0.12em] text-ink-mute">
-        <span>{stageLabel[quizAnswers?.stage ?? ""] ?? quizAnswers?.stage}</span>
-        <span>·</span>
-        <span>{quizAnswers?.sector}</span>
-        <span>·</span>
-        <span>{data.county} County</span>
-        <span>·</span>
-        <span>{quizAnswers?.goal}</span>
+      {/* Summary bar */}
+      <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] uppercase tracking-[0.12em] text-ink-mute">
+        {summaryParts.map((part, i) => (
+          <span key={i} className="flex items-center gap-2">
+            {i > 0 && <span>·</span>}
+            {part}
+          </span>
+        ))}
       </div>
-      <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
-        Your matched resources
-      </h2>
-      <p className="mt-1.5 text-[14px] text-ink-mute">
-        {data.results.length} resources ranked for you · Utah state programs &amp; organizations
-      </p>
+
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
+            Your matched resources
+          </h2>
+          <p className="mt-1.5 text-[14px] text-ink-mute">
+            {data.results.length} resources ranked for you · Utah state programs &amp; organizations
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => router.push("/navigator")}
+          className="mt-1 shrink-0 inline-flex h-9 items-center rounded-full border border-rule px-4 text-[13px] font-medium text-ink-soft hover:border-rule-strong hover:text-ink"
+        >
+          ← Retake
+        </button>
+      </div>
 
       <div className="mt-8 flex flex-col gap-4">
         {data.results.map((r, i) => (
           <ResultCard key={r.id} result={r} rank={i + 1} />
         ))}
-      </div>
-
-      <div className="mt-10 flex flex-col items-center gap-3 border-t border-rule pt-8 text-center">
-        <p className="text-[13px] text-ink-mute">Want different results?</p>
-        <button
-          type="button"
-          onClick={() => router.push("/navigator")}
-          className="inline-flex h-9 items-center rounded-full border border-rule px-5 text-[13px] font-medium text-ink-soft hover:border-rule-strong hover:text-ink"
-        >
-          ← Retake the quiz
-        </button>
       </div>
     </div>
   );

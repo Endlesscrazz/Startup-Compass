@@ -24,17 +24,18 @@ function isEligible(entry: IndexEntry, county: string): boolean {
   return locs.includes("Utah") || locs.length >= STATEWIDE_MIN_LOCATIONS || locs.includes(county);
 }
 
+// goal and sector are nullable — NL path passes null, boost becomes ×1.0 (pure cosine)
 function boostMultiplier(
   entry: IndexEntry,
-  goal: Goal,
-  sector: string,
+  goal: Goal | null,
+  sector: string | null,
   community: string[]
 ): number {
-  const mappedTopic = GOAL_TO_TOPIC[goal];
-  const mappedIndustry = SECTOR_TO_INDUSTRY[sector] ?? sector;
+  const mappedTopic = goal ? GOAL_TO_TOPIC[goal] : null;
+  const mappedIndustry = sector ? (SECTOR_TO_INDUSTRY[sector] ?? sector) : null;
 
-  const topicMatch = entry.topics.includes(mappedTopic) ? 0.1 : 0;
-  const industryMatch = entry.industries.includes(mappedIndustry) ? 0.1 : 0;
+  const topicMatch = mappedTopic && entry.topics.includes(mappedTopic) ? 0.1 : 0;
+  const industryMatch = mappedIndustry && entry.industries.includes(mappedIndustry) ? 0.1 : 0;
 
   const commsData = entry.communities;
   // Community boost fires only when founder has community tags.
@@ -51,8 +52,8 @@ function boostMultiplier(
 export function rankResources(
   profileVector: Float32Array,
   county: string,
-  goal: Goal,
-  sector: string,
+  goal: Goal | null,
+  sector: string | null,
   community: string[],
   topK = 8
 ): MatchCandidate[] {
