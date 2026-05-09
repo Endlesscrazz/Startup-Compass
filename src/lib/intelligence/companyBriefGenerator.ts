@@ -1,5 +1,6 @@
 import type { Company } from "@/lib/map-config";
 import { completeJson } from "@/lib/intelligence/llm";
+import { getPublicSiteUrl } from "@/lib/siteUrl";
 import type { BriefType, UserIntentProfile } from "@/lib/intelligence/types";
 
 export type BriefEmailPayload = {
@@ -17,7 +18,7 @@ export type BriefEmailPayload = {
   suggestedActions: string[];
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://startup-compass-one.vercel.app";
+const BASE_URL = getPublicSiteUrl();
 
 function fallbackPayload(params: {
   companies: Company[];

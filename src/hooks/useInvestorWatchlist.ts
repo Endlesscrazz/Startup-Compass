@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Company } from "@/lib/map-config";
 import { stableCompanyKey } from "@/lib/investor/companyIdentity";
+import { loadRemoteAppState, patchRemoteAppState } from "@/hooks/userAppStateApi";
 
 const LS_KEY = "startup-compass-investor-watchlist-v1";
 const META_KEY = "startup-compass-investor-watchlist-meta-v1";
@@ -106,9 +108,11 @@ function saveIds(ids: string[]) {
 }
 
 export function useInvestorWatchlist() {
+  const { status } = useSession();
   const [ids, setIds] = useState<string[]>([]);
   const [meta, setMeta] = useState<Record<string, WatchlistMeta>>({});
   const [hydrated, setHydrated] = useState(false);
+  const remotePushReady = useRef(false);
 
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect -- hydrate watchlist from localStorage once */
@@ -119,6 +123,42 @@ export function useInvestorWatchlist() {
   }, []);
 
   useEffect(() => {
+    if (!hydrated || status !== "authenticated") {
+      remotePushReady.current = false;
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const remote = await loadRemoteAppState();
+      if (cancelled || remote.persistence !== "database") {
+        remotePushReady.current = remote.persistence === "database";
+        return;
+      }
+      const d = remote.data;
+      const hasServer =
+        (d.investorWatchlistIds?.length ?? 0) > 0 ||
+        Object.keys((d.investorWatchlistMeta as object) ?? {}).length > 0;
+      if (hasServer) {
+        setIds(d.investorWatchlistIds ?? []);
+        setMeta((d.investorWatchlistMeta as Record<string, WatchlistMeta>) ?? {});
+      } else {
+        const localIds = loadIds();
+        const localMeta = loadMeta();
+        if (localIds.length > 0 || Object.keys(localMeta).length > 0) {
+          await patchRemoteAppState({
+            investorWatchlistIds: localIds,
+            investorWatchlistMeta: localMeta as Record<string, unknown>,
+          });
+        }
+      }
+      remotePushReady.current = true;
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated, status]);
+
+  useEffect(() => {
     if (!hydrated) return;
     saveIds(ids);
   }, [ids, hydrated]);
@@ -127,6 +167,21 @@ export function useInvestorWatchlist() {
     if (!hydrated) return;
     saveMeta(meta);
   }, [meta, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated || status !== "authenticated" || !remotePushReady.current) return;
+    const t = window.setTimeout(() => {
+      void (async () => {
+        const remote = await loadRemoteAppState();
+        if (remote.persistence !== "database") return;
+        await patchRemoteAppState({
+          investorWatchlistIds: ids,
+          investorWatchlistMeta: meta as Record<string, unknown>,
+        });
+      })();
+    }, 700);
+    return () => window.clearTimeout(t);
+  }, [ids, meta, hydrated, status]);
 
   const set = useMemo(() => new Set(ids), [ids]);
 

@@ -1,9 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ResultCard } from "@/components/ResultCard";
 import type { MatchResponse, MatchResultItem } from "@/app/api/match/route";
+import { RESOURCES } from "@/lib/atlas-data";
+import type { FounderProfileInput } from "@/lib/founder/types";
+import {
+  founderFromNlStorage,
+  founderFromQuizStorage,
+  locationSortKey,
+  sortResultsWithLocationPrefs,
+} from "@/lib/recommendation/scoreResource";
+import { pickUniversalStartHere } from "@/lib/recommendation/startHere";
+import { cn } from "@/lib/utils";
 
 // Quiz path storage shape
 type QuizStorage = {
@@ -185,6 +195,41 @@ const STAGE_LABEL: Record<string, string> = {
   growth: "Growth stage",
 };
 
+type ListView = "recommended" | "near" | "boosted" | "deadline";
+
+function pickNextStepsFromResults(
+  results: MatchResultItem[],
+  excludeIds: Set<number>,
+): MatchResultItem[] {
+  const pick: MatchResultItem[] = [];
+  const ids = new Set<number>();
+  const add = (r: MatchResultItem | undefined) => {
+    if (!r || ids.has(r.id) || excludeIds.has(r.id)) return;
+    pick.push(r);
+    ids.add(r.id);
+  };
+  add(results[0]);
+  add(
+    results.find(
+      (r) =>
+        !ids.has(r.id) &&
+        r.topics.some((t) => /fund|capital|grant|invest|loan/i.test(t)),
+    ),
+  );
+  add(
+    results.find(
+      (r) =>
+        !ids.has(r.id) &&
+        r.topics.some((t) => /mentor|community|network|entrepreneur|start/i.test(t)),
+    ),
+  );
+  for (const r of results) {
+    if (pick.length >= 3) break;
+    add(r);
+  }
+  return pick.slice(0, 3);
+}
+
 export function ResultsClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -192,12 +237,22 @@ export function ResultsClient() {
   const [data, setData] = useState<MatchResponse | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [stored, setStored] = useState<StorageShape | null>(null);
+  const [nlChips, setNlChips] = useState<string[]>([]);
+  const [locPrefs, setLocPrefs] = useState<{
+    statewideBoost?: boolean;
+    remotePrefer?: boolean;
+  } | null>(null);
+  const [listView, setListView] = useState<ListView>("recommended");
 
   useEffect(() => {
+    let cancelled = false;
     setStatus("loading");
     setData(null);
     const raw = sessionStorage.getItem("sc_quiz");
-    if (!raw) { setStatus("no-answers"); return; }
+    if (!raw) {
+      setStatus("no-answers");
+      return;
+    }
 
     let answers: StorageShape;
     try {
@@ -209,29 +264,108 @@ export function ResultsClient() {
 
     setStored(answers);
 
-    // Similar path: results already fetched, skip API call
-    if (isSimilarStorage(answers)) {
-      setData({ results: answers.results, profileString: "", county: answers.county });
-      setStatus("success");
-      return;
-    }
+    async function load() {
+      if (isSimilarStorage(answers)) {
+        if (cancelled) return;
+        setData({ results: answers.results, profileString: "", county: answers.county });
+        setStatus("success");
+        return;
+      }
 
-    fetch("/api/match", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(answers),
-    })
-      .then(async (res) => {
+      try {
+        const res = await fetch("/api/match", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(answers),
+        });
         if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
+          const err = (await res.json().catch(() => ({}))) as { error?: string };
           throw new Error(err.error ?? `Request failed (${res.status})`);
         }
-        return res.json() as Promise<MatchResponse>;
-      })
-      .then((json) => { setData(json); setStatus("success"); })
-      .catch((err: Error) => { setErrorMsg(err.message); setStatus("error"); });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+        const json = (await res.json()) as MatchResponse;
+        if (cancelled) return;
+        setData(json);
+        try {
+          const c = sessionStorage.getItem("sc_nl_chips");
+          setNlChips(c ? (JSON.parse(c) as string[]) : []);
+          const p = sessionStorage.getItem("sc_location_prefs");
+          setLocPrefs(
+            p
+              ? (JSON.parse(p) as {
+                  statewideBoost?: boolean;
+                  remotePrefer?: boolean;
+                })
+              : null,
+          );
+        } catch {
+          setNlChips([]);
+          setLocPrefs(null);
+        }
+        setStatus("success");
+      } catch (err) {
+        if (cancelled) return;
+        setErrorMsg(err instanceof Error ? err.message : "Request failed");
+        setStatus("error");
+      }
+    }
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
   }, [searchParams]);
+
+  const founderProfile: FounderProfileInput | null = useMemo(() => {
+    if (!stored) return null;
+    if (isSimilarStorage(stored)) {
+      return {
+        stage: "idea",
+        sector: "",
+        city: stored.county,
+        goal: "Funding",
+        community: [],
+      };
+    }
+    if (isNLStorage(stored)) {
+      const base = founderFromNlStorage(stored);
+      return stored.founderName ? { ...base, founderDisplayName: stored.founderName } : base;
+    }
+    const q = stored as QuizStorage;
+    const base = founderFromQuizStorage(q);
+    return q.founderName ? { ...base, founderDisplayName: q.founderName } : base;
+  }, [stored]);
+
+  const startHere = useMemo(() => pickUniversalStartHere(RESOURCES), []);
+
+  const hasLocPrefs = Boolean(locPrefs?.statewideBoost || locPrefs?.remotePrefer);
+
+  const effectiveListView: ListView =
+    listView === "boosted" && !hasLocPrefs ? "recommended" : listView;
+
+  const displayResults = useMemo(() => {
+    if (!data) return [];
+    if (effectiveListView === "near") {
+      return [...data.results].sort((a, b) => {
+        const ka = locationSortKey(a, data.county);
+        const kb = locationSortKey(b, data.county);
+        if (ka !== kb) return ka - kb;
+        return b.score - a.score;
+      });
+    }
+    if (effectiveListView === "boosted" && hasLocPrefs) {
+      return sortResultsWithLocationPrefs(data.results, data.county, locPrefs);
+    }
+    if (effectiveListView === "deadline") {
+      return [...data.results];
+    }
+    return data.results;
+  }, [data, effectiveListView, hasLocPrefs, locPrefs]);
+
+  const nextSteps = useMemo(() => {
+    if (!data) return [];
+    const exclude = new Set(startHere.map((r) => r.id));
+    return pickNextStepsFromResults(data.results, exclude);
+  }, [data, startHere]);
 
   if (status === "no-answers") {
     return (
@@ -279,20 +413,6 @@ export function ResultsClient() {
     ? [stored.description.slice(0, 80) + (stored.description.length > 80 ? "…" : ""), `${data.county} County`]
     : [STAGE_LABEL[(stored as QuizStorage).stage] ?? (stored as QuizStorage).stage, (stored as QuizStorage).sector, `${data.county} County`, (stored as QuizStorage).goal];
 
-  // Build founder profile for outreach drafts
-  const founderProfile = isNLStorage(stored)
-    ? { stage: "idea" as const, sector: "", city: stored.city, goal: "Funding" as const, community: [], founderDisplayName: stored.founderName }
-    : isSimilar
-    ? { stage: "idea" as const, sector: "", city: data.county, goal: "Funding" as const, community: [] }
-    : {
-        stage: (stored as QuizStorage).stage as "idea" | "building" | "revenue" | "growth",
-        sector: (stored as QuizStorage).sector,
-        city: (stored as QuizStorage).city,
-        goal: (stored as QuizStorage).goal as "Funding" | "Start a Business" | "Mentorship" | "Workspace" | "International" | "Scaling",
-        community: (stored as QuizStorage).community,
-        founderDisplayName: (stored as QuizStorage).founderName,
-      };
-
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       {/* Summary bar */}
@@ -326,23 +446,144 @@ export function ResultsClient() {
         <SaveButton data={data} stored={stored} />
       </div>
 
+      {nlChips.length > 0 && (
+        <div className="mt-4 rounded-xl border border-rule/70 bg-surface-tint/50 px-4 py-3">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-mute">
+            From your description
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {nlChips.map((chip) => (
+              <span
+                key={chip}
+                className="rounded-full border border-rule bg-surface-elev px-2.5 py-1 text-[12px] text-ink-soft"
+              >
+                {chip}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {hasLocPrefs && (
+        <p className="mt-3 text-[12px] text-ink-mute">
+          Quick match preferences:{" "}
+          {locPrefs?.statewideBoost ? "prefer statewide programs · " : ""}
+          {locPrefs?.remotePrefer ? "boost remote-friendly descriptions" : ""}
+          — use the <strong>Quick-match order</strong> tab to see that sort.
+        </p>
+      )}
+
+      {/* Start here */}
+      <section className="mt-8 rounded-[14px] border border-rule bg-surface-elev p-5 shadow-[var(--shadow-card)]">
+        <h3 className="font-display text-lg font-semibold text-ink">Start here</h3>
+        <p className="mt-1 text-[13px] text-ink-mute">
+          Three broadly useful programs from the real Utah resource dataset — good defaults while
+          you refine your profile.
+        </p>
+        <ul className="mt-4 space-y-3">
+          {startHere.map((r) => (
+            <li
+              key={r.id}
+              className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-rule/70 bg-surface px-3 py-2"
+            >
+              <span className="text-[13px] font-medium text-ink">{r.title}</span>
+              {r.link ? (
+                <a
+                  href={r.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] font-semibold text-ink underline decoration-ink/30 underline-offset-2"
+                >
+                  Open →
+                </a>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Personalized next steps */}
+      {nextSteps.length > 0 && (
+        <section className="mt-8">
+          <h3 className="font-display text-lg font-semibold text-ink">
+            Recommended next steps for you
+          </h3>
+          <p className="mt-1 text-[13px] text-ink-mute">
+            Immediate action, funding-style programs, and community-oriented options from your top
+            matches (deduped from Start here where possible).
+          </p>
+          <ol className="mt-3 list-decimal space-y-2 pl-5 text-[13px] text-ink-soft">
+            {nextSteps.map((r, i) => (
+              <li key={r.id}>
+                <span className="font-medium text-ink">{r.title}</span>
+                {i === 0 ? " — best immediate next step" : null}
+                {i === 1 ? " — funding or capital angle" : null}
+                {i === 2 ? " — community / mentorship angle" : null}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
       {/* Transparency accordion */}
       <MatchTransparency data={data} stored={stored} />
 
-      {/* Back link for similar path */}
       {isSimilar && (
-        <button type="button"
-          onClick={() => { sessionStorage.removeItem("sc_quiz"); router.back(); }}
-          className="mt-4 text-[13px] font-medium text-ink-mute hover:text-ink">
+        <button
+          type="button"
+          onClick={() => {
+            sessionStorage.removeItem("sc_quiz");
+            router.back();
+          }}
+          className="mt-4 text-[13px] font-medium text-ink-mute hover:text-ink"
+        >
           ← Back to your matches
         </button>
       )}
 
+      {/* View tabs */}
+      <div className="mt-6 flex flex-wrap gap-2 border-b border-rule pb-3">
+        {(
+          [
+            ["recommended", "Recommended"],
+            ["near", "Near you"],
+            ...(hasLocPrefs ? [["boosted", "Quick-match order"] as [ListView, string]] : []),
+            ["deadline", "Deadline soon"],
+          ] as [ListView, string][]
+        ).map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setListView(id)}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-[12px] font-semibold transition-colors",
+              effectiveListView === id
+                ? "bg-ink text-[#fbf7f0]"
+                : "bg-surface-tint text-ink-mute hover:text-ink",
+            )}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {effectiveListView === "deadline" && (
+        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[12px] text-amber-950">
+          Application deadlines are not stored in the resource dataset yet — we are not showing
+          guessed dates. Browse matches below and confirm deadlines on each program&apos;s site.
+        </p>
+      )}
+
       {/* Result cards */}
       <div className="mt-6 flex flex-col gap-4">
-        {data.results.map((r, i) => (
-          <ResultCard key={r.id} result={r} rank={i + 1}
-            founderProfile={founderProfile} county={data.county} />
+        {displayResults.map((r, i) => (
+          <ResultCard
+            key={`${r.id}-${effectiveListView}`}
+            result={r}
+            rank={i + 1}
+            founderProfile={founderProfile}
+            county={data.county}
+          />
         ))}
       </div>
     </div>

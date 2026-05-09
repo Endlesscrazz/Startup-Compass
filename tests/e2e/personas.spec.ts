@@ -208,8 +208,8 @@ test("UI: full quiz flow for Jordan (idea, SLC, student)", async ({ page }) => {
   await page.getByPlaceholder(/city|county/i).fill("Salt Lake City");
   await page.getByRole("button", { name: "Next →", exact: true }).click();
 
-  // Step 3 — Goal: Funding
-  await page.getByText("Funding").click();
+  // Step 3 — Goal: Find funding (maps to Funding in API)
+  await page.getByRole("button", { name: /Find funding/i }).click();
   await page.getByRole("button", { name: "Next →", exact: true }).click();
 
   // Step 4 — Background: community tag (label is "University / student" with slash)
@@ -256,7 +256,7 @@ test("UI: results page shows transparency accordion content", async ({ page }) =
   await page.getByText("Tech / SaaS").click();
   await page.getByPlaceholder(/city|county/i).fill("Salt Lake City");
   await page.getByRole("button", { name: "Next →", exact: true }).click();
-  await page.getByText("Funding").click();
+  await page.getByRole("button", { name: /Find funding/i }).click();
   await page.getByRole("button", { name: "Next →", exact: true }).click();
   await page.getByRole("button", { name: "Find my resources →", exact: true }).click();
   await page.waitForURL("**/results", { timeout: 15_000 });

@@ -1,6 +1,8 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
+import { loadRemoteAppState, patchRemoteAppState } from "@/hooks/userAppStateApi";
 
 const LS_KEY = "sc-user-role-v1";
 
@@ -121,7 +123,12 @@ function persist(role: UserRole | null) {
   }
 }
 
+function isUserRole(s: string | null | undefined): s is UserRole {
+  return Boolean(s) && ROLE_CONFIGS.some((c) => c.id === s);
+}
+
 export function useUserRole() {
+  const { status } = useSession();
   const [role, setRoleState] = useState<UserRole | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -140,16 +147,39 @@ export function useUserRole() {
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
+  useEffect(() => {
+    if (!hydrated || status !== "authenticated") return;
+    let cancelled = false;
+    (async () => {
+      const remote = await loadRemoteAppState();
+      if (cancelled || remote.persistence !== "database") return;
+      const r = remote.data.userRole;
+      const local = load();
+      if (isUserRole(r)) {
+        setRoleState(r);
+        persist(r);
+        setShowOnboarding(false);
+      } else if (local) {
+        await patchRemoteAppState({ userRole: local });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated, status]);
+
   const setRole = useCallback((r: UserRole) => {
     setRoleState(r);
     persist(r);
     setShowOnboarding(false);
+    void patchRemoteAppState({ userRole: r });
   }, []);
 
   const clearRole = useCallback(() => {
     setRoleState(null);
     persist(null);
     setShowOnboarding(true);
+    void patchRemoteAppState({ userRole: null });
   }, []);
 
   const dismissOnboarding = useCallback(() => {

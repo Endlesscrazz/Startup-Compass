@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUserId } from "@/lib/intelligence/session";
-import { addWatchlistRow, getWatchlistRow } from "@/lib/intelligence/store";
+import {
+  addWatchlistRowResolved,
+  getWatchlistRowResolved,
+} from "@/lib/intelligence/persistence";
 import type { WatchlistAlertCondition } from "@/lib/intelligence/types";
 
 export async function PATCH(req: NextRequest) {
@@ -18,11 +21,11 @@ export async function PATCH(req: NextRequest) {
   if (!companyId) {
     return NextResponse.json({ success: false, error: "companyId required" }, { status: 400 });
   }
-  const existing = getWatchlistRow(userId, companyId);
+  const existing = await getWatchlistRowResolved(userId, companyId);
   if (!existing) {
-    addWatchlistRow({ user_id: userId, company_id: companyId });
+    await addWatchlistRowResolved({ user_id: userId, company_id: companyId });
   }
-  const row = addWatchlistRow({
+  const row = await addWatchlistRowResolved({
     user_id: userId,
     company_id: companyId,
     email_enabled: body.email_enabled,

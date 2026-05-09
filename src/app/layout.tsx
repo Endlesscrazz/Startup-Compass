@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { Footer } from "@/components/Footer";
+import { getPublicSiteUrl } from "@/lib/siteUrl";
 import "./globals.css";
 
 const inter = Inter({
@@ -17,7 +18,8 @@ const fraunces = Fraunces({
   axes: ["opsz", "SOFT"],
 });
 
-const SITE_URL = "https://startupcompass.utah.gov";
+/** Open Graph / canonical base; override with NEXT_PUBLIC_APP_URL on Vercel. */
+const SITE_URL = getPublicSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { SMS_SEND_ENABLED, TWILIO_CONFIGURED } from "@/lib/intelligence/smsDelivery";
 import { getSessionUserId } from "@/lib/intelligence/session";
-import { getNotificationPreferences } from "@/lib/intelligence/store";
+import { getNotificationPreferencesResolved } from "@/lib/intelligence/persistence";
 
 export async function GET() {
   const userId = await getSessionUserId();
-  const prefs = userId ? getNotificationPreferences(userId) : null;
+  const prefs = userId ? await getNotificationPreferencesResolved(userId) : null;
   return NextResponse.json({
     success: true,
     data: {

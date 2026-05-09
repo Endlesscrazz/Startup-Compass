@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendTestSms } from "@/lib/intelligence/smsDelivery";
 import { getSessionUserId } from "@/lib/intelligence/session";
-import { getNotificationPreferences } from "@/lib/intelligence/store";
+import { getNotificationPreferencesResolved } from "@/lib/intelligence/persistence";
 
 export async function POST(req: NextRequest) {
   const userId = await getSessionUserId();
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: "Sign in required" }, { status: 401 });
   }
   const body = (await req.json()) as { to?: string };
-  const prefs = getNotificationPreferences(userId);
+  const prefs = await getNotificationPreferencesResolved(userId);
   const to = body.to ?? prefs.phone_number;
   if (!to) {
     return NextResponse.json({ success: false, error: "Phone number required" }, { status: 400 });

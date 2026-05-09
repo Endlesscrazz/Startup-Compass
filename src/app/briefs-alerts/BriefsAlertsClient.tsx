@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { AtlasHeader } from "@/components/AtlasPages";
+import { readResponseJson } from "@/lib/client/readResponseJson";
 import type { AudienceType, EmailFrequency, SmsMinPriority } from "@/lib/intelligence/types";
 
 type Prefs = {
@@ -34,14 +35,19 @@ export function BriefsAlertsClient() {
   const [demoCompanyId, setDemoCompanyId] = useState("");
 
   const load = useCallback(async () => {
-    const [p, g, s] = await Promise.all([
-      fetch("/api/settings/briefs-alerts").then((r) => r.json()),
-      fetch("/api/integrations/gmail/status").then((r) => r.json()),
-      fetch("/api/notifications/sms/status").then((r) => r.json()),
+    const [pr, gr, sr] = await Promise.all([
+      fetch("/api/settings/briefs-alerts"),
+      fetch("/api/integrations/gmail/status"),
+      fetch("/api/notifications/sms/status"),
     ]);
-    if (p.success) setPrefs(p.data);
-    if (g.success) setGmail(g.data);
-    if (s.success) setSmsStatus(s.data);
+    const p = await readResponseJson(pr, { success: false } as { success: boolean; data?: Prefs });
+    const g = await readResponseJson(gr, { success: false } as { success: boolean; data?: GmailStatus });
+    const s = await readResponseJson(sr, {
+      success: false,
+    } as { success: boolean; data?: { canSendReal: boolean } });
+    if (p.success && p.data) setPrefs(p.data);
+    if (g.success && g.data) setGmail(g.data);
+    if (s.success && s.data) setSmsStatus(s.data);
   }, []);
 
   useEffect(() => {
@@ -83,8 +89,8 @@ export function BriefsAlertsClient() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    const j = await res.json();
-    if (j.success) setPrefs(j.data);
+    const j = await readResponseJson(res, { success: false } as { success: boolean; data?: Prefs });
+    if (j.success && j.data) setPrefs(j.data);
   };
 
   const savePhone = async () => {
