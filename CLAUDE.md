@@ -15,10 +15,18 @@ system with hard location eligibility constraints and LLM-generated personalizat
 on top of ranked results.
 
 ## CURRENT STATE
-Session 1 complete. Merged into single root Next.js app (no more founder-navigator/ subdir).
-Built: parse_resources.py → 211 resources.json, generate_embeddings.py → embeddings.json (3072-dim),
-src/lib/index.ts (Float32Array singleton), GET /api/ping → { count: 211, dim: 3072 } ✓
-Next: Session 2 — /api/match pipeline (profile string, embed, cosine sim, location filter, boost, LLM).
+Sessions 1–6 complete. Deployed branch: shreyas/quiz-results-ui.
+Built: 211-resource pipeline, /api/match (quiz + NL paths), /navigator (quiz+NL+voice),
+/results (cards + share buttons), /api/admin/reindex, /admin UI, atlas theme unified.
+Merged with teammate's map/atlas. Next: Vercel deploy + demo prep.
+
+## DEFERRED / NICE-TO-HAVE
+See NICE-TO-HAVE.md for full list. Key items:
+- Mobile polish (45 min, medium priority)
+- Outreach draft email per result (1–2h, high differentiator — needs prompt engineering)
+- Marcus/David matching gaps (VBRC, BioUtah industry tags, Wildcat topic fix)
+- Real-time LLM streaming (low priority, already < 3s p50)
+- Rate limiting on /api/match (post-demo)
 
 ## ARCHITECTURE
 ```
@@ -132,6 +140,7 @@ Dr. Amir (29, SLC, PhD, novel tech, commercializing, never started a business) �
   message "Matching service temporarily unavailable". Do not show a blank results page.
 - If LLM explanation call fails → return results with generic explanations
   (just the resource description, truncated to 25 words). Do not block on this.
+- Never Access or edit .env.local file, unless i say so
 
 ## RESUME / INTERVIEW CONTEXT
 Core engineering problem: semantic retrieval with hard location constraints
