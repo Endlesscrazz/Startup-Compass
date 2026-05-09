@@ -31,7 +31,9 @@ const INITIAL_ZOOM = 8;
 const DISABLE_CLUSTER_ZOOM = 14;
 const FOCUS_MIN_ZOOM = DISABLE_CLUSTER_ZOOM;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function clusterBrandIcon(cluster: any) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const L = require("leaflet");
   const count = cluster.getChildCount();
   let size = 42;

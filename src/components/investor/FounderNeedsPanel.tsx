@@ -67,7 +67,7 @@ export function FounderNeedsPanel({ selected, onChange, readonly = false }: Prop
       </div>
       {!readonly && selected.length === 0 && (
         <p className="mt-2 text-[11px] text-ink-mute">
-          Select what you're currently looking for — this helps the community find and connect with you.
+          Select what you&apos;re currently looking for — this helps the community find and connect with you.
         </p>
       )}
     </div>

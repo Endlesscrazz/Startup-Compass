@@ -136,7 +136,7 @@ export function ClaimProfileModal({
           </p>
           {founderNeeds.length > 0 && (
             <p className="mt-2 text-[12px] text-ink-soft">
-              We've shared that you need:{" "}
+              We&apos;ve shared that you need:{" "}
               <strong>{founderNeeds.join(", ")}</strong>
             </p>
           )}

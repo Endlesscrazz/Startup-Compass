@@ -29,7 +29,7 @@ export function MapFloatingInsights({
 
   useEffect(() => {
     if (containerRef.current && typeof window !== "undefined") {
-      // Dynamically import Leaflet only on the client
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const L = require("leaflet");
       L.DomEvent.disableScrollPropagation(containerRef.current);
       L.DomEvent.disableClickPropagation(containerRef.current);

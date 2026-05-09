@@ -53,10 +53,11 @@ export async function rankAndExplainInvestorThesis(
   const raw = response.choices[0]?.message?.content ?? "[]";
   const clean = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let parsed: any[] = [];
   try {
     parsed = JSON.parse(clean);
-  } catch (e) {
+  } catch {
     console.warn("Failed to parse LLM response for rankAndExplainInvestorThesis");
   }
 
@@ -114,10 +115,11 @@ export async function rankAndExplainJobHunter(
   const raw = response.choices[0]?.message?.content ?? "[]";
   const clean = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let parsed: any[] = [];
   try {
     parsed = JSON.parse(clean);
-  } catch (e) {
+  } catch {
     console.warn("Failed to parse LLM response for rankAndExplainJobHunter");
   }
 
@@ -142,6 +144,7 @@ export interface FounderResourceAdvice {
 
 export async function adviseFounderResource(
   challenge: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resources: any[] // From match.ts candidates
 ): Promise<FounderResourceAdvice[]> {
   const client = getClient();
@@ -172,10 +175,11 @@ export async function adviseFounderResource(
   const raw = response.choices[0]?.message?.content ?? "[]";
   const clean = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let parsed: any[] = [];
   try {
     parsed = JSON.parse(clean);
-  } catch (e) {
+  } catch {
     console.warn("Failed to parse LLM response for adviseFounderResource");
   }
 

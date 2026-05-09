@@ -76,7 +76,7 @@ export function EcosystemChangeFeed() {
             Ecosystem Pulse
           </p>
           <h2 className="mt-1 font-display text-[18px] font-semibold text-ink">
-            What's happening in Utah
+            What&apos;s happening in Utah
           </h2>
         </div>
         <Link
@@ -155,7 +155,7 @@ function buildFeedItems(c: ChangeSummary): FeedItem[] {
     const top = c.clusterGrowth[0]!;
     items.push({
       emoji: "🏔️",
-      headline: `${top.sector} is Utah's largest startup cluster`,
+      headline: `${top.sector} is Utah&apos;s largest startup cluster`,
       sub: `${top.count} companies · growing fast`,
       href: "/search",
     });

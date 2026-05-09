@@ -26,6 +26,7 @@ export function MapDetailsPanel({
 
   useEffect(() => {
     if (containerRef.current && typeof window !== "undefined") {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const L = require("leaflet");
       L.DomEvent.disableScrollPropagation(containerRef.current);
       L.DomEvent.disableClickPropagation(containerRef.current);

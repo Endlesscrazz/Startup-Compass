@@ -137,7 +137,7 @@ export function SavedSearchDrawer({ filters, onApply }: Props) {
 
       {open && searches.length === 0 && (
         <p className="mt-2 text-[12px] text-ink-mute">
-          No saved searches yet. Use filters and click "Save current".
+          No saved searches yet. Use filters and click &quot;Save current&quot;.
         </p>
       )}
     </div>

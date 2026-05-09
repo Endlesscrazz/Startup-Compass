@@ -34,7 +34,7 @@ export function RoleOnboarding({ onSelect, onDismiss }: Props) {
                 What brings you here?
               </h2>
               <p className="mt-1.5 text-[13px] leading-relaxed text-ink-mute">
-                We'll personalize your experience based on your role.
+                We&apos;ll personalize your experience based on your role.
               </p>
             </div>
             <button

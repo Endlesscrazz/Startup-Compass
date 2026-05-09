@@ -13,6 +13,7 @@ function escapeAttr(s: string): string {
     .replace(/</g, "&lt;");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconCache = new Map<string, any>();
 
 /**
@@ -21,6 +22,7 @@ const iconCache = new Map<string, any>();
 export function getStartupMarkerIcon(
   company: Company,
   opts: { focused: boolean; saved: boolean },
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any {
   const logoUrl = getCompanyLogoUrl(company) ?? "";
   const key = `${company.id}:${opts.focused}:${opts.saved}:${logoUrl}`;
@@ -50,6 +52,7 @@ export function getStartupMarkerIcon(
     </div>
   `;
 
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const L = require("leaflet");
   const icon = L.divIcon({
     html,
