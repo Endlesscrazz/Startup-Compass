@@ -27,7 +27,15 @@ type HeaderVariant = "landing" | "founder" | "search";
 export function LandingAtlasPage() {
   const stats = getAtlasStats();
   const sources = getDatasetSourceLabels();
-  const { role, config, showOnboarding, setRole, clearRole, hydrated } = useUserRole();
+  const {
+    role,
+    config,
+    showOnboarding,
+    setRole,
+    clearRole,
+    dismissOnboarding,
+    hydrated,
+  } = useUserRole();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
