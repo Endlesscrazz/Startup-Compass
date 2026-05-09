@@ -46,7 +46,7 @@ export function LandingAtlasPage() {
               <Link className="atlas-btn atlas-btn-primary" href="/search">
                 Explore Startup Atlas
               </Link>
-              <Link className="atlas-btn atlas-btn-ghost" href="/founder-compass">
+              <Link className="atlas-btn atlas-btn-ghost" href="/navigator">
                 Find Founder Resources
               </Link>
               <Link className="atlas-btn atlas-btn-gold" href="/search">
