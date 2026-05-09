@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { InvestorMapExplorer } from "@/components/InvestorMapExplorer";
-import { NavigatorQuiz } from "@/components/NavigatorQuiz";
+import { NavigatorTabs } from "@/app/navigator/NavigatorTabs";
+import { ResultsClient } from "@/app/results/ResultsClient";
 import {
   getAtlasStats,
   getDatasetSourceLabels,
@@ -206,8 +207,27 @@ export function NavigatorAtlasPage() {
   return (
     <div className="atlas-page atlas-page-light">
       <AtlasHeader variant="founder" />
-      <main className="navigator-atlas-main px-4 pb-20 pt-8 md:px-12">
-        <NavigatorQuiz />
+      <main>
+        <div style={{ borderBottom: "1px solid rgba(8,38,83,0.1)", padding: "2rem 1.5rem 1.75rem", textAlign: "center" }}>
+          <h1 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(1.7rem, 4vw, 2.4rem)", fontWeight: 700, color: "#062a52", lineHeight: 1.15 }}>
+            Find your resources
+          </h1>
+          <p style={{ marginTop: "0.5rem", fontSize: "0.9rem", color: "#4a6080", maxWidth: "36rem", marginInline: "auto" }}>
+            5–7 Utah programs matched to your situation · 30 seconds
+          </p>
+        </div>
+        <NavigatorTabs />
+      </main>
+    </div>
+  );
+}
+
+export function ResultsAtlasPage() {
+  return (
+    <div className="atlas-page atlas-page-light">
+      <AtlasHeader variant="founder" />
+      <main>
+        <ResultsClient />
       </main>
     </div>
   );
