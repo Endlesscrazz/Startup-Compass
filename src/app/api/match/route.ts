@@ -35,6 +35,8 @@ export interface MatchResultItem {
   email: string | null;
   topics: string[];
   communities: string[];
+  industries: string[];
+  locations: string[];
   score: number;
 }
 
@@ -130,6 +132,8 @@ export async function POST(req: NextRequest) {
     email: entry.email,
     topics: entry.topics,
     communities: entry.communities,
+    industries: entry.industries,
+    locations: entry.locations,
     score: Math.round(score * 1000) / 1000,
   }));
 
