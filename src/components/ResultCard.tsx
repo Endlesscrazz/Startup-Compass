@@ -43,7 +43,7 @@ export function ResultCard({ result, rank, founderProfile, county }: ResultCardP
         results: data.results,
         county: data.county,
       }));
-      router.push("/results");
+      router.push("/results?t=" + Date.now());
     } catch {
       setSimilarError(true);
       setTimeout(() => setSimilarError(false), 2000);

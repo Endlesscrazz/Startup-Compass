@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -290,7 +290,9 @@ export function ResultsAtlasPage() {
     <div className="atlas-page atlas-page-light">
       <AtlasHeader />
       <main>
-        <ResultsClient />
+        <Suspense fallback={null}>
+          <ResultsClient />
+        </Suspense>
       </main>
     </div>
   );

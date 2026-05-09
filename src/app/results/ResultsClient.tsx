@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ResultCard } from "@/components/ResultCard";
 import type { MatchResponse, MatchResultItem } from "@/app/api/match/route";
 
@@ -187,12 +187,15 @@ const STAGE_LABEL: Record<string, string> = {
 
 export function ResultsClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<Status>("loading");
   const [data, setData] = useState<MatchResponse | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [stored, setStored] = useState<StorageShape | null>(null);
 
   useEffect(() => {
+    setStatus("loading");
+    setData(null);
     const raw = sessionStorage.getItem("sc_quiz");
     if (!raw) { setStatus("no-answers"); return; }
 
@@ -227,7 +230,8 @@ export function ResultsClient() {
       })
       .then((json) => { setData(json); setStatus("success"); })
       .catch((err: Error) => { setErrorMsg(err.message); setStatus("error"); });
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   if (status === "no-answers") {
     return (
