@@ -90,7 +90,11 @@ function ShareButtons({ results }: { results: MatchResultItem[] }) {
 // ── Save to localStorage ───────────────────────────────────────────────────
 
 function SaveButton({ data, stored }: { data: MatchResponse; stored: StorageShape }) {
-  const [saved, setSaved] = useState(false);
+  const router = useRouter();
+  const [saved, setSaved] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return Boolean(localStorage.getItem(STORAGE_SAVE_KEY));
+  });
 
   function handleSave() {
     const payload = {
@@ -102,17 +106,28 @@ function SaveButton({ data, stored }: { data: MatchResponse; stored: StorageShap
     };
     localStorage.setItem(STORAGE_SAVE_KEY, JSON.stringify(payload));
     setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+  }
+
+  if (saved) {
+    return (
+      <div className="flex items-center gap-2">
+        <span className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rule px-4 text-[13px] font-medium text-ink-mute">
+          <svg className="h-3.5 w-3.5 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+          Saved
+        </span>
+        <button type="button" onClick={() => router.push("/navigator")}
+          className="inline-flex h-9 items-center gap-1.5 rounded-full bg-ink px-4 text-[13px] font-medium text-[#fbf7f0] hover:bg-ink-soft">
+          Resume later →
+        </button>
+      </div>
+    );
   }
 
   return (
     <button type="button" onClick={handleSave}
       className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rule px-4 text-[13px] font-medium text-ink-soft transition-colors hover:border-rule-strong hover:text-ink">
-      {saved ? (
-        <><svg className="h-3.5 w-3.5 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>Saved!</>
-      ) : (
-        <><svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>Save for later</>
-      )}
+      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
+      Save for later
     </button>
   );
 }
@@ -332,7 +347,16 @@ export function ResultsClient() {
       {/* Back link for similar path */}
       {isSimilar && (
         <button type="button"
-          onClick={() => { sessionStorage.removeItem("sc_quiz"); router.back(); }}
+          onClick={() => {
+            const prev = sessionStorage.getItem("sc_quiz_prev");
+            sessionStorage.removeItem("sc_quiz_prev");
+            if (prev) {
+              sessionStorage.setItem("sc_quiz", prev);
+              router.push("/results?t=" + Date.now());
+            } else {
+              router.push("/navigator");
+            }
+          }}
           className="mt-4 text-[13px] font-medium text-ink-mute hover:text-ink">
           ← Back to your matches
         </button>

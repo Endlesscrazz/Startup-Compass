@@ -37,6 +37,9 @@ export function ResultCard({ result, rank, founderProfile, county }: ResultCardP
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
+      // Preserve original quiz so "← Back to your matches" can restore it
+      const original = sessionStorage.getItem("sc_quiz");
+      if (original) sessionStorage.setItem("sc_quiz_prev", original);
       sessionStorage.setItem("sc_quiz", JSON.stringify({
         _similar: true,
         sourceTitle: data.sourceTitle,
