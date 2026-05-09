@@ -27,6 +27,43 @@ export function reloadIndex(): IndexEntry[] {
   return getIndex();
 }
 
+export function getNextId(): number {
+  const index = getIndex();
+  if (index.length === 0) return 1;
+  return Math.max(...index.map((e) => e.id)) + 1;
+}
+
+export function addToIndex(resource: Resource, embedding: Float32Array): IndexEntry {
+  const index = getIndex();
+  const entry: IndexEntry = { ...resource, embedding };
+  index.push(entry);
+  return entry;
+}
+
+export function updateInIndex(
+  id: number,
+  updates: Partial<Resource>,
+  embedding?: Float32Array,
+): IndexEntry {
+  const index = getIndex();
+  const i = index.findIndex((e) => e.id === id);
+  if (i === -1) throw new Error(`Resource id=${id} not found`);
+  const updated: IndexEntry = {
+    ...index[i],
+    ...updates,
+    ...(embedding ? { embedding } : {}),
+  };
+  index[i] = updated;
+  return updated;
+}
+
+export function deleteFromIndex(id: number): void {
+  const index = getIndex();
+  const i = index.findIndex((e) => e.id === id);
+  if (i === -1) throw new Error(`Resource id=${id} not found`);
+  index.splice(i, 1);
+}
+
 export function getIndex(): IndexEntry[] {
   if (_index) return _index;
 

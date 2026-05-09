@@ -39,6 +39,7 @@ interface QuizState {
   city: string;
   goal: Goal | null;
   community: string[];
+  founderName: string;
 }
 
 function OptionButton({
@@ -108,6 +109,7 @@ export function QuizClient() {
     city: "",
     goal: null,
     community: [],
+    founderName: "",
   });
 
   function canAdvance() {
@@ -127,16 +129,15 @@ export function QuizClient() {
 
   function submit() {
     if (!quiz.stage || !quiz.sector || !quiz.goal) return;
-    sessionStorage.setItem(
-      "sc_quiz",
-      JSON.stringify({
-        stage: quiz.stage,
-        sector: quiz.sector,
-        city: quiz.city.trim(),
-        goal: quiz.goal,
-        community: quiz.community,
-      })
-    );
+    const payload: Record<string, unknown> = {
+      stage: quiz.stage,
+      sector: quiz.sector,
+      city: quiz.city.trim(),
+      goal: quiz.goal,
+      community: quiz.community,
+    };
+    if (quiz.founderName.trim()) payload.founderName = quiz.founderName.trim();
+    sessionStorage.setItem("sc_quiz", JSON.stringify(payload));
     router.push("/results");
   }
 
@@ -257,7 +258,7 @@ export function QuizClient() {
         </div>
       )}
 
-      {/* Step 3 — Community (optional) */}
+      {/* Step 3 — Community + optional name */}
       {step === 3 && (
         <div>
           <h2 className="font-display text-2xl font-semibold text-ink">
@@ -275,6 +276,20 @@ export function QuizClient() {
                 onClick={() => toggleCommunity(c.value)}
               />
             ))}
+          </div>
+          <div className="mt-6">
+            <label className="block text-[13px] font-medium text-ink-soft" htmlFor="founder-name">
+              Your first name <span className="text-ink-mute font-normal">(optional — used for email drafts)</span>
+            </label>
+            <input
+              id="founder-name"
+              type="text"
+              placeholder="e.g. Sarah"
+              maxLength={50}
+              value={quiz.founderName}
+              onChange={(e) => setQuiz((q) => ({ ...q, founderName: e.target.value }))}
+              className="mt-1.5 w-full rounded-xl border border-rule bg-surface-elev px-4 py-3 text-[14px] text-ink placeholder:text-ink-mute focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+            />
           </div>
         </div>
       )}
