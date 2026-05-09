@@ -31,6 +31,7 @@ export function ResultCard({ result, rank, founderProfile, county }: ResultCardP
   const [modalOpen, setModalOpen] = useState(false);
   const [similarLoading, setSimilarLoading] = useState(false);
   const [similarError, setSimilarError] = useState(false);
+  const [whyOpen, setWhyOpen] = useState(false);
 
   const visibleCommunities = communities.filter((c) => c !== "Any");
 
@@ -179,19 +180,36 @@ export function ResultCard({ result, rank, founderProfile, county }: ResultCardP
             </dl>
 
             {rec && rec.reasons.length > 0 && (
-              <div className="mt-3 rounded-lg bg-surface-tint/60 px-3 py-2">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-mute">
-                  Why this matched
-                </p>
-                <ul className="mt-1.5 list-disc space-y-0.5 pl-4 text-[12px] text-ink-soft">
-                  {rec.reasons.slice(0, 4).map((r, i) => (
-                    <li key={i}>
-                      <JargonText text={r} />
-                    </li>
-                  ))}
-                </ul>
-                {rec.warnings.length > 0 && (
-                  <p className="mt-2 text-[11px] text-amber-800">{rec.warnings[0]}</p>
+              <div className="mt-3 rounded-lg border border-rule/60 bg-surface-tint/40">
+                <button
+                  type="button"
+                  onClick={() => setWhyOpen((o) => !o)}
+                  className="flex w-full items-center justify-between px-3 py-2 text-left"
+                >
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-mute">
+                    Why this matched
+                  </p>
+                  <svg
+                    className={`h-3.5 w-3.5 shrink-0 text-ink-mute transition-transform ${whyOpen ? "rotate-180" : ""}`}
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+                    strokeLinecap="round" strokeLinejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </button>
+                {whyOpen && (
+                  <div className="border-t border-rule/60 px-3 pb-2 pt-1.5">
+                    <ul className="list-disc space-y-0.5 pl-4 text-[12px] text-ink-soft">
+                      {rec.reasons.slice(0, 4).map((r, i) => (
+                        <li key={i}>
+                          <JargonText text={r} />
+                        </li>
+                      ))}
+                    </ul>
+                    {rec.warnings.length > 0 && (
+                      <p className="mt-2 text-[11px] text-amber-800">{rec.warnings[0]}</p>
+                    )}
+                  </div>
                 )}
               </div>
             )}
