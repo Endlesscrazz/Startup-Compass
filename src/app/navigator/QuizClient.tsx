@@ -160,9 +160,9 @@ export function QuizClient() {
                 className={cn(
                   "flex h-7 w-7 items-center justify-center rounded-full text-[12px] font-semibold transition-colors",
                   i < step
-                    ? "bg-accent text-surface"
+                    ? "bg-accent text-[#fbf7f0]"
                     : i === step
-                    ? "bg-ink text-surface"
+                    ? "bg-ink text-[#fbf7f0]"
                     : "bg-rule text-ink-mute"
                 )}
               >
@@ -300,7 +300,7 @@ export function QuizClient() {
           className={cn(
             "inline-flex h-10 items-center gap-1.5 rounded-full px-6 text-[14px] font-semibold transition-all",
             canAdvance()
-              ? "bg-ink text-surface hover:bg-ink-soft"
+              ? "bg-ink text-[#fbf7f0] hover:bg-ink-soft"
               : "cursor-not-allowed bg-rule text-ink-mute"
           )}
         >

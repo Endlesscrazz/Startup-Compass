@@ -53,7 +53,7 @@ export function ResultCard({ result, rank }: ResultCardProps) {
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-8 items-center gap-1.5 rounded-full bg-ink px-4 text-[13px] font-medium text-surface transition-colors hover:bg-ink-soft"
+                className="inline-flex h-8 items-center gap-1.5 rounded-full bg-ink px-4 text-[13px] font-medium text-[#fbf7f0] transition-colors hover:bg-ink-soft"
               >
                 Visit →
               </a>

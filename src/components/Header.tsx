@@ -53,7 +53,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <Link
               href="#products"
-              className="hidden h-10 items-center justify-center rounded-full bg-ink px-5 text-sm font-medium text-surface transition-colors hover:bg-ink-soft sm:inline-flex"
+              className="hidden h-10 items-center justify-center rounded-full bg-ink px-5 text-sm font-medium text-[#fbf7f0] transition-colors hover:bg-ink-soft sm:inline-flex"
             >
               Get started
             </Link>
