@@ -62,6 +62,7 @@ export async function generateExplanations(
     });
 
     const raw = response.choices[0]?.message?.content ?? "";
+    console.log("[explain] Groq raw response (first 200):", raw.slice(0, 200));
     // Strip markdown fences if present (llama-3.3-70b occasionally wraps in ```json)
     const clean = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
     const parsed: ExplanationEntry[] = JSON.parse(clean);
@@ -73,8 +74,8 @@ export async function generateExplanations(
       }
     }
     return result;
-  } catch {
-    // LLM failure is non-fatal — return fallback descriptions
+  } catch (err) {
+    console.error("[explain] LLM call failed, using fallbacks:", err);
     return fallbacks;
   }
 }
