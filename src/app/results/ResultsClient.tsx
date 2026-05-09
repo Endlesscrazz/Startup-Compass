@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ResultCard } from "@/components/ResultCard";
 import type { MatchResponse, MatchResultItem } from "@/app/api/match/route";
-import { RESOURCES } from "@/lib/atlas-data";
 import type { FounderProfileInput } from "@/lib/founder/types";
 import {
   founderFromNlStorage,
@@ -12,7 +11,6 @@ import {
   locationSortKey,
   sortResultsWithLocationPrefs,
 } from "@/lib/recommendation/scoreResource";
-import { pickUniversalStartHere } from "@/lib/recommendation/startHere";
 import { cn } from "@/lib/utils";
 
 // Quiz path storage shape
@@ -350,8 +348,6 @@ export function ResultsClient() {
     return q.founderName ? { ...base, founderDisplayName: q.founderName } : base;
   }, [stored]);
 
-  const startHere = useMemo(() => pickUniversalStartHere(RESOURCES), []);
-
   const hasLocPrefs = Boolean(locPrefs?.statewideBoost || locPrefs?.remotePrefer);
 
   const effectiveListView: ListView =
@@ -376,11 +372,6 @@ export function ResultsClient() {
     return data.results;
   }, [data, effectiveListView, hasLocPrefs, locPrefs]);
 
-  const nextSteps = useMemo(() => {
-    if (!data) return [];
-    const exclude = new Set(startHere.map((r) => r.id));
-    return pickNextStepsFromResults(data.results, exclude);
-  }, [data, startHere]);
 
   if (status === "no-answers") {
     return (
@@ -486,58 +477,6 @@ export function ResultsClient() {
           {locPrefs?.remotePrefer ? "boost remote-friendly descriptions" : ""}
           — use the <strong>Quick-match order</strong> tab to see that sort.
         </p>
-      )}
-
-      {/* Start here */}
-      <section className="mt-8 rounded-[14px] border border-rule bg-surface-elev p-5 shadow-[var(--shadow-card)]">
-        <h3 className="font-display text-lg font-semibold text-ink">Start here</h3>
-        <p className="mt-1 text-[13px] text-ink-mute">
-          Three broadly useful programs from the real Utah resource dataset — good defaults while
-          you refine your profile.
-        </p>
-        <ul className="mt-4 space-y-3">
-          {startHere.map((r) => (
-            <li
-              key={r.id}
-              className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-rule/70 bg-surface px-3 py-2"
-            >
-              <span className="text-[13px] font-medium text-ink">{r.title}</span>
-              {r.link ? (
-                <a
-                  href={r.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[12px] font-semibold text-ink underline decoration-ink/30 underline-offset-2"
-                >
-                  Open →
-                </a>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Personalized next steps */}
-      {nextSteps.length > 0 && (
-        <section className="mt-8">
-          <h3 className="font-display text-lg font-semibold text-ink">
-            Recommended next steps for you
-          </h3>
-          <p className="mt-1 text-[13px] text-ink-mute">
-            Immediate action, funding-style programs, and community-oriented options from your top
-            matches (deduped from Start here where possible).
-          </p>
-          <ol className="mt-3 list-decimal space-y-2 pl-5 text-[13px] text-ink-soft">
-            {nextSteps.map((r, i) => (
-              <li key={r.id}>
-                <span className="font-medium text-ink">{r.title}</span>
-                {i === 0 ? " — best immediate next step" : null}
-                {i === 1 ? " — funding or capital angle" : null}
-                {i === 2 ? " — community / mentorship angle" : null}
-              </li>
-            ))}
-          </ol>
-        </section>
       )}
 
       {/* Transparency accordion */}
