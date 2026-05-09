@@ -91,12 +91,20 @@ export function NLClient() {
     setIsRecording(true);
   }
 
+  function extractNameFromText(text: string): string | null {
+    const m = text.match(/(?:my name is|i'm|i am)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
+    return m ? m[1].trim() : null;
+  }
+
   function handleSubmit() {
     if (!description.trim() || !city.trim()) return;
-    sessionStorage.setItem(
-      "sc_quiz",
-      JSON.stringify({ description: description.trim(), city: city.trim() })
-    );
+    const payload: Record<string, string> = {
+      description: description.trim(),
+      city: city.trim(),
+    };
+    const name = extractNameFromText(description);
+    if (name) payload.founderName = name;
+    sessionStorage.setItem("sc_quiz", JSON.stringify(payload));
     router.push("/results");
   }
 

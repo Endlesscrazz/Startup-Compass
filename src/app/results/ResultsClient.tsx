@@ -12,18 +12,32 @@ type QuizStorage = {
   city: string;
   goal: string;
   community: string[];
+  founderName?: string;
 };
 
 // NL path storage shape
 type NLStorage = {
   description: string;
   city: string;
+  founderName?: string;
 };
 
-type StorageShape = QuizStorage | NLStorage;
+// "Similar to this" path — results pre-fetched, no API call needed
+type SimilarStorage = {
+  _similar: true;
+  sourceTitle: string;
+  results: MatchResultItem[];
+  county: string;
+};
+
+type StorageShape = QuizStorage | NLStorage | SimilarStorage;
 
 function isNLStorage(s: StorageShape): s is NLStorage {
   return "description" in s;
+}
+
+function isSimilarStorage(s: StorageShape): s is SimilarStorage {
+  return "_similar" in s;
 }
 
 type Status = "loading" | "success" | "error" | "no-answers";
@@ -179,50 +193,40 @@ export function ResultsClient() {
   const [stored, setStored] = useState<StorageShape | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
+    const raw = sessionStorage.getItem("sc_quiz");
+    if (!raw) { setStatus("no-answers"); return; }
 
-    async function load() {
-      const raw = sessionStorage.getItem("sc_quiz");
-      if (!raw) {
-        if (!cancelled) setStatus("no-answers");
-        return;
-      }
+    let answers: StorageShape;
+    try {
+      answers = JSON.parse(raw);
+    } catch {
+      setStatus("no-answers");
+      return;
+    }
 
-      let answers: StorageShape;
-      try {
-        answers = JSON.parse(raw);
-      } catch {
-        if (!cancelled) setStatus("no-answers");
-        return;
-      }
+    setStored(answers);
 
-      if (!cancelled) setStored(answers);
+    // Similar path: results already fetched, skip API call
+    if (isSimilarStorage(answers)) {
+      setData({ results: answers.results, profileString: "", county: answers.county });
+      setStatus("success");
+      return;
+    }
 
-      try {
-        const res = await fetch("/api/match", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(answers),
-        });
+    fetch("/api/match", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(answers),
+    })
+      .then(async (res) => {
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
           throw new Error(err.error ?? `Request failed (${res.status})`);
         }
-        const json = (await res.json()) as MatchResponse;
-        if (cancelled) return;
-        setData(json);
-        setStatus("success");
-      } catch (err) {
-        if (cancelled) return;
-        setErrorMsg(err instanceof Error ? err.message : "Request failed");
-        setStatus("error");
-      }
-    }
-
-    void load();
-    return () => {
-      cancelled = true;
-    };
+        return res.json() as Promise<MatchResponse>;
+      })
+      .then((json) => { setData(json); setStatus("success"); })
+      .catch((err: Error) => { setErrorMsg(err.message); setStatus("error"); });
   }, []);
 
   if (status === "no-answers") {
@@ -263,9 +267,27 @@ export function ResultsClient() {
 
   if (!data || !stored) return null;
 
-  const summaryParts: string[] = isNLStorage(stored)
+  const isSimilar = isSimilarStorage(stored);
+
+  const summaryParts: string[] = isSimilar
+    ? [`Similar to: ${(stored as SimilarStorage).sourceTitle.slice(0, 50)}`, `${data.county} County`]
+    : isNLStorage(stored)
     ? [stored.description.slice(0, 80) + (stored.description.length > 80 ? "…" : ""), `${data.county} County`]
-    : [STAGE_LABEL[stored.stage] ?? stored.stage, stored.sector, `${data.county} County`, stored.goal];
+    : [STAGE_LABEL[(stored as QuizStorage).stage] ?? (stored as QuizStorage).stage, (stored as QuizStorage).sector, `${data.county} County`, (stored as QuizStorage).goal];
+
+  // Build founder profile for outreach drafts
+  const founderProfile = isNLStorage(stored)
+    ? { stage: "idea" as const, sector: "", city: stored.city, goal: "Funding" as const, community: [], founderDisplayName: stored.founderName }
+    : isSimilar
+    ? { stage: "idea" as const, sector: "", city: data.county, goal: "Funding" as const, community: [] }
+    : {
+        stage: (stored as QuizStorage).stage as "idea" | "building" | "revenue" | "growth",
+        sector: (stored as QuizStorage).sector,
+        city: (stored as QuizStorage).city,
+        goal: (stored as QuizStorage).goal as "Funding" | "Start a Business" | "Mentorship" | "Workspace" | "International" | "Scaling",
+        community: (stored as QuizStorage).community,
+        founderDisplayName: (stored as QuizStorage).founderName,
+      };
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -303,10 +325,20 @@ export function ResultsClient() {
       {/* Transparency accordion */}
       <MatchTransparency data={data} stored={stored} />
 
+      {/* Back link for similar path */}
+      {isSimilar && (
+        <button type="button"
+          onClick={() => { sessionStorage.removeItem("sc_quiz"); router.back(); }}
+          className="mt-4 text-[13px] font-medium text-ink-mute hover:text-ink">
+          ← Back to your matches
+        </button>
+      )}
+
       {/* Result cards */}
       <div className="mt-6 flex flex-col gap-4">
         {data.results.map((r, i) => (
-          <ResultCard key={r.id} result={r} rank={i + 1} />
+          <ResultCard key={r.id} result={r} rank={i + 1}
+            founderProfile={founderProfile} county={data.county} />
         ))}
       </div>
     </div>
