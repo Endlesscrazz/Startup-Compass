@@ -48,7 +48,7 @@ export function ProductShowcase() {
           className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end"
         >
           <div className="max-w-2xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-accent">
+            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-gold">
               Two products. One platform.
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
@@ -121,7 +121,7 @@ export function ProductShowcase() {
             href="https://startup.utah.gov"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-ink hover:text-accent"
+            className="inline-flex items-center gap-1.5 text-ink hover:text-gold"
           >
             Learn about the Startup State
             <svg
@@ -174,7 +174,7 @@ function ProductCard({
 
       <div className="flex flex-1 flex-col p-7 sm:p-8">
         <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-ink/5 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-soft">
-          <span className="inline-flex h-1 w-1 rounded-full bg-accent" />
+          <span className="inline-flex h-1 w-1 rounded-full bg-utah-blue" />
           {tag}
         </span>
 
@@ -190,7 +190,7 @@ function ProductCard({
           {features.map((feature) => (
             <li key={feature} className="flex items-start gap-3 text-[14px] text-ink-soft">
               <svg
-                className="mt-1 h-3.5 w-3.5 shrink-0 text-accent"
+                className="mt-1 h-3.5 w-3.5 shrink-0 text-ink"
                 viewBox="0 0 14 14"
                 fill="none"
                 aria-hidden="true"
@@ -211,12 +211,12 @@ function ProductCard({
         <div className="mt-auto pt-8">
           <Link
             href={ctaHref}
-            className="group/cta inline-flex items-center gap-2 text-[15px] font-medium text-ink hover:text-accent"
+            className="group/cta inline-flex items-center gap-2 text-[15px] font-medium text-ink hover:text-gold"
           >
             {ctaLabel}
             <span
               aria-hidden="true"
-              className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-ink/15 transition-all group-hover/cta:border-accent group-hover/cta:bg-accent group-hover/cta:text-white"
+              className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-ink/15 transition-all group-hover/cta:border-gold group-hover/cta:bg-utah-blue group-hover/cta:text-white"
             >
               <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none">
                 <path
@@ -260,9 +260,9 @@ function NavigatorArtwork() {
           <span className="text-[12px] text-ink-mute">
             B2B SaaS · 18 months in · raising
           </span>
-          <span className="ml-auto h-2 w-2 rounded-full bg-accent" />
+          <span className="ml-auto h-2 w-2 rounded-full bg-utah-blue" />
         </div>
-        <ResultRow tagColor="bg-accent" label="Angel Group · Park City" weight="80%" />
+        <ResultRow tagColor="bg-utah-blue" label="Angel Group · Park City" weight="80%" />
         <ResultRow tagColor="bg-ink" label="SBIR Match Program · GOED" weight="64%" />
         <ResultRow tagColor="bg-ink-soft" label="University of Utah Lassonde" weight="51%" />
       </div>
@@ -355,7 +355,7 @@ function Pin({
 }) {
   const dotClass =
     hue === "accent"
-      ? "bg-accent ring-accent/40"
+      ? "bg-utah-blue ring-gold/40"
       : "bg-white ring-white/30";
   return (
     <span
@@ -366,7 +366,7 @@ function Pin({
       {pulse && (
         <span
           className={`absolute inset-0 -m-2 rounded-full ${
-            hue === "accent" ? "bg-accent/40" : "bg-white/30"
+            hue === "accent" ? "bg-utah-blue/40" : "bg-white/30"
           } animate-ping`}
         />
       )}

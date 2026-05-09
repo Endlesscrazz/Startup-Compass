@@ -9,11 +9,13 @@
 ┌─────────────────────────────────────────────────────────────────────┐
 │  BROWSER                                                            │
 │                                                                     │
-│  /                      /results              /admin               │
-│  ┌──────────────┐       ┌──────────────┐      ┌──────────────┐     │
-│  │ Intake Quiz  │──────▶│ Results Page │      │ Admin Panel  │     │
-│  │ (4 steps)    │  API  │ (5–7 cards)  │      │ (reindex)    │     │
-│  └──────────────┘       └──────────────┘      └──────────────┘     │
+│  /navigator                             /results        /admin      │
+│  ┌─────────────────────────────┐       ┌──────────┐   ┌─────────┐  │
+│  │  [Quiz tab]  [Describe tab] │──────▶│ Results  │   │  Admin  │  │
+│  │  4-step quiz │ textarea     │  API  │ (5–7     │   │ reindex │  │
+│  │              │ + mic button │       │  cards)  │   │         │  │
+│  └─────────────────────────────┘       └──────────┘   └─────────┘  │
+│    Path A: {stage,sector,city,goal}  Path B: {description,city}    │
 │         │                      │                      │            │
 └─────────┼──────────────────────┼──────────────────────┼────────────┘
           │ POST /api/match       │                      │ POST /api/admin/reindex
@@ -216,35 +218,43 @@ Step 4 — Goal + Community tags:
   Maps to: goal string + communities[] array
   UI label → API value: "Woman-owned" → "Women" (matches data field)
 
-### POST /api/match — matching pipeline (pseudocode)
+### POST /api/match — two input paths, same pipeline from step 3 onward
+
 ```
-1. Normalise community tags: "Woman-owned" → "Women" etc.
-2. Build profile string from request using stage-aware template (lib/profile.ts)
-   — see DECISIONS.md [DECISION-8] for full template and stage/goal phrase maps
-3. Call Gemini text-embedding-004 → profileVector (768-dim Float32Array)
-4. For each resource in resourceIndex:
-   a. cosine_sim = dot(profileVector, resource.vector) /
-                   (norm(profileVector) * norm(resource.vector))
-   b. location_eligible = resource.locations.includes(request.county)
-                          OR resource.locations.length >= 20  (statewide heuristic)
-   c. Skip if !location_eligible
-   d. Compute boosts (multiplicative — see DECISIONS.md [DECISION-10]):
-      topicMatch    = resource.topics includes mapped goal topic     → ×1.10
-      industryMatch = resource.industries includes request.sector    → ×1.10
-      communityMatch = resource.communities.includes('Any')
-                       OR intersects request.community              → ×1.10
-      final_score = cosine_sim × (1 + 0.10×topicMatch + 0.10×industryMatch + 0.10×communityMatch)
-   e. Record {resource, final_score}
-5. Sort by final_score descending, take top 8 candidates
-6. Call Groq (llama-3.3-70b-versatile) with all 8 in one prompt:
-   System: "You generate one-sentence resource recommendations for Utah startup founders.
-            Be specific to this founder's situation. Max 25 words each.
-            Return a JSON array ONLY — no markdown, no preamble.
-            Format: [{\"id\": 2543, \"explanation\": \"...\"}]"
-   User: "Founder profile: [profileString]\n\nResources: [JSON of 8 resources]"
-7. Strip markdown fences from LLM response, then JSON.parse()
-   If parse fails or LLM call fails → use resource.description.slice(0, 120) as fallback
-8. Attach explanations to top 8, return all 8 (front-end renders 5–7 cards)
+PATH A — Quiz (structured inputs):
+  Body: { stage, sector, city, goal, community? }
+  1. Validate required fields, return 400 if missing
+  2. Normalise community tags: "Woman-owned" → "Women" etc.
+  3. resolveCounty(city) → county  (return 422 if unresolved)
+  4. composeProfileString({stage,sector,city,county,goal,community}) → profileString
+  5. → [shared pipeline]
+  6. rankResources with FULL boost (topic + industry + community)
+
+PATH B — Natural language (free text):
+  Body: { description, city }
+  1. sanitizeDescription(description) → strip HTML, cap 500 chars  [DECISION-18]
+  2. resolveCounty(city) → county  (return 422 if unresolved)
+  3. description used directly as profileString  [DECISION-17]
+  4. → [shared pipeline]
+  5. rankResources with NO boost — pure cosine similarity
+     (stage/sector/goal not known, boost would be noise)
+
+SHARED PIPELINE (both paths from here):
+  → embedText(profileString) → profileVector (3072-dim Float32Array via Gemini)
+     On failure → 503 "Matching service temporarily unavailable"
+  → For each entry in resourceIndex:
+      a. isEligible: locations.includes("Utah") OR
+                     locations.length >= STATEWIDE_MIN_LOCATIONS(20) OR
+                     locations.includes(county)   [DECISION-16]
+      b. sim = cosineSim(profileVector, entry.embedding)
+      c. boost = boostMultiplier(entry, goal, sector, community)  [PATH A only]
+      d. score = sim * boost
+  → Sort descending, take top 8
+  → generateExplanations(profileString, top8):
+      System prompt: untrusted-input notice + JSON-only instruction  [DECISION-18]
+      User prompt:   <founder_profile>…</founder_profile> + resources JSON
+      On failure → fallback to first 25 words of description
+  → Return { results: top8WithExplanations, profileString, county }
 ```
 
 ### POST /api/admin/reindex
@@ -279,35 +289,42 @@ Step 4 — Goal + Community tags:
 Startup-Compass/  ← repo root, single Next.js app (merged)
 ├── src/
 │   ├── app/
-│   │   ├── page.tsx              # Team landing page (teammates own this)
-│   │   ├── map/                  # Team map page (teammates own this)
-│   │   ├── quiz/
-│   │   │   └── page.tsx          # 4-step intake quiz (Shreyas)
+│   │   ├── page.tsx                    # Team landing page (teammates own)
+│   │   ├── map/                        # Team map page (teammates own)
+│   │   ├── navigator/
+│   │   │   ├── page.tsx                # Shell — Header + QuizClient ✓ DONE
+│   │   │   ├── QuizClient.tsx          # 4-step quiz UI ✓ DONE
+│   │   │   └── NLClient.tsx            # NL textarea + voice button  ← Session 4
 │   │   ├── results/
-│   │   │   └── page.tsx          # Results cards (Shreyas)
+│   │   │   ├── page.tsx                # Shell ✓ DONE
+│   │   │   └── ResultsClient.tsx       # sessionStorage → /api/match → cards ✓ DONE
 │   │   └── api/
-│   │       ├── ping/route.ts     # GET /api/ping → {count, dim} ✓ DONE
-│   │       ├── match/route.ts    # POST /api/match — core pipeline (Session 2)
-│   │       └── admin/reindex/route.ts
+│   │       ├── ping/route.ts           # GET /api/ping ✓ DONE
+│   │       ├── match/route.ts          # POST /api/match — Path A + B  ← Session 4
+│   │       └── admin/reindex/route.ts  # ← Session 6
 │   ├── lib/
-│   │   ├── index.ts              # In-memory resource index singleton ✓ DONE
-│   │   ├── embed.ts              # Gemini embed call (Session 2)
-│   │   ├── match.ts              # Cosine sim + filter + boost (Session 2)
-│   │   ├── explain.ts            # Groq LLM explanations (Session 2)
-│   │   ├── profile.ts            # Profile string composer (Session 2)
-│   │   └── counties.ts           # City → county lookup (Session 2)
+│   │   ├── index.ts                    # In-memory index singleton ✓ DONE
+│   │   ├── embed.ts                    # Gemini gemini-embedding-001 ✓ DONE
+│   │   ├── match.ts                    # Cosine sim + filter + boost ✓ DONE
+│   │   ├── explain.ts                  # Groq explanations + injection defence ✓ DONE
+│   │   ├── profile.ts                  # Quiz profile string composer ✓ DONE
+│   │   ├── counties.ts                 # City → county lookup ✓ DONE
+│   │   └── sanitize.ts                 # NL input sanitization ✓ DONE
 │   └── components/
-│       ├── ui/                   # shadcn components
-│       ├── QuizStep.tsx          # Session 3
-│       ├── ResultCard.tsx        # Session 3
-│       └── CategoryBadge.tsx     # Session 3
+│       ├── ui/button.tsx               # base-ui button ✓
+│       ├── Header.tsx                  # Team header ✓
+│       ├── Footer.tsx                  # Team footer ✓
+│       ├── ResultCard.tsx              # Result card ✓ DONE
+│       └── CategoryBadge.tsx           # Topic/community badge ✓ DONE
 ├── data/
-│   ├── resources.json            # 211 resources ✓ DONE
-│   └── embeddings.json           # 211 × 3072-dim vectors ✓ DONE
+│   ├── resources.json                  # 211 resources ✓ DONE
+│   └── embeddings.json                 # 211 × 3072-dim ✓ DONE
 └── scripts/
-    ├── parse_resources.py        # ✓ DONE — uv run scripts/parse_resources.py
-    ├── generate_embeddings.py    # ✓ DONE — uv run scripts/generate_embeddings.py
-    └── generate-companies.mjs   # Team script (do not modify)
+    ├── parse_resources.py              # ✓ DONE
+    ├── generate_embeddings.py          # ✓ DONE
+    ├── personas.json                   # 6 custom edge-case personas (stress test)
+    ├── personas_eval.py                # LLM-as-Judge eval harness  ← Session 5
+    └── generate-companies.mjs         # Team script (do not modify)
 ```
 
 ## WHAT CLAUDE CODE SHOULD REVIEW

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Sarah",
+    "stage": "scaling",
+    "sector": "Tech / SaaS",
+    "city": "Lehi",
+    "goal": "Bootstrapping / Mentorship (NO Venture Capital)",
+    "community": ["Women-owned", "Bootstrapped"],
+    "description": "I am a woman-owned bootstrapped SaaS company based in Lehi, Utah County. I am looking for mentorship and peer networks to grow my business. I am NOT looking for venture capital or equity investment.",
+    "expect": ["Silicon Slopes", "SBDC", "1 Million Cups"],
+    "mustNotSee": ["Peterson Ventures", "Pelion", "Kickstart"]
+  },
+  {
+    "name": "Mateo",
+    "stage": "building",
+    "sector": "Agriculture",
+    "city": "Logan",
+    "goal": "Grants and Prototyping",
+    "community": ["University affiliated"],
+    "description": "I am an early-stage founder at Utah State University in Logan, Cache County building an agriculture technology hardware prototype. I am looking for research grants and prototyping resources.",
+    "expect": ["SBDC", "USU", "Utah State"],
+    "mustNotSee": ["USDA Rural Farm Subsidies", "Microloan"]
+  },
+  {
+    "name": "Linda",
+    "stage": "growth",
+    "sector": "Retail / CPG",
+    "city": "West Valley City",
+    "goal": "Business restructuring and legal aid",
+    "community": ["Immigrant"],
+    "description": "I am an immigrant-owned retail business in West Valley City, Salt Lake County. My business is struggling and I need legal advice and restructuring support to stay afloat.",
+    "expect": ["SBDC", "Suazo", "Small Business"],
+    "mustNotSee": ["Pitch Competition", "Y Combinator", "Venture Capital"]
+  },
+  {
+    "name": "Chloe",
+    "stage": "idea",
+    "sector": "Arts & Entertainment",
+    "city": "Moab",
+    "goal": "Workspace",
+    "community": ["Rural"],
+    "description": "I am a solo founder in Moab, Grand County running a creative arts and e-commerce business out of my garage. I am looking for a workspace or coworking space to grow my small business.",
+    "expect": ["SBDC", "Rural", "Coworking"],
+    "mustNotSee": ["FDA", "Venture Capital", "SBIR"]
+  },
+  {
+    "name": "Elias",
+    "stage": "growth",
+    "sector": "Other",
+    "city": "Salt Lake City",
+    "goal": "Mentorship",
+    "community": [],
+    "description": "I run a social impact nonprofit B-Corp in Salt Lake City. I am looking for corporate sponsorships, philanthropic grants, and impact-focused entrepreneurship communities.",
+    "expect": ["1 Million Cups", "SBDC", "Community"],
+    "mustNotSee": ["Angel Investors", "Equity", "Venture Capital"]
+  },
+  {
+    "name": "Dr. Chen",
+    "stage": "idea",
+    "sector": "Food & Hospitality",
+    "city": "Orem",
+    "goal": "Start a Business",
+    "community": [],
+    "description": "I am making a career pivot in Orem, Utah County. I want to start a food and beverage business and need to find a commercial kitchen and learn about FDA food safety requirements.",
+    "expect": ["SBDC", "Utah Department of Agriculture", "Food"],
+    "mustNotSee": ["Tech Accelerator", "Software", "Medical Device"]
+  }
+]

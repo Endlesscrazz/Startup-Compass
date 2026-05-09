@@ -1,63 +1,69 @@
 ---
 # Handoff — Startup Compass / Founder's Navigator
 Date: 2026-05-08
-Session: 2 complete
+Session: 3 complete. Session 4 planned, not started.
 
-## What was completed
-Full /api/match pipeline built and Gate 2 passed.
+## Current branch
+shreyas/quiz-results-ui — all work goes here, PR to main when done.
 
-## Files created this session
-- src/lib/counties.ts — city→county lookup (60+ cities, county passthrough, strip " County")
-- src/lib/profile.ts — stage-aware profile string composer (DECISION-8 template)
-- src/lib/embed.ts — Gemini gemini-embedding-001 client (3072-dim)
-- src/lib/match.ts — cosine sim + statewide location filter + multiplicative boost
-- src/lib/explain.ts — Groq llama-3.3-70b explanations with fallback
-- src/app/api/match/route.ts — full pipeline wired, community label normalization
+## Completed (Sessions 1–3)
+- data/resources.json — 211 resources
+- data/embeddings.json — 211 × 3072-dim (Gemini gemini-embedding-001)
+- src/lib/index.ts — module singleton, Float32Array
+- src/lib/counties.ts — city→county lookup (60+ cities)
+- src/lib/profile.ts — stage-aware profile string composer
+- src/lib/embed.ts — Gemini embed client
+- src/lib/match.ts — cosine sim + statewide filter + multiplicative boost
+- src/lib/explain.ts — Groq llama-3.3-70b + prompt injection defence (DECISION-18)
+- src/lib/sanitize.ts — NL input sanitizer (ready to use in Session 4)
+- src/app/api/match/route.ts — full quiz pipeline
+- src/app/api/ping/route.ts — health check
+- src/app/navigator/ — QuizClient.tsx (4-step quiz) + page.tsx
+- src/app/results/ — ResultsClient.tsx + page.tsx
+- src/components/ResultCard.tsx + CategoryBadge.tsx
+- DECISIONS.md — decisions 1–18
 
-## Gate 2 status
-POST /api/match (Priya: revenue, SaaS, SLC, Funding) → Salt Lake Angels rank 5, no microloans ✓ PASSED
+## Session 4 — NL Input + Voice (NEXT)
+See PROJECT-TASKS.md §4 for detailed tasks. Summary:
 
-## 6-Persona results summary
-| Persona | Key expected | Status |
-|---|---|---|
-| Jordan (idea, SLC, start) | Get Started ✓ rank 3, Lassonde ✓ rank 8 | PASS |
-| Maria (growth, Washington, rural, woman, agri, scaling) | Women's BC ✓, Rural Center ✓, Rural Chamber ✓ | PASS |
-| Marcus (building, Weber, veteran, mfg, mentorship) | STRIVE ✓, VBRC ✓, Veteran Registry ✓, MEP ✓, iMpact ✓ | EXCELLENT |
-| Priya (revenue, SLC, SaaS, funding) | Salt Lake Angels ✓ rank 5, Park City Angels ✓ rank 2 | PASS |
-| David (growth, Provo, life sci, international) | WTC Utah ✓ rank 6, BIO Utah in results | PARTIAL |
-| Dr. Amir (idea, SLC, student, start) | Lassonde ✓ rank 1 | PASS |
+1. Extend /api/match to accept { description, city } as Path B
+   - sanitizeDescription() already in src/lib/sanitize.ts
+   - Pass null/[] for goal/sector/community → boost = ×1.0 (pure cosine)
+   - rankResources signature already supports null goal (check it)
 
-Missing: EPIC Ventures for Amir (appears if goal=Funding used), BIOHive for David.
-Wildcat MicroFund appears for David — minor tuning item.
+2. Build src/app/navigator/NLClient.tsx
+   - textarea (maxLength=500) + char counter
+   - city input
+   - mic button (Web Speech API, hidden if unavailable)
+   - sessionStorage: { description, city } → router.push('/results')
 
-## Key decision this session
-DECISION-15: Community boost fires only when founder has community tags.
-"Any" resources were over-boosting for non-community founders (Priya), pushing VC resources out of top 8.
-Fixed in match.ts: `community.length > 0 && (commsData.includes("Any") || intersect)`.
+3. Add tab toggle to /navigator — [Step-by-step] | [Describe your situation]
 
-## Action required before Session 3
-1. Add GROQ_API_KEY to .env.local — explanations are currently using fallback text (truncated description)
-2. For teammate awareness: /api/match and /api/ping are live. POST body shape:
-   { stage, sector, city, goal, community? }
-   Response: { results[], profileString, county }
+4. Update ResultsClient to handle both sessionStorage shapes
 
-## Architecture constants (do not change)
-- EMBEDDING_DIM = 3072 (gemini-embedding-001)
-- Resource count = 211
-- Statewide heuristic: locations.length >= 20
-- Community normalization: "Woman-owned" → "Women", "Veteran-owned" → "Veteran"
-- topK = 8 candidates returned (front-end renders 5–7)
+## Session 5 — personas_eval.py (after Session 4)
+- Fix personas.json: add description + city fields per persona
+- Wire get_top_results() to POST http://localhost:3000/api/match
+- Add LLM-as-Judge via Groq (GROQ_API_KEY already in .env.local)
+- Fuzzy mustNotSee/expect matching (substring, not exact)
+- Print scorecard
 
-## Pick up here — Session 3
-Goal: Build /quiz and /results pages (UI).
-- Install shadcn components needed: Card, Badge, Button, Progress
-- src/app/quiz/page.tsx — 4-step quiz, client-side state, sessionStorage handoff
-- src/app/results/page.tsx — reads sessionStorage, calls /api/match, renders cards
-- src/components/ResultCard.tsx — title, explanation badge, link button
-- src/components/CategoryBadge.tsx — Funding/Community/Workspace/Growth/Events color map
-- Utah palette: red #CC0000, navy #003087
+## Must-know context
+1. EMBEDDING_DIM = 3072 — not 768, not 1536
+2. Resource count = 211
+3. API response: { results[], profileString, county }
+   results: { id, title, description, explanation, link, email, topics, communities, score }
+4. Quiz → API body: { stage, sector, city, goal, community[] }
+   NL → API body: { description, city }
+5. Community label normalization in route.ts: "Woman-owned"→"Women" etc.
+6. iHub: locations=["Utah"] treated as statewide (DECISION-16, match.ts)
+7. Dr. Amir must pick goal=Funding + community=Student to surface Lassonde/iHub
+8. Groq key confirmed working. Gemini key confirmed working.
+9. text-surface Tailwind v4 bug: use text-[#fbf7f0] for buttons with bg-ink
+10. globals.css: base styles now inside @layer base so Tailwind utilities take precedence
 
 ## Open questions
-- iHub is Utah County only — Jordan (SLC) won't see it. Raise with GOED organizers.
-- GROQ_API_KEY needed in .env.local (add before demo)
+- rankResources() signature: check if null goal/sector breaks the boost logic
+  (it shouldn't — GOAL_TO_TOPIC[null] → undefined → topicMatch = false → no boost)
+- Vercel deploy: push branch after Session 4 is complete, not before
 ---

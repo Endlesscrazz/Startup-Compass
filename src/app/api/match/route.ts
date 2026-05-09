@@ -4,26 +4,38 @@ import { composeProfileString, type QuizAnswers, type Goal, type Stage } from "@
 import { embedText } from "@/lib/embed";
 import { rankResources, type MatchCandidate } from "@/lib/match";
 import { generateExplanations } from "@/lib/explain";
+import { sanitizeDescription } from "@/lib/sanitize";
 
-// Quiz UI label → data field value normalization
 const COMMUNITY_LABEL_MAP: Record<string, string> = {
   "Veteran-owned": "Veteran",
   "Woman-owned": "Women",
   "Rural business": "Rural",
   "University student": "Student",
-  // Accept normalized values passed directly
   "Veteran": "Veteran",
   "Women": "Women",
   "Rural": "Rural",
   "Student": "Student",
 };
 
-interface MatchRequestBody {
+// Path A — quiz fields (all required together)
+interface QuizRequestBody {
   stage: Stage;
   sector: string;
   city: string;
   goal: Goal;
   community?: string[];
+}
+
+// Path B — natural language description + city
+interface NLRequestBody {
+  description: string;
+  city: string;
+}
+
+type MatchRequestBody = QuizRequestBody | NLRequestBody;
+
+function isNLPath(body: MatchRequestBody): body is NLRequestBody {
+  return "description" in body && typeof (body as NLRequestBody).description === "string";
 }
 
 export interface MatchResultItem {
@@ -35,6 +47,8 @@ export interface MatchResultItem {
   email: string | null;
   topics: string[];
   communities: string[];
+  industries: string[];
+  locations: string[];
   score: number;
 }
 
@@ -52,60 +66,62 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { stage, sector, city, goal, community = [] } = body;
-
-  if (!stage || !sector || !city || !goal) {
-    return NextResponse.json(
-      { error: "Missing required fields: stage, sector, city, goal" },
-      { status: 400 }
-    );
+  const city = body.city?.trim();
+  if (!city) {
+    return NextResponse.json({ error: "city is required" }, { status: 400 });
   }
 
-  // Normalize community tags from UI labels → data field values
-  const normalizedCommunity = community
-    .map((c) => COMMUNITY_LABEL_MAP[c] ?? c)
-    .filter(Boolean);
-
-  // Resolve city → county
   const county = resolveCounty(city);
   if (!county) {
     return NextResponse.json(
-      {
-        error: `Could not resolve "${city}" to a Utah county. Try entering your county name directly (e.g. "Salt Lake County").`,
-      },
+      { error: `Could not resolve "${city}" to a Utah county. Try entering your county name directly (e.g. "Salt Lake County").` },
       { status: 422 }
     );
   }
 
-  const answers: QuizAnswers = {
-    stage,
-    sector,
-    city,
-    county,
-    goal,
-    community: normalizedCommunity,
-  };
+  let profileString: string;
+  let goal: Goal | null = null;
+  let sector: string | null = null;
+  let community: string[] = [];
 
-  // Compose profile string → embed
-  const profileString = composeProfileString(answers);
+  if (isNLPath(body)) {
+    // ── Path B: natural language ──────────────────────────────────────────
+    const clean = sanitizeDescription(body.description);
+    if (!clean) {
+      return NextResponse.json({ error: "description is empty after sanitization" }, { status: 400 });
+    }
+    profileString = clean;
+    // goal/sector/community intentionally null — pure cosine, no boost (DECISION-17)
+  } else {
+    // ── Path A: quiz ──────────────────────────────────────────────────────
+    const { stage, sector: rawSector, goal: rawGoal, community: rawCommunity = [] } = body;
+    if (!stage || !rawSector || !rawGoal) {
+      return NextResponse.json(
+        { error: "Provide either description (NL path) or stage + sector + goal (quiz path)" },
+        { status: 400 }
+      );
+    }
+    community = rawCommunity.map((c) => COMMUNITY_LABEL_MAP[c] ?? c).filter(Boolean);
+    goal = rawGoal;
+    sector = rawSector;
+
+    const answers: QuizAnswers = { stage, sector, city, county, goal, community };
+    profileString = composeProfileString(answers);
+  }
 
   let profileVector: Float32Array;
   try {
     profileVector = await embedText(profileString);
   } catch {
-    return NextResponse.json(
-      { error: "Matching service temporarily unavailable" },
-      { status: 503 }
-    );
+    return NextResponse.json({ error: "Matching service temporarily unavailable" }, { status: 503 });
   }
 
-  // Rank resources
   const candidates: MatchCandidate[] = rankResources(
     profileVector,
     county,
     goal,
     sector,
-    normalizedCommunity
+    community
   );
 
   if (candidates.length === 0) {
@@ -115,7 +131,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Generate LLM explanations (non-fatal if it fails)
   const explanations = await generateExplanations(
     profileString,
     candidates.map((c) => c.entry)
@@ -130,9 +145,10 @@ export async function POST(req: NextRequest) {
     email: entry.email,
     topics: entry.topics,
     communities: entry.communities,
+    industries: entry.industries,
+    locations: entry.locations,
     score: Math.round(score * 1000) / 1000,
   }));
 
-  const response: MatchResponse = { results, profileString, county };
-  return NextResponse.json(response);
+  return NextResponse.json({ results, profileString, county } satisfies MatchResponse);
 }

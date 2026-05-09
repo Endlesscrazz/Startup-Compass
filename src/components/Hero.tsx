@@ -71,7 +71,7 @@ export function Hero() {
             variants={item}
             className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.22em] text-ink-mute"
           >
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-utah-blue" />
             An initiative of the Utah Governor&rsquo;s Office of Economic
             Development
           </motion.div>
@@ -117,7 +117,7 @@ export function Hero() {
                           : { duration: 0.6, ease: EASE, delay: 0.15 }
                       }
                       style={{ originX: 0 }}
-                      className="absolute inset-x-0 bottom-1 -z-0 h-3 bg-accent-soft sm:bottom-2 sm:h-4"
+                      className="absolute inset-x-0 bottom-1 -z-0 h-3 bg-gold-soft/50 sm:bottom-2 sm:h-4"
                     />
                   </span>
                 </h1>
@@ -131,7 +131,7 @@ export function Hero() {
                 <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
                   <Link
                     href={content.primaryCta.href}
-                    className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-accent px-6 text-[15px] font-medium text-white shadow-[0_8px_24px_-8px_rgba(184,84,42,0.55)] transition-all hover:bg-accent-hover hover:shadow-[0_12px_28px_-8px_rgba(184,84,42,0.65)]"
+                    className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-utah-blue px-6 text-[15px] font-medium text-white shadow-[0_8px_24px_-8px_rgba(184,84,42,0.55)] transition-all hover:bg-utah-blue-hover hover:shadow-[0_12px_28px_-8px_rgba(184,84,42,0.65)]"
                   >
                     {content.primaryCta.label}
                     <svg
