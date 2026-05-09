@@ -3,11 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Polyline, useMap, useMapEvents } from "react-leaflet";
-import L from "leaflet";
+import type { LatLng } from "leaflet";
 import { pathLengthKm } from "@/lib/map/distance";
 
 export function MeasureDistanceTool({ active }: { active: boolean }) {
-  const [pts, setPts] = useState<L.LatLng[]>([]);
+  const [pts, setPts] = useState<LatLng[]>([]);
   const map = useMap();
 
   useMapEvents({

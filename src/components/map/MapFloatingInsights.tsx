@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import L from "leaflet";
+
 import { EcosystemPulse } from "@/components/investor/EcosystemPulse";
 import { ThesisPresetsBar } from "@/components/investor/ThesisPresetsBar";
 import type { EcosystemStats } from "@/lib/investor/ecosystemStats";
@@ -28,7 +28,9 @@ export function MapFloatingInsights({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && typeof window !== "undefined") {
+      // Dynamically import Leaflet only on the client
+      const L = require("leaflet");
       L.DomEvent.disableScrollPropagation(containerRef.current);
       L.DomEvent.disableClickPropagation(containerRef.current);
     }

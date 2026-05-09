@@ -1,4 +1,4 @@
-import L from "leaflet";
+import type { DivIcon } from "leaflet";
 import {
   getCompanyInitials,
   getCompanyLogoUrl,
@@ -13,7 +13,7 @@ function escapeAttr(s: string): string {
     .replace(/</g, "&lt;");
 }
 
-const iconCache = new Map<string, L.DivIcon>();
+const iconCache = new Map<string, any>();
 
 /**
  * Circular logo / initials marker with a sector-colored ring (colors from dataset palette).
@@ -21,7 +21,7 @@ const iconCache = new Map<string, L.DivIcon>();
 export function getStartupMarkerIcon(
   company: Company,
   opts: { focused: boolean; saved: boolean },
-): L.DivIcon {
+): any {
   const logoUrl = getCompanyLogoUrl(company) ?? "";
   const key = `${company.id}:${opts.focused}:${opts.saved}:${logoUrl}`;
   const hit = iconCache.get(key);
@@ -50,6 +50,7 @@ export function getStartupMarkerIcon(
     </div>
   `;
 
+  const L = require("leaflet");
   const icon = L.divIcon({
     html,
     className: "startup-marker-logo-wrap",

@@ -149,6 +149,7 @@ export function useUserRole() {
   const clearRole = useCallback(() => {
     setRoleState(null);
     persist(null);
+    setShowOnboarding(true);
   }, []);
 
   const dismissOnboarding = useCallback(() => {

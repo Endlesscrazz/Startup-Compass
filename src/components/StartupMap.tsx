@@ -7,7 +7,7 @@ import "./startup-map.css";
 
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import L from "leaflet";
+import type { LatLngBoundsExpression, LatLngExpression, MarkerClusterGroupOptions } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MapContainer, Marker, Popup, TileLayer, useMap, ZoomControl } from "react-leaflet";
 import { CompanyMapPopup } from "@/components/investor/CompanyMapPopup";
@@ -21,17 +21,18 @@ import type { Company } from "@/lib/map-config";
 import { MAP_LAYER_OPTIONS, type MapLayerId } from "@/lib/map/mapLayers";
 import { getStartupMarkerIcon } from "@/lib/map/markerIcon";
 
-const UTAH_BOUNDS: L.LatLngBoundsExpression = [
+const UTAH_BOUNDS: LatLngBoundsExpression = [
   [36.95, -114.07],
   [42.05, -109.0],
 ];
 
-const INITIAL_CENTER: L.LatLngExpression = [40.4555, -111.65];
+const INITIAL_CENTER: LatLngExpression = [40.4555, -111.65];
 const INITIAL_ZOOM = 8;
 const DISABLE_CLUSTER_ZOOM = 14;
 const FOCUS_MIN_ZOOM = DISABLE_CLUSTER_ZOOM;
 
-function clusterBrandIcon(cluster: L.MarkerCluster): L.DivIcon {
+function clusterBrandIcon(cluster: any) {
+  const L = require("leaflet");
   const count = cluster.getChildCount();
   let size = 42;
   if (count >= 35) size = 52;
@@ -121,7 +122,7 @@ function StartupMapInner({
   const [measureActive, setMeasureActive] = useState(false);
 
   const clusterOptions = useMemo(
-    (): L.MarkerClusterGroupOptions => ({
+    (): MarkerClusterGroupOptions => ({
       chunkedLoading: true,
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: false,
@@ -149,101 +150,52 @@ function StartupMapInner({
         onMeasureToggle={() => setMeasureActive((v) => !v)}
       />
       <MarkerClusterGroup {...clusterOptions}>
-        <Markers
-          companies={companies}
-          allCompanies={allCompanies}
-          focusedId={focusedId}
-          onMarkerClick={onMarkerClick}
-          inWatchlist={inWatchlist}
-          onToggleWatchlist={onToggleWatchlist}
-          compareIds={compareIds}
-          onToggleCompare={onToggleCompare}
-          getClaimStatus={getClaimStatus}
-          onClaimCompany={onClaimCompany}
-        />
+        {companies.map((c) => {
+          const focused = c.id === focusedId;
+          const claimStatus = getClaimStatus?.(c.id) ?? "unclaimed";
+          const wl = inWatchlist?.(c) ?? false;
+          const cmpSel = compareIds.includes(c.id);
+          const cmpDisabled =
+            Boolean(onToggleCompare) && !cmpSel && compareIds.length >= 3;
+          const similar = findSimilarCompanies(c, allCompanies, 3);
+
+          return (
+            <Marker
+              key={c.id}
+              position={[c.lat, c.lng]}
+              icon={getStartupMarkerIcon(c, { focused, saved: wl })}
+              zIndexOffset={focused ? 1000 : wl ? 400 : 0}
+              eventHandlers={{
+                click: () => onMarkerClick?.(c.id),
+              }}
+            >
+              <Popup
+                minWidth={260}
+                maxWidth={320}
+                className="startup-popup"
+                autoPan
+                autoPanPadding={[20, 20]}
+                autoPanPaddingTopLeft={[24, 100]}
+                autoPanPaddingBottomRight={[24, 120]}
+                keepInView
+              >
+                <CompanyMapPopup
+                  company={c}
+                  similar={similar}
+                  inWatchlist={wl}
+                  onToggleWatchlist={() => onToggleWatchlist?.(c)}
+                  compareSelected={cmpSel}
+                  compareDisabled={cmpDisabled}
+                  onToggleCompare={() => onToggleCompare?.(c)}
+                  claimStatus={claimStatus}
+                  onClaimClick={() => onClaimCompany?.(c)}
+                />
+              </Popup>
+            </Marker>
+          );
+        })}
       </MarkerClusterGroup>
       <FocusFlyTo companies={companies} focusedId={focusedId} />
-    </>
-  );
-}
-
-function Markers({
-  companies,
-  allCompanies,
-  focusedId,
-  onMarkerClick,
-  inWatchlist,
-  onToggleWatchlist,
-  compareIds,
-  onToggleCompare,
-  getClaimStatus,
-  onClaimCompany,
-}: {
-  companies: Company[];
-  allCompanies: Company[];
-  focusedId: string | null;
-  onMarkerClick?: (id: string) => void;
-  inWatchlist?: (company: Company) => boolean;
-  onToggleWatchlist?: (company: Company) => void;
-  compareIds: string[];
-  onToggleCompare?: (company: Company) => void;
-  getClaimStatus?: (companyId: string) => ClaimStatus;
-  onClaimCompany?: (company: Company) => void;
-}) {
-  const similarMap = useMemo(() => {
-    const m = new Map<string, Company[]>();
-    for (const c of companies) {
-      m.set(c.id, findSimilarCompanies(c, allCompanies, 3));
-    }
-    return m;
-  }, [companies, allCompanies]);
-
-  return (
-    <>
-      {companies.map((c) => {
-        const focused = c.id === focusedId;
-        const claimStatus = getClaimStatus?.(c.id) ?? "unclaimed";
-        const wl = inWatchlist?.(c) ?? false;
-        const cmpSel = compareIds.includes(c.id);
-        const cmpDisabled =
-          Boolean(onToggleCompare) && !cmpSel && compareIds.length >= 3;
-        const similar = similarMap.get(c.id) ?? [];
-
-        return (
-          <Marker
-            key={c.id}
-            position={[c.lat, c.lng]}
-            icon={getStartupMarkerIcon(c, { focused, saved: wl })}
-            zIndexOffset={focused ? 1000 : wl ? 400 : 0}
-            eventHandlers={{
-              click: () => onMarkerClick?.(c.id),
-            }}
-          >
-            <Popup
-              minWidth={260}
-              maxWidth={320}
-              className="startup-popup"
-              autoPan
-              autoPanPadding={L.point(20, 20)}
-              autoPanPaddingTopLeft={L.point(24, 100)}
-              autoPanPaddingBottomRight={L.point(24, 120)}
-              keepInView
-            >
-              <CompanyMapPopup
-                company={c}
-                similar={similar}
-                inWatchlist={wl}
-                onToggleWatchlist={() => onToggleWatchlist?.(c)}
-                compareSelected={cmpSel}
-                compareDisabled={cmpDisabled}
-                onToggleCompare={() => onToggleCompare?.(c)}
-                claimStatus={claimStatus}
-                onClaimClick={() => onClaimCompany?.(c)}
-              />
-            </Popup>
-          </Marker>
-        );
-      })}
     </>
   );
 }

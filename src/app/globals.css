@@ -8,22 +8,26 @@
  *   - Red-rock terracotta accent (Mighty 5 landscape)
  */
 :root {
-  --ink: #0b1b33;
-  --ink-soft: #1a2d4e;
-  --ink-mute: #44557a;
+  --ink: #082653;
+  --ink-soft: #1e3a5f;
+  --ink-mute: #4a6080;
 
-  --surface: #fbf7f0;
+  --surface: #ffffff;
   --surface-elev: #ffffff;
-  --surface-tint: #f4ecdd;
+  --surface-tint: #f0f4f8;
 
-  --accent: #b8542a;
-  --accent-hover: #9b4421;
-  --accent-soft: #f3dccd;
+  --accent: #0f62c9;
+  --accent-hover: #0d51a8;
+  --accent-soft: #e6effb;
 
-  --rule: #e7dec9;
-  --rule-strong: #c8b48a;
+  --gold: #d4af37;
+  --gold-hover: #b8962e;
+  --gold-soft: #fff9e6;
 
-  --focus: #b8542a;
+  --rule: #e2eaf4;
+  --rule-strong: #cbd5e1;
+
+  --focus: #0f62c9;
 }
 
 @theme inline {
@@ -39,6 +43,10 @@
   --color-accent-hover: var(--accent-hover);
   --color-accent-soft: var(--accent-soft);
 
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-gold-soft: var(--gold-soft);
+
   --color-rule: var(--rule);
   --color-rule-strong: var(--rule-strong);
 
@@ -47,10 +55,10 @@
 
   --radius-card: 14px;
 
-  --shadow-card: 0 1px 0 rgba(11, 27, 51, 0.04),
-    0 18px 40px -24px rgba(11, 27, 51, 0.18);
-  --shadow-card-hover: 0 1px 0 rgba(11, 27, 51, 0.06),
-    0 24px 48px -20px rgba(11, 27, 51, 0.28);
+  --shadow-card: 0 1px 0 rgba(8, 38, 83, 0.04),
+    0 18px 40px -24px rgba(8, 38, 83, 0.12);
+  --shadow-card-hover: 0 1px 0 rgba(8, 38, 83, 0.06),
+    0 24px 48px -20px rgba(8, 38, 83, 0.22);
 }
 
 @layer base {
@@ -101,20 +109,20 @@
 .topo {
   background-image: radial-gradient(
       ellipse 80% 50% at 50% -10%,
-      rgba(184, 84, 42, 0.08),
+      rgba(15, 98, 201, 0.08),
       transparent 60%
     ),
     repeating-radial-gradient(
       circle at 20% 110%,
-      rgba(11, 27, 51, 0.045) 0,
-      rgba(11, 27, 51, 0.045) 1px,
+      rgba(8, 38, 83, 0.045) 0,
+      rgba(8, 38, 83, 0.045) 1px,
       transparent 1px,
       transparent 60px
     ),
     repeating-radial-gradient(
       circle at 85% 120%,
-      rgba(11, 27, 51, 0.04) 0,
-      rgba(11, 27, 51, 0.04) 1px,
+      rgba(8, 38, 83, 0.04) 0,
+      rgba(8, 38, 83, 0.04) 1px,
       transparent 1px,
       transparent 80px
     );
@@ -150,16 +158,10 @@
   gap: 20px;
   min-height: 72px;
   padding: 0 26px;
-  border-bottom: 1px solid rgba(8, 38, 83, 0.1);
-  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(4, 28, 59, 0.94);
   backdrop-filter: blur(18px);
-  box-shadow: 0 8px 24px rgba(8, 38, 83, 0.06);
-}
-
-.atlas-header-dark {
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(4, 28, 59, 0.88);
-  box-shadow: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .atlas-brand {
@@ -167,24 +169,19 @@
   align-items: center;
   gap: 10px;
   min-width: max-content;
-  color: #062a52;
+  color: #ffffff;
   font-weight: 800;
   text-decoration: none;
 }
 
-.atlas-header-dark .atlas-brand {
-  color: #ffffff;
-}
+/* Brand colors are now white for dark header */
 
 .atlas-brand .mountain-mark {
   width: 43px;
   height: 30px;
-  color: #0f62c9;
-}
-
-.atlas-header-dark .atlas-brand .mountain-mark {
   color: #ffffff;
 }
+
 
 .atlas-brand span {
   font-size: 15px;
@@ -203,19 +200,20 @@
 .atlas-header-actions button {
   border: 0;
   background: transparent;
-  color: #0b2f61;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-.atlas-header-dark nav a,
-.atlas-header-dark .atlas-header-actions a,
-.atlas-header-dark .atlas-header-actions button {
-  color: rgba(255, 255, 255, 0.82);
+.atlas-header nav a:hover,
+.atlas-header-actions a:hover {
+  color: #ffffff;
 }
+
 
 .atlas-header nav a {
   position: relative;
@@ -229,7 +227,7 @@
   left: 0;
   height: 3px;
   border-radius: 999px;
-  background: #f5a21a;
+  background: var(--gold);
   content: "";
 }
 
@@ -247,9 +245,9 @@
   min-height: 38px;
   padding: 0 18px;
   border-radius: 8px;
-  background: #f3a20e;
+  background: var(--gold);
   color: #ffffff;
-  box-shadow: 0 10px 18px rgba(238, 145, 5, 0.18);
+  box-shadow: 0 10px 18px rgba(212, 175, 55, 0.18);
 }
 
 .atlas-header-actions button:not(.investor-pill) {
@@ -360,9 +358,9 @@
 }
 
 .atlas-btn-gold {
-  background: #f3a20e;
+  background: var(--gold);
   color: #ffffff;
-  box-shadow: 0 10px 22px rgba(238, 145, 5, 0.24);
+  box-shadow: 0 10px 22px rgba(212, 175, 55, 0.24);
 }
 
 .atlas-landing-map-card {

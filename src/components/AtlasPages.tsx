@@ -3,7 +3,8 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { InvestorMapExplorer } from "@/components/InvestorMapExplorer";
 import { NavigatorTabs } from "@/app/navigator/NavigatorTabs";
 import { ResultsClient } from "@/app/results/ResultsClient";
@@ -19,15 +20,25 @@ import {
   profileCompleteness,
 } from "@/lib/atlas-data";
 
-const heroImage =
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=82";
+const heroImage = "/hero-utah.png";
 
 type HeaderVariant = "landing" | "founder" | "search";
 
 export function LandingAtlasPage() {
   const stats = getAtlasStats();
   const sources = getDatasetSourceLabels();
-  const { role, config, showOnboarding, setRole, dismissOnboarding, hydrated } = useUserRole();
+  const { role, config, showOnboarding, setRole, clearRole, hydrated } = useUserRole();
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push("/search");
+    }
+  };
 
   // Role-specific hero content
   const headline = config ? config.heroHeadline : "Invest in what Utah is building.";
@@ -60,7 +71,7 @@ export function LandingAtlasPage() {
                 Personalized for {config.label}s
                 <button
                   type="button"
-                  onClick={dismissOnboarding}
+                  onClick={clearRole}
                   className="ml-1 text-accent hover:text-accent-hover text-[11px]"
                   title="Change my role"
                 >
@@ -94,20 +105,22 @@ export function LandingAtlasPage() {
         </section>
 
         <section className="atlas-landing-map-card" aria-label="Utah atlas preview">
-          <div className="atlas-searchbar">
+          <form className="atlas-searchbar" onSubmit={handleSearch}>
             <label>
               <span className="atlas-search-icon" aria-hidden="true">
                 <SearchIcon />
               </span>
               <input
                 type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search startups, investors, sectors, or locations"
               />
             </label>
-            <button className="atlas-filter-btn" type="button">
-              <FilterIcon /> Filters
+            <button className="atlas-filter-btn" type="submit">
+              <FilterIcon /> Explore
             </button>
-          </div>
+          </form>
           <div className="atlas-preview-map atlas-preview-map-static">
             <div className="atlas-map-note">
               <strong>Utah Innovation. Global Impact.</strong>
@@ -241,7 +254,7 @@ export function FounderCompassPage() {
 export function SearchAtlasPage() {
   return (
     <div className="atlas-page atlas-page-dark atlas-search-live">
-      <AtlasHeader variant="search" />
+      <AtlasHeader />
       <main className="search-shell atlas-search-shell-live">
         <InvestorMapExplorer variant="atlas" />
       </main>
@@ -279,8 +292,7 @@ export function ResultsAtlasPage() {
   );
 }
 
-export function AtlasHeader({ variant = "default" }: { variant?: "default" | "search" }) {
-  const dark = variant === "search";
+export function AtlasHeader() {
   const nav = [
     ["Home", "/"],
     ["Map", "/search"],
@@ -291,7 +303,7 @@ export function AtlasHeader({ variant = "default" }: { variant?: "default" | "se
 
 
   return (
-    <header className={`atlas-header ${dark ? "atlas-header-dark" : ""}`}>
+    <header className="atlas-header">
       <Link className="atlas-brand" href="/">
         <MountainMark />
         <span>Startup Compass</span>

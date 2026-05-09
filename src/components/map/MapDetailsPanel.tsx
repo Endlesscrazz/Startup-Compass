@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, useRef, useEffect } from "react";
-import L from "leaflet";
+
 import {
   MAP_LAYER_OPTIONS,
   type MapLayerId,
@@ -25,7 +25,8 @@ export function MapDetailsPanel({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && typeof window !== "undefined") {
+      const L = require("leaflet");
       L.DomEvent.disableScrollPropagation(containerRef.current);
       L.DomEvent.disableClickPropagation(containerRef.current);
     }
