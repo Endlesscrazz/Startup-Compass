@@ -6,6 +6,7 @@
  */
 
 import companiesJson from "@/data/companies.json";
+import { inferHiringFromDescription } from "@/lib/investor/hiringHeuristic";
 import { computeProfileCompleteness } from "@/lib/investor/profileCompleteness";
 import { normalizeDomain } from "@/lib/investor/verification";
 import { getCompanyCoordinates } from "@/lib/map/companyAccessors";
@@ -31,6 +32,24 @@ export type Company = {
   sector: string;
   logo?: string | null;
   yearFounded?: number | null;
+  // ── Stickiness & intelligence fields ──────────────────────────
+  /** Hiring status: derived heuristically or set by founder via claim */
+  hiringStatus?: "hiring" | "not-hiring" | "unknown";
+  /** Remote work policy */
+  remotePolicy?: "remote" | "hybrid" | "in-person" | "unknown";
+  /** Connected to a Utah university (U of U, BYU, USU, etc.) */
+  universityConnected?: boolean;
+  /** Tags representing what the founder needs right now */
+  founderNeeds?: string[];
+  /** True if a founder has verified and claimed this profile */
+  claimedByFounder?: boolean;
+  /** ISO date of last data update — used for change feed */
+  lastUpdated?: string;
+  /** Pre-computed opportunity signals (Hiring Now, Remote Friendly, etc.) */
+  opportunityBadges?: string[];
+  /** Funding information */
+  fundingAmount?: string | null;
+  lastFundingDate?: string | null;
 };
 
 export const COMPANIES: Company[] = companiesJson as Company[];
@@ -158,6 +177,19 @@ export type Filters = {
   minCompletenessScore?: number;
   /** Filter to companies within great-circle distance of a point */
   geoFilter?: GeoFilter;
+  // ── Opportunity-based filters ──────────────────────────
+  /** Show only companies currently hiring */
+  hiringOnly?: boolean;
+  /** Show only remote/hybrid companies */
+  remoteOnly?: boolean;
+  /** Show only university-connected companies */
+  universityConnected?: boolean;
+  /** Filter by founder need tags */
+  founderNeedsTags?: string[];
+  /** Show only founder-claimed profiles */
+  claimedOnly?: boolean;
+  /** Show only companies updated in the last N days */
+  recentlyUpdatedDays?: number;
 };
 
 /** Apply preset slices — arrays become new Sets when provided */
@@ -169,6 +201,12 @@ export type FilterPatch = {
   cities?: string[];
   minCompletenessScore?: number | null;
   geoFilter?: GeoFilter | null;
+  hiringOnly?: boolean | null;
+  remoteOnly?: boolean | null;
+  universityConnected?: boolean | null;
+  founderNeedsTags?: string[] | null;
+  claimedOnly?: boolean | null;
+  recentlyUpdatedDays?: number | null;
 };
 
 export function applyFilterPatch(base: Filters, patch: FilterPatch): Filters {
@@ -196,6 +234,30 @@ export function applyFilterPatch(base: Filters, patch: FilterPatch): Filters {
           ? undefined
           : patch.geoFilter
         : base.geoFilter,
+    hiringOnly:
+      patch.hiringOnly !== undefined
+        ? patch.hiringOnly === null ? undefined : patch.hiringOnly
+        : base.hiringOnly,
+    remoteOnly:
+      patch.remoteOnly !== undefined
+        ? patch.remoteOnly === null ? undefined : patch.remoteOnly
+        : base.remoteOnly,
+    universityConnected:
+      patch.universityConnected !== undefined
+        ? patch.universityConnected === null ? undefined : patch.universityConnected
+        : base.universityConnected,
+    founderNeedsTags:
+      patch.founderNeedsTags !== undefined
+        ? patch.founderNeedsTags === null ? undefined : patch.founderNeedsTags
+        : base.founderNeedsTags,
+    claimedOnly:
+      patch.claimedOnly !== undefined
+        ? patch.claimedOnly === null ? undefined : patch.claimedOnly
+        : base.claimedOnly,
+    recentlyUpdatedDays:
+      patch.recentlyUpdatedDays !== undefined
+        ? patch.recentlyUpdatedDays === null ? undefined : patch.recentlyUpdatedDays
+        : base.recentlyUpdatedDays,
   };
 }
 
@@ -208,6 +270,12 @@ export function emptyFilters(): Filters {
     cities: new Set(),
     minCompletenessScore: undefined,
     geoFilter: undefined,
+    hiringOnly: undefined,
+    remoteOnly: undefined,
+    universityConnected: undefined,
+    founderNeedsTags: undefined,
+    claimedOnly: undefined,
+    recentlyUpdatedDays: undefined,
   };
 }
 
@@ -230,6 +298,7 @@ export function applyFilters(filters: Filters): Company[] {
   const q = filters.search.trim().toLowerCase();
   const minC = filters.minCompletenessScore;
   const geo = filters.geoFilter;
+  const now = Date.now();
 
   return COMPANIES.filter((c) => {
     if (filters.sectors.size > 0 && !filters.sectors.has(c.sector))
@@ -245,6 +314,35 @@ export function applyFilters(filters: Filters): Company[] {
       const p = getCompanyCoordinates(c);
       if (!p) return false;
       if (haversineKm(geo, p) > geo.maxKm) return false;
+    }
+    // ── Opportunity-based filters ────────────────────────────────
+    if (filters.hiringOnly) {
+      // Accept explicit hiring flag OR inferred from description
+      const explicit = c.hiringStatus === "hiring";
+      const inferred = !c.hiringStatus && inferHiringFromDescription(c.description);
+      if (!explicit && !inferred) return false;
+    }
+    if (filters.remoteOnly) {
+      const policy = c.remotePolicy;
+      if (policy !== "remote" && policy !== "hybrid") return false;
+    }
+    if (filters.universityConnected) {
+      if (!c.universityConnected) return false;
+    }
+    if (filters.claimedOnly) {
+      if (!c.claimedByFounder) return false;
+    }
+    if (filters.founderNeedsTags && filters.founderNeedsTags.length > 0) {
+      if (!c.founderNeeds) return false;
+      const hasAll = filters.founderNeedsTags.every((tag) =>
+        c.founderNeeds!.includes(tag),
+      );
+      if (!hasAll) return false;
+    }
+    if (filters.recentlyUpdatedDays && c.lastUpdated) {
+      const updatedMs = new Date(c.lastUpdated).getTime();
+      const cutoffMs = now - filters.recentlyUpdatedDays * 24 * 60 * 60 * 1000;
+      if (updatedMs < cutoffMs) return false;
     }
     if (q) {
       if (!searchHaystack(c).includes(q)) return false;

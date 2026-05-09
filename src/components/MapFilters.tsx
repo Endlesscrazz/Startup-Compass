@@ -2,6 +2,7 @@
 
 import { useMemo, type ReactNode } from "react";
 import type { MapDiscoveryPreset } from "@/lib/map/discoveryPresets";
+import { SavedSearchDrawer } from "@/components/SavedSearchDrawer";
 import {
   type Company,
   type Filters,
@@ -30,6 +31,8 @@ type Props = {
   nearMePending?: boolean;
   /** Collapse the discovery drawer (desktop) or close overlay (mobile) */
   onRequestHide?: () => void;
+  /** Allow restoring a saved search from the sidebar */
+  onApplySavedSearch?: (filters: Filters) => void;
 };
 
 export function MapFilters({
@@ -47,6 +50,7 @@ export function MapFilters({
   onRequestNearMe,
   nearMePending,
   onRequestHide,
+  onApplySavedSearch,
 }: Props) {
   const sectors = useMemo(() => getSectors(), []);
   const stages = useMemo(() => getStages(), []);
@@ -71,7 +75,13 @@ export function MapFilters({
     filters.employees.size > 0 ||
     filters.cities.size > 0 ||
     filters.minCompletenessScore != null ||
-    filters.geoFilter != null;
+    filters.geoFilter != null ||
+    filters.hiringOnly ||
+    filters.remoteOnly ||
+    filters.universityConnected ||
+    filters.claimedOnly ||
+    (filters.founderNeedsTags && filters.founderNeedsTags.length > 0) ||
+    filters.recentlyUpdatedDays != null;
 
   return (
     <aside className="flex h-full w-full min-h-0 flex-col overflow-hidden border-r border-rule/70 bg-surface-elev shadow-[4px_0_24px_-8px_rgba(11,27,51,0.15)] md:w-[360px]">
@@ -229,7 +239,80 @@ export function MapFilters({
           className="mt-7"
         />
 
+        {/* ── Opportunity-based filters ── */}
+        <div className="mt-7">
+          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ink-mute">
+            Opportunities
+          </p>
+          <div className="mt-3 flex flex-col gap-2">
+            <OpportunityToggle
+              id="filter-hiring"
+              label="Hiring Now"
+              active={!!filters.hiringOnly}
+              onToggle={() =>
+                onChange({ ...filters, hiringOnly: filters.hiringOnly ? undefined : true })
+              }
+              emoji="⚙️"
+            />
+            <OpportunityToggle
+              id="filter-remote"
+              label="Remote / Hybrid"
+              active={!!filters.remoteOnly}
+              onToggle={() =>
+                onChange({ ...filters, remoteOnly: filters.remoteOnly ? undefined : true })
+              }
+              emoji="🏠"
+            />
+            <OpportunityToggle
+              id="filter-university"
+              label="University Connected"
+              active={!!filters.universityConnected}
+              onToggle={() =>
+                onChange({
+                  ...filters,
+                  universityConnected: filters.universityConnected ? undefined : true,
+                })
+              }
+              emoji="🎓"
+            />
+            <OpportunityToggle
+              id="filter-new"
+              label="New This Week"
+              active={filters.recentlyUpdatedDays === 7}
+              onToggle={() =>
+                onChange({
+                  ...filters,
+                  recentlyUpdatedDays:
+                    filters.recentlyUpdatedDays === 7 ? undefined : 7,
+                })
+              }
+              emoji="✨"
+            />
+            <OpportunityToggle
+              id="filter-claimed"
+              label="Founder Claimed"
+              active={!!filters.claimedOnly}
+              onToggle={() =>
+                onChange({ ...filters, claimedOnly: filters.claimedOnly ? undefined : true })
+              }
+              emoji="✅"
+            />
+          </div>
+        </div>
+
+
         {detailSlot}
+
+        {/* Saved Searches */}
+        {onApplySavedSearch && (
+          <div className="mt-6">
+            <SavedSearchDrawer
+              filters={filters}
+              onApply={onApplySavedSearch}
+            />
+          </div>
+        )}
+
 
         <div className="mt-8 border-t border-rule/70 pt-5">
           <div className="flex items-center justify-between">
@@ -353,5 +436,44 @@ function FilterGroup({
         })}
       </div>
     </div>
+  );
+}
+
+function OpportunityToggle({
+  id,
+  label,
+  active,
+  onToggle,
+  emoji,
+}: {
+  id: string;
+  label: string;
+  active: boolean;
+  onToggle: () => void;
+  emoji: string;
+}) {
+  return (
+    <button
+      type="button"
+      id={id}
+      onClick={onToggle}
+      aria-pressed={active}
+      className={`flex w-full items-center gap-2.5 rounded-xl border px-3 py-2 text-[12px] font-medium transition-colors ${
+        active
+          ? "border-accent bg-accent-soft text-ink"
+          : "border-rule bg-surface text-ink-soft hover:border-rule-strong hover:text-ink"
+      }`}
+    >
+      <span className="text-[15px] leading-none" aria-hidden="true">
+        {emoji}
+      </span>
+      <span className="flex-1 text-left">{label}</span>
+      <span
+        className={`h-3.5 w-3.5 rounded-full border-2 transition-colors ${
+          active ? "border-accent bg-accent" : "border-rule"
+        }`}
+        aria-hidden="true"
+      />
+    </button>
   );
 }

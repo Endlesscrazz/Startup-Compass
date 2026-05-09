@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { QuizClient } from "./QuizClient";
@@ -8,26 +8,32 @@ import { NLClient } from "./NLClient";
 
 const STORAGE_SAVE_KEY = "sc_saved_results";
 
+function readSavedResults() {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_SAVE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    const stored = parsed.stored;
+    const label = stored?.description
+      ? stored.description.slice(0, 55) + "…"
+      : [stored?.stage, stored?.sector, stored?.goal].filter(Boolean).join(" · ");
+    return { county: parsed.county, savedAt: parsed.savedAt, label };
+  } catch {
+    return null;
+  }
+}
+
 function SavedResultsBanner() {
   const router = useRouter();
-  const [saved, setSaved] = useState<{ county: string; savedAt: number; label: string } | null>(null);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_SAVE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      const stored = parsed.stored;
-      const label = stored?.description
-        ? stored.description.slice(0, 55) + "…"
-        : [stored?.stage, stored?.sector, stored?.goal].filter(Boolean).join(" · ");
-      setSaved({ county: parsed.county, savedAt: parsed.savedAt, label });
-    } catch { /* ignore */ }
-  }, []);
+  const [saved, setSaved] = useState<{ county: string; savedAt: number; label: string } | null>(() =>
+    readSavedResults(),
+  );
+  const [now] = useState(() => Date.now());
 
   if (!saved) return null;
 
-  const daysAgo = Math.floor((Date.now() - saved.savedAt) / 86400000);
+  const daysAgo = Math.floor((now - saved.savedAt) / 86400000);
   const timeLabel = daysAgo === 0 ? "today" : daysAgo === 1 ? "yesterday" : `${daysAgo} days ago`;
 
   function handleResume() {

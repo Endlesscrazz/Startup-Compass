@@ -179,33 +179,50 @@ export function ResultsClient() {
   const [stored, setStored] = useState<StorageShape | null>(null);
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("sc_quiz");
-    if (!raw) { setStatus("no-answers"); return; }
+    let cancelled = false;
 
-    let answers: StorageShape;
-    try {
-      answers = JSON.parse(raw);
-    } catch {
-      setStatus("no-answers");
-      return;
-    }
+    async function load() {
+      const raw = sessionStorage.getItem("sc_quiz");
+      if (!raw) {
+        if (!cancelled) setStatus("no-answers");
+        return;
+      }
 
-    setStored(answers);
+      let answers: StorageShape;
+      try {
+        answers = JSON.parse(raw);
+      } catch {
+        if (!cancelled) setStatus("no-answers");
+        return;
+      }
 
-    fetch("/api/match", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(answers),
-    })
-      .then(async (res) => {
+      if (!cancelled) setStored(answers);
+
+      try {
+        const res = await fetch("/api/match", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(answers),
+        });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
           throw new Error(err.error ?? `Request failed (${res.status})`);
         }
-        return res.json() as Promise<MatchResponse>;
-      })
-      .then((json) => { setData(json); setStatus("success"); })
-      .catch((err: Error) => { setErrorMsg(err.message); setStatus("error"); });
+        const json = (await res.json()) as MatchResponse;
+        if (cancelled) return;
+        setData(json);
+        setStatus("success");
+      } catch (err) {
+        if (cancelled) return;
+        setErrorMsg(err instanceof Error ? err.message : "Request failed");
+        setStatus("error");
+      }
+    }
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (status === "no-answers") {

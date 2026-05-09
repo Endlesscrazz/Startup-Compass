@@ -1,9 +1,16 @@
+"use client";
+
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { InvestorMapExplorer } from "@/components/InvestorMapExplorer";
 import { NavigatorTabs } from "@/app/navigator/NavigatorTabs";
 import { ResultsClient } from "@/app/results/ResultsClient";
+import { EcosystemChangeFeed } from "@/components/EcosystemChangeFeed";
+import { RoleOnboarding } from "@/components/RoleOnboarding";
+import { useUserRole } from "@/hooks/useUserRole";
+import { AuthStatus } from "@/components/AuthStatus";
 import {
   getAtlasStats,
   getDatasetSourceLabels,
@@ -20,10 +27,25 @@ type HeaderVariant = "landing" | "founder" | "search";
 export function LandingAtlasPage() {
   const stats = getAtlasStats();
   const sources = getDatasetSourceLabels();
+  const { role, config, showOnboarding, setRole, dismissOnboarding, hydrated } = useUserRole();
+
+  // Role-specific hero content
+  const headline = config ? config.heroHeadline : "Invest in what Utah is building.";
+  const subline = config
+    ? config.heroSubline
+    : `Explore ${stats[0].value} verified Utah startups by sector, stage, team size, and location.`;
+  const primaryLabel = config ? config.primaryCta : "Explore Startup Atlas";
+  const primaryHref = config ? config.primaryHref : "/search";
+  const secondaryLabel = config ? config.discoveryCta : "Find Founder Resources";
 
   return (
     <div className="atlas-page atlas-page-light">
-      <AtlasHeader variant="landing" />
+      {/* Role Onboarding modal — shown only on first visit */}
+      {hydrated && showOnboarding && (
+        <RoleOnboarding onSelect={setRole} onDismiss={dismissOnboarding} />
+      )}
+
+      <AtlasHeader />
       <main>
         <section
           className="atlas-hero"
@@ -32,27 +54,42 @@ export function LandingAtlasPage() {
           }}
         >
           <div className="atlas-hero-copy">
-            <h1>
-              Invest in what
-              <br />
-              Utah is building.
-            </h1>
-            <p>
-              Explore {stats[0].value} verified Utah startups by sector, stage,
-              team size, and location. Founders can use the provided resource
-              dataset to find programs, capital, communities, and support.
-            </p>
+            {config && (
+              <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-rule bg-surface-elev px-3 py-1.5 text-[12px] font-semibold text-ink-mute">
+                <span aria-hidden="true">{config.emoji}</span>
+                Personalized for {config.label}s
+                <button
+                  type="button"
+                  onClick={dismissOnboarding}
+                  className="ml-1 text-accent hover:text-accent-hover text-[11px]"
+                  title="Change my role"
+                >
+                  Change
+                </button>
+              </p>
+            )}
+            <h1>{headline}</h1>
+            <p>{subline}</p>
             <div className="atlas-actions">
-              <Link className="atlas-btn atlas-btn-primary" href="/search">
-                Explore Startup Atlas
+              <Link className="atlas-btn atlas-btn-primary" href={primaryHref}>
+                {primaryLabel}
               </Link>
               <Link className="atlas-btn atlas-btn-ghost" href="/navigator">
-                Find Founder Resources
+                {secondaryLabel}
               </Link>
-              <Link className="atlas-btn atlas-btn-gold" href="/search">
-                Claim My Startup
+              <Link className="atlas-btn atlas-btn-gold" href="/pulse">
+                Weekly Pulse
               </Link>
             </div>
+            {!hydrated || !config ? (
+              <button
+                type="button"
+                onClick={() => setRole("investor")}
+                className="mt-4 text-[12px] text-ink-mute hover:text-ink underline"
+              >
+                Personalize for my role →
+              </button>
+            ) : null}
           </div>
         </section>
 
@@ -104,8 +141,16 @@ export function LandingAtlasPage() {
           ))}
         </section>
 
+        {/* Ecosystem Change Feed */}
+        <section
+          className="w-full max-w-[1090px] mx-auto px-4 pb-8"
+          aria-label="What's happening in Utah"
+        >
+          <EcosystemChangeFeed />
+        </section>
+
         <section className="atlas-trust">
-          <span>Powered by Utah startup map & resource datasets</span>
+          <span>Powered by Utah startup map &amp; resource datasets</span>
           <div>
             {sources.map((source) => (
               <strong key={source}>{source}</strong>
@@ -117,13 +162,14 @@ export function LandingAtlasPage() {
   );
 }
 
+
 export function FounderCompassPage() {
   const company = getFeaturedCompany();
   const score = profileCompleteness(company);
 
   return (
     <div className="atlas-page atlas-page-light">
-      <AtlasHeader variant="founder" />
+      <AtlasHeader />
       <main className="founder-shell">
         <p className="atlas-kicker">Founder Compass</p>
         <h1>Resources matched to your journey</h1>
@@ -206,7 +252,7 @@ export function SearchAtlasPage() {
 export function NavigatorAtlasPage() {
   return (
     <div className="atlas-page atlas-page-light">
-      <AtlasHeader variant="founder" />
+      <AtlasHeader />
       <main>
         <div style={{ borderBottom: "1px solid rgba(8,38,83,0.1)", padding: "2rem 1.5rem 1.75rem", textAlign: "center" }}>
           <h1 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(1.7rem, 4vw, 2.4rem)", fontWeight: 700, color: "#062a52", lineHeight: 1.15 }}>
@@ -225,7 +271,7 @@ export function NavigatorAtlasPage() {
 export function ResultsAtlasPage() {
   return (
     <div className="atlas-page atlas-page-light">
-      <AtlasHeader variant="founder" />
+      <AtlasHeader />
       <main>
         <ResultsClient />
       </main>
@@ -233,30 +279,16 @@ export function ResultsAtlasPage() {
   );
 }
 
-function AtlasHeader({ variant }: { variant: HeaderVariant }) {
+export function AtlasHeader({ variant = "default" }: { variant?: "default" | "search" }) {
   const dark = variant === "search";
-  const company = getFeaturedCompany();
-  const nav =
-    variant === "landing"
-      ? [
-          ["Map", "/search"],
-          ["Founder match", "/navigator"],
-          ["Compass", "/founder-compass"],
-          ["Atlas home", "/"],
-        ]
-      : variant === "founder"
-        ? [
-            ["Founder Compass", "/founder-compass"],
-            ["Navigator", "/navigator"],
-            ["Investor map", "/search"],
-            ["Home", "/"],
-          ]
-        : [
-            ["Search", "/search"],
-            ["Navigator", "/navigator"],
-            ["Compass", "/founder-compass"],
-            ["Home", "/"],
-          ];
+  const nav = [
+    ["Home", "/"],
+    ["Map", "/search"],
+    ["Find Resources", "/navigator"],
+    ["Pulse", "/pulse"],
+    ["AI Agents", "/agents"],
+  ];
+
 
   return (
     <header className={`atlas-header ${dark ? "atlas-header-dark" : ""}`}>
@@ -269,46 +301,24 @@ function AtlasHeader({ variant }: { variant: HeaderVariant }) {
           <Link
             key={label}
             href={href}
-            className={isActiveNav(variant, label) ? "active" : undefined}
+            className={isActiveNav(href, usePathname()) ? "active" : undefined}
           >
             {label}
           </Link>
         ))}
       </nav>
       <div className="atlas-header-actions">
-        {variant === "landing" && (
-          <>
-            <Link href="/founder-compass">Log in</Link>
-            <Link className="signup" href="/founder-compass">Sign up</Link>
-          </>
-        )}
-        {variant === "founder" && (
-          <>
-            <button type="button" aria-label="Notifications">
-              <BellIcon />
-            </button>
-            <CompanyAvatar name={company.name} small />
-          </>
-        )}
-        {variant === "search" && (
-          <>
-            <button type="button" className="investor-pill">
-              {company.sector}
-            </button>
-            <CompanyAvatar name={company.name} small />
-          </>
-        )}
+        <AuthStatus />
       </div>
     </header>
   );
 }
 
-function isActiveNav(variant: HeaderVariant, label: string) {
-  return (
-    (variant === "founder" && label === "Founder Compass") ||
-    (variant === "search" && label === "Search") ||
-    (variant === "landing" && label === "Atlas home")
-  );
+function isActiveNav(href: string, pathname: string) {
+  if (href === "/") {
+    return pathname === "/";
+  }
+  return pathname.startsWith(href);
 }
 
 function Metric({
@@ -351,7 +361,7 @@ function CompanyAvatar({ name, small = false }: { name: string; small?: boolean 
   );
 }
 
-function MountainMark() {
+export function MountainMark() {
   return (
     <svg viewBox="0 0 52 34" aria-hidden="true" className="mountain-mark">
       <path d="M4 29 L18 8 L26 19 L34 2 L49 29 Z" fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" />

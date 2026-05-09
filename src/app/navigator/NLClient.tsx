@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -56,13 +56,10 @@ export function NLClient() {
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [speechAvailable, setSpeechAvailable] = useState(false);
   const recognitionRef = useRef<ISpeechRecognition | null>(null);
-
-  useEffect(() => {
-    const SR = window.SpeechRecognition ?? window.webkitSpeechRecognition;
-    setSpeechAvailable(!!SR);
-  }, []);
+  const speechAvailable =
+    typeof window !== "undefined" &&
+    Boolean(window.SpeechRecognition ?? window.webkitSpeechRecognition);
 
   function toggleRecording() {
     const SR = window.SpeechRecognition ?? window.webkitSpeechRecognition;

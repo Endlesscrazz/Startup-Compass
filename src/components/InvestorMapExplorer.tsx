@@ -272,6 +272,10 @@ function InvestorMapExplorerInner({ variant = "main" }: Props) {
           onRequestNearMe={handleNearMe}
           nearMePending={nearMePending}
           onRequestHide={() => setPanelOpen(false)}
+          onApplySavedSearch={(restored) => {
+            setFilters(restored);
+            setSortMode("relevance");
+          }}
           detailSlot={
             focusedCompany ? (
               <CompanyDetailPanel

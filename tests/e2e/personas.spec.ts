@@ -6,7 +6,7 @@
  * Dev server must be running (reuseExistingServer: true in config).
  */
 
-import { test, expect, type APIRequestContext } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 
 // ── Persona definitions ────────────────────────────────────────────────────
 
