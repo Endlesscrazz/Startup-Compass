@@ -223,7 +223,7 @@ export function ResultCard({ result, rank, founderProfile, county }: ResultCardP
             <p
               className={
                 isFallback
-                  ? "mt-2 text-[14px] leading-relaxed text-ink-soft"
+                  ? "mt-2 text-[13px] leading-relaxed text-ink-soft line-clamp-3"
                   : "mt-1.5 text-[12px] leading-relaxed text-ink-mute line-clamp-2"
               }
             >
