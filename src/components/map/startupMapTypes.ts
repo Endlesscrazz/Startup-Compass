@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import type { ClaimStatus } from "@/hooks/useCompanyClaims";
 import type { Company } from "@/lib/map-config";
-import type { MapViewMode } from "@/lib/map/mapViewStorage";
 
 export type StartupMapProps = {
   companies: Company[];
@@ -16,6 +15,4 @@ export type StartupMapProps = {
   onClaimCompany?: (company: Company) => void;
   mapLayoutRevision?: number;
   mapChrome?: ReactNode;
-  mapViewMode: MapViewMode;
-  onMapViewModeChange: (mode: MapViewMode) => void;
 };

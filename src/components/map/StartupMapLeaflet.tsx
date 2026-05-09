@@ -139,8 +139,6 @@ function StartupMapLeafletInner({
   onClaimCompany,
   mapLayoutRevision = 0,
   mapChrome,
-  mapViewMode,
-  onMapViewModeChange,
 }: StartupMapProps) {
   const [layerId, setLayerId] = useState<MapLayerId>("default");
   const [measureActive, setMeasureActive] = useState(false);
@@ -180,8 +178,6 @@ function StartupMapLeafletInner({
             return next;
           });
         }}
-        mapViewMode={mapViewMode}
-        onMapViewModeChange={onMapViewModeChange}
       />
       <MarkerClusterGroup {...clusterOptions}>
         {companies.map((c) => {
