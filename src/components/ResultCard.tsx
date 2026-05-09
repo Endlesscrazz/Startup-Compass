@@ -11,6 +11,10 @@ export function ResultCard({ result, rank }: ResultCardProps) {
 
   const visibleCommunities = communities.filter((c) => c !== "Any");
 
+  // Detect fallback: explanation is a truncated description (ends with "…" and desc starts with it)
+  const isFallback = explanation.endsWith("…") &&
+    description.startsWith(explanation.slice(0, -1).trimEnd());
+
   return (
     <article className="group relative rounded-[14px] border border-rule bg-surface-elev p-6 shadow-card transition-shadow hover:shadow-card-hover">
       <div className="flex items-start gap-4">
@@ -26,15 +30,19 @@ export function ResultCard({ result, rank }: ResultCardProps) {
             {title}
           </h3>
 
-          <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
-            {explanation}
-          </p>
-
-          {explanation !== description && (
-            <p className="mt-1.5 text-[12px] leading-relaxed text-ink-mute line-clamp-2">
-              {description}
+          {/* When LLM explanation is available, show it prominently */}
+          {!isFallback && (
+            <p className="mt-2 text-[14px] font-medium leading-relaxed text-accent-dark">
+              {explanation}
             </p>
           )}
+
+          {/* Show description: full text if fallback, smaller context if LLM explanation present */}
+          <p className={isFallback
+            ? "mt-2 text-[14px] leading-relaxed text-ink-soft"
+            : "mt-1.5 text-[12px] leading-relaxed text-ink-mute line-clamp-2"}>
+            {description}
+          </p>
 
           {(topics.length > 0 || visibleCommunities.length > 0) && (
             <div className="mt-3 flex flex-wrap gap-1.5">
